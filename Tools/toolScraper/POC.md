@@ -11,27 +11,27 @@ We often find ourselves lost when reading research papers, gleaning for what is 
 
 ## Solution 1: From Scratch
 
-	By making our own NLP, which will be very costy in terms of time.
+By making our own NLP, which will be very costy in terms of time.
 
 ## Solution 2 : Using an already pre-trained NLP model
 
-	To hasten the deployment of this project and save ourselves the hassle of making our own NLP, we use a pre-trained NLP model.
+To hasten the deployment of this project and save ourselves the hassle of making our own NLP, we use a pre-trained NLP model.
 
-	Our choice is Google's Bert, why?
+Our choice is Google's Bert, why?
 		
-	- Because it's free and responds to our needs.
-	- Because it's a bidirectional transformer model, unlike chatgpt, This makes it better suited for sentiment analysis or natural language understanding (NLU) tasks, which is handy to attain our goal.
+- Because it's free and responds to our needs.
+- Because it's a bidirectional transformer model, unlike chatgpt, This makes it better suited for sentiment analysis or natural language understanding (NLU) tasks, which is handy to attain our goal.
 	
 for more in-depth info : https://blog.invgate.com/gpt-3-vs-bert
 	
-	We're gonna use a pre-trained model directed towards scientific papers, scibert.
+We're gonna use a pre-trained model directed towards scientific papers, scibert.
 
 https://github.com/allenai/scibert/
 
 ## Solution 3 : using an API of an already existing AI responding to these needs
 
 https://consensus.ai/
-	This app might help us, unfortunately, it is commercial and it doesn't provide an API, however, it is a good reference point to make our own AI.
+This app might help us, unfortunately, it is commercial and it doesn't provide an API, however, it is a good reference point to make our own AI.
 
 
 
