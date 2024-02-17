@@ -48,4 +48,4 @@ The MASS app could be an adjunctive tool for improving social functioning in ind
 ## Useful Links
 
 - MASS app website [URL](URL)
-- Original research article [Article](https://www.proquest.com/openview/661abf8b01b4993f570e54214af90e4f/1?pq-origsite=gscholar&cbl=4997118)
+- Original [research article] (10.2196/27475)
