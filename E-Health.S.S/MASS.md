@@ -6,10 +6,10 @@ Schizophrenia is a chronic mental illness impacting social functioning. Social s
 
 ## Methods
 
-- Design Pilot randomized controlled trial
-- Participants 30 (15 MASS group, 15 control group)
+- **Design**: Pilot randomized controlled trial
+- **Participants**: 30 (15 MASS group, 15 control group)
 - Intervention MASS group used the app for 12 weeks; control group received standard treatment.
-- Outcome Measures 
+- **Outcome Measures**: 
   - Primary Social functioning (SFS)
   - Secondary Negative symptoms (PANSS-N), quality of life (QoL), app engagement (EMA)
 
