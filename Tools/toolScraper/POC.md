@@ -15,11 +15,11 @@ We need to identify where to extract data, for this, we are going to use an API,
 We need to narrow the data down to our needs, in this case, anything relevant to Autism & Alzheimer
 ## Third - we need to implement a way to identify and track the tools & protocols, how to do that?
 
-## Solution 1: Making a Natural Language Processor (NLP) From Scratch
+### Solution 1: Making a Natural Language Processor (NLP) From Scratch
 
 Which will be very costy in terms of time.
 
-## Solution 2 : Using an already pre-trained NLP model
+### Solution 2 : Using an already pre-trained NLP model
 
 To hasten the deployment of this project and save ourselves the hassle of making our own NLP, we use a pre-trained NLP model.
 
@@ -34,7 +34,7 @@ We're gonna use a pre-trained model directed towards scientific papers, scibert.
 
 https://github.com/allenai/scibert/
 
-## Solution 3 : using an API of an already existing AI responding to these needs
+### Solution 3 : using an API of an already existing AI responding to these needs
 
 Let's say ChatGPT's AI, we can leverage its usage to glean the tools off the data we've extracted and narrowed to autism & alzheimer in step 1 & 2.
 
