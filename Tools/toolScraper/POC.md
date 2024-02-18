@@ -5,9 +5,15 @@ We often find ourselves lost when reading research papers, gleaning for what is 
 # How to solve the problem?
 
 
-- First, we need to identify where to extract data, https://scholar.google.com is a decent choice.
-- Second, we need to narrow the data down to our needs, in this case, anything relevant to Autism & Alzheimer
-- Third, we need to implement a Natural Language Processor (NLP) to identify and track the tools & protocols, how to do that?
+## First - Data Extraction :
+We need to identify where to extract data, for this, we are going to use an API, which is from https://semanticscholar.org
+### Why? 
+- Because when extracting research papers, it already manages the potential conflicts of interest.
+- Because it is free. 
+
+## Second - Scope of Data :
+We need to narrow the data down to our needs, in this case, anything relevant to Autism & Alzheimer
+## Third, we need to implement a Natural Language Processor (NLP) to identify and track the tools & protocols, how to do that?
 
 ## Solution 1: From Scratch
 
@@ -30,9 +36,14 @@ https://github.com/allenai/scibert/
 
 ## Solution 3 : using an API of an already existing AI responding to these needs
 
+Let's say ChatGPT's AI, we can leverage its usage to glean the tools off the data we've extracted and narrowed to autism & alzheimer in step 1 & 2.
+
 https://consensus.ai/
 This app might help us, unfortunately, it is commercial and it doesn't provide an API, however, it is a good reference point to make our own AI.
 
+https://www.semanticscholar.org/product/api/tutorial#datasets
+
+https://arxiv.org/pdf/2301.10140.pdf
 
 
 
