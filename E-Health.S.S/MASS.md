@@ -29,21 +29,9 @@ The MASS app appears promising for enhancing social functioning in individuals w
 - Lack of an active control group
 - Relatively short intervention duration (12 weeks)
 
-## Strengths
-
-- Randomized controlled design
-- Innovative mobile app usage
-- Measurement of multiple important outcomes
-
 ## Implications for Practice
 
 The MASS app could be an adjunctive tool for improving social functioning in individuals with schizophrenia. Further research in real-world clinical settings is needed to determine effectiveness.
-
-## Additional Information
-
-- The MASS app is a free and easy-to-use mobile app.
-- Modules include social skills training, symptom management, and communication.
-- Can be used independently or as an adjunct to standard treatment.
 
 ## Useful Links
 
