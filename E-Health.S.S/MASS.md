@@ -15,7 +15,7 @@ Schizophrenia is a chronic mental illness impacting social functioning. Social s
 
 ## Results
 
-- MASS group showed significant improvement in social functioning (SFS) compared to the control group after 12 weeks, sustained at 3 months follow-up.
+- MASS group showed significant improvement in social functioning (SFS) particularly in female participants, compared to the control group after 12 weeks, sustained at 3 months follow-up.
 - Trend towards improvement in negative symptoms (PANSS-N) and quality of life (QoL) in the MASS group.
 - High app engagement 80% used the app at least 3 times per week.
 
