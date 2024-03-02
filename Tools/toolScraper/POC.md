@@ -41,7 +41,7 @@ Let's say ChatGPT's AI, we can leverage its usage to glean the tools off the dat
 # Goal Tree of the Tool
 ![goaltree](https://github.com/sMouaad/FinalCourseProject/assets/93816869/c7872d55-4c47-4800-b23b-08b8d7cb11da)
 # Resources :
-https://consensus.ai/
+https://consensus.app/
 This app might help us, unfortunately, it is commercial and it doesn't provide an API, however, it is a good reference point to make our own AI.
 
 https://www.semanticscholar.org/product/api/tutorial#datasets
