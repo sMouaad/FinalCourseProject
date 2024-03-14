@@ -9,7 +9,7 @@
 
 body{
     background-color: #c9d6ff;
-    background: linear-gradient(to right, #9370DB, #40E0D0);
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,7 +157,7 @@ body{
 
 .container.active .toggle-container{
     transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+    border-radius: 0 50px 50px 0;
 }
 
 .toggle{
