@@ -208,3 +208,79 @@ body{
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+
+.side-container{
+    background-color: #191970;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: absolute;
+    left: 2%;
+    height: max-content;
+    overflow: hidden;
+    width: 50px;
+    min-height: 480px;
+
+}
+
+.side-container a{
+    color: #ccc;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4px 3px;
+    width: 40px;
+    height: 40px;
+}
+
+.option-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.option-container a{
+    color: black;
+    font-size: 50px;
+    text-decoration: none;
+    display: inline-flex;
+}
+
+.chat-container{
+    background-color: #BBFFDD;
+    border-radius: 15px;
+    min-width: 200px;
+    min-height: 350px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.games-container{
+    background-color: #E6E6E7;
+    border-radius: 15px;
+    min-width: 200px;
+    min-height: 350px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.social-container{
+    background-color: #F7C93D;
+    border-radius: 15px;
+    min-width: 200px;
+    min-height: 350px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
