@@ -8,8 +8,7 @@
 }
 
 body{
-    background-color: #c9d6ff;
-    
+    background-color: #e7e7e7;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,7 +46,7 @@ body{
 }
 
 .container button{
-    background-color: #9370DB;
+    background-color: #00E5BD;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -61,8 +60,7 @@ body{
 }
 
 .container button.hidden{
-    background-color: transparent;
-    border-color: #fff;
+    background-color: #58cc02;
 }
 
 .container form{
@@ -160,10 +158,11 @@ body{
     border-radius: 0 50px 50px 0;
 }
 
+
+
 .toggle{
-    background-color: #9370DB;
+    background-color: #00E5BD;
     height: 100%;
-    background: linear-gradient(to right, #40E0D0, #9370DB);
     color: #fff;
     position: relative;
     left: -100%;
@@ -172,6 +171,18 @@ body{
     transform: translateX(0);
     transition: all 0.6s ease-in-out;
 }
+
+.toggle-right img
+{
+    width: 200px;
+    height: 200px;
+}
+
+.toggle-right .register
+{
+background-color: #58cc02;
+}
+
 
 .container.active .toggle{
     transform: translateX(50%);
@@ -207,80 +218,4 @@ body{
 
 .container.active .toggle-right{
     transform: translateX(200%);
-}
-
-.side-container{
-    background-color: #191970;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: absolute;
-    left: 2%;
-    height: max-content;
-    overflow: hidden;
-    width: 50px;
-    min-height: 480px;
-
-}
-
-.side-container a{
-    color: #ccc;
-    font-size: 15px;
-    text-decoration: none;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 4px 3px;
-    width: 40px;
-    height: 40px;
-}
-
-.option-container{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-}
-
-.option-container a{
-    color: black;
-    font-size: 50px;
-    text-decoration: none;
-    display: inline-flex;
-}
-
-.chat-container{
-    background-color: #BBFFDD;
-    border-radius: 15px;
-    min-width: 200px;
-    min-height: 350px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 20px;
-}
-
-.games-container{
-    background-color: #E6E6E7;
-    border-radius: 15px;
-    min-width: 200px;
-    min-height: 350px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 20px;
-}
-
-.social-container{
-    background-color: #F7C93D;
-    border-radius: 15px;
-    min-width: 200px;
-    min-height: 350px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 20px;
 }
