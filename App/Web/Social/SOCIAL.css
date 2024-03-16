@@ -20,8 +20,9 @@ body{
     margin-left:32px;
 }
 .side-container{
+    top:20px;
     position:fixed;
-    height:98vh;
+    height:85vh;
     width:max-content;
     padding:3px;
     display:flex;
