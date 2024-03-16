@@ -15,8 +15,15 @@ body{
     background-color: #F0F2F5;
     height: 100vh;
 }
-
+.fixed-container{
+    width:93px;
+    margin-left:32px;
+}
 .side-container{
+    position:fixed;
+    height:98vh;
+    width:max-content;
+    padding:3px;
     display:flex;
     flex-direction: column;
     background-color: var(--sidebar);
@@ -24,7 +31,6 @@ body{
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     margin-left:32px;
 }
-
 .side-container a{
     color: #ccc;
     font-size: 15px;
