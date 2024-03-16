@@ -42,7 +42,7 @@ body{
     height: 40px;
 }
 
-.option-container{
+.container{
     position: relative;
     display: flex;
     align-items: center;
@@ -50,15 +50,9 @@ body{
     flex-direction: row;
 }
 
-.option-container a{
-    color: black;
-    font-size: 50px;
-    text-decoration: none;
-    display: inline-flex;
-}
 
-.chat-container{
-    background-color: #BBFFDD;
+.container1{
+    background-color: #F5BD036E;
     border-radius: 15px;
     min-width: 200px;
     min-height: 350px;
@@ -69,8 +63,8 @@ body{
     margin: 20px;
 }
 
-.games-container{
-    background-color: #E6E6E7;
+.container2{
+    background-color: #FFB9506E;
     border-radius: 15px;
     min-width: 200px;
     min-height: 350px;
@@ -81,8 +75,8 @@ body{
     margin: 20px;
 }
 
-.social-container{
-    background-color: #F7C93D;
+.container3{
+    background-color: #FFBA826E;
     border-radius: 15px;
     min-width: 200px;
     min-height: 350px;
