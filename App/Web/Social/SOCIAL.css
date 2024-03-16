@@ -35,7 +35,6 @@ body{
 }
 
 .container{
-    display: flex;
     align-items: center;
     justify-content: center;
     flex:1;
@@ -80,7 +79,7 @@ body{
 .flex-container{
     display:flex;
 }
-img{
+.wink{
     height:100%;
 }
 .column{
@@ -104,10 +103,52 @@ img{
 }
 .chat{
  background-color: var(--chat);
+ transition: 0.5s;
 }
 .games{
 background-color: var(--game);
+transition: 0.5s;
 }
 .social{
 background-color: var(--social);
+transition: 0.5s;
+}
+.social-image,
+.game-image,
+.chat-image{
+    position:relative;
+    height:22rem;
+    top:100px;
+    z-index:2;
+}
+.flex-wrap{
+    flex-wrap:wrap;
+}
+span.green{
+    color:var(--chat);
+}
+span.purple{
+    color:var(--game);
+}
+span.social{
+    color:var(--social);
+}
+div{
+    text-align: center;
+}
+p{
+    font-size: 2rem;
+    font-weight: bold;
+}
+.chat-image:hover + .chat{
+    box-shadow: 0 5px 15px var(--chat);
+}
+.game-image:hover + .games{
+    box-shadow: 0 5px 15px var(--game);
+}
+.social-image:hover + .social{
+    box-shadow: 0 5px 15px var(--social);
+}
+img:hover{
+    cursor:pointer;
 }
