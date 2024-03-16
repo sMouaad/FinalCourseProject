@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+:root{
+    --sidebar:#00B691;
+    --chat:#8FFFA1;
+    --game:#757FDB;
+    --social:#FFD95B;
 
+}
 *{
-    margin: 8px;
-    padding: 8px;
     box-sizing:  border-box;
     font-family: 'Montserrat', sans-serif;
 }
@@ -14,13 +18,11 @@ body{
 
 .side-container{
     display:flex;
-    justify-content: center;
-    background-color: #191970;
+    flex-direction: column;
+    background-color: var(--sidebar);
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    width: 50px;
-    min-height: 480px;
-
+    margin-left:32px;
 }
 
 .side-container a{
@@ -30,9 +32,6 @@ body{
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    margin: 4px 3px;
-    width: 40px;
-    height: 40px;
 }
 
 .container{
@@ -43,11 +42,11 @@ body{
 }
 
 
-.container1{
+.child{
     background-color: #F5BD036E;
-    border-radius: 15px;
-    min-width: 200px;
-    min-height: 350px;
+    border-radius: 100%;
+    min-height: 120px;
+    min-width: 350px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -80,4 +79,35 @@ body{
 }
 .flex-container{
     display:flex;
+}
+img{
+    height:100%;
+}
+.column{
+    flex-direction: column;
+}
+.icons{
+    gap:32px;
+}
+.main{
+    padding-top:16px;
+    padding-bottom:16px;
+    height:100%
+}
+.exit{
+    margin-top: auto;
+    margin-bottom:24px;
+}
+.space-between{
+    height: 70%;
+    justify-content: space-around;
+}
+.chat{
+ background-color: var(--chat);
+}
+.games{
+background-color: var(--game);
+}
+.social{
+background-color: var(--social);
 }
