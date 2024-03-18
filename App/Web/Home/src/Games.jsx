@@ -1,7 +1,7 @@
 import Chat from "./assets/chat.svg";
 import Social from "./assets/social.svg";
 import Game from "./assets/game.svg";
-export default function Content() {
+export default function Games() {
   return (
     <div className="flex justify-center flex-wrap px-16 pr-32 py-16 gap-16 max-h-fit min-h-card ml-32 ">
       <Card
