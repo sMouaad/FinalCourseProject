@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .sidebar-icon {
+    @apply relative flex items-center justify-center mx-2 h-12 w-12 rounded-full transition-all duration-300 ease-linear;
+  }
+  .sidebar-hover {
+    @apply hover:bg-selected hover:shadow-sm hover:cursor-pointer;
+  }
+  .sidebar-msg {
+    @apply absolute w-auto p-2 m-2 min-w-max left-10 rounded-xl text-white bg-selected bottom-3 text-xs font-bold transition-all duration-300 scale-0;
+  }
+  .card-hover {
+    @apply hover:shadow-lg cursor-pointer transition-all ease-linear;
+  }
+}
+html {
+  height: 100vh;
+  background-color: #f0f2f5;
+}
