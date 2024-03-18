@@ -4,6 +4,7 @@ import { memory } from "./data.jsx";
 import { focus } from "./data.jsx";
 import ArrowL from "./assets/arrow-left.svg";
 import ArrowR from "./assets/arrow-right.svg";
+var x = document.getElementById("this");
 export default function Apps() {
   return (
     <div
@@ -21,30 +22,51 @@ function Row({ msg, dataset }) {
     <>
       <div className="relative flex flex-col flex-1">
         <p className="font-Poppins text-xl font-bold">{msg}</p>
-        <div className="z-10 bg-slate-500 hover:cursor-pointer bg-opacity-50 rounded-full px-1 py-1 absolute left-2 top-1/2">
-          <img src={ArrowL} alt="" />
-        </div>
-        <div className="z-10 bg-slate-500 hover:cursor-pointer bg-opacity-50 rounded-full px-1 py-1 absolute top-1/2 right-2">
-          <img src={ArrowR} alt="" />
-        </div>
-        <div className="flex-1 basis-0 no-scrollbar overflow-x-scroll grid grid-cards">
-          {dataset.items.map((data) => {
-            return (
-              <div
-                onClick={() => {
-                  GoToApp(data.link);
-                }}
-                key={data.title}
-                className="grid hover:cursor-pointer group overflow-hidden rounded-xl grid-cards border-black border-4"
-              >
-                <img
-                  className="relative h-full mx-auto bottom-10 group-hover:bottom-20 transition-all"
-                  src={data.thumbnail}
-                  alt=""
-                ></img>
-              </div>
-            );
-          })}
+        <div className="relative flex-1 basis-0 no-scrollbar overflow-x-scroll grid grid-cols-1">
+          <div
+            onClick={(e) => {
+              e.currentTarget.nextSibling.nextSibling.scrollBy({
+                left: -332,
+                behavior: "smooth",
+              });
+            }}
+            className="z-10 hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center left-0 hover:scroll-hover-left transition-all ease-linear duration-300"
+          >
+            <img src={ArrowL} alt="" />
+          </div>
+          <div
+            onClick={(e) => {
+              e.currentTarget.nextSibling.scrollBy({
+                left: 332,
+                behavior: "smooth",
+              });
+            }}
+            className="z-10 hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center justify-end right-0 hover:scroll-hover-right transition-all ease-linar duration-300"
+          >
+            <img src={ArrowR} alt="" />
+          </div>
+          <div
+            id="this"
+            className="flex-1 basis-0 no-scrollbar overflow-x-scroll grid grid-cards"
+          >
+            {dataset.items.map((data) => {
+              return (
+                <div
+                  onClick={() => {
+                    GoToApp(data.link);
+                  }}
+                  key={data.title}
+                  className="grid hover:cursor-pointer group overflow-hidden rounded-xl grid-cards border-black border-4"
+                >
+                  <img
+                    className="relative h-full mx-auto right-1 bottom-10 group-hover:bottom-20 transition-all"
+                    src={data.thumbnail}
+                    alt=""
+                  ></img>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
