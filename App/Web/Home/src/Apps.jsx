@@ -4,7 +4,6 @@ import { memory } from "./data.jsx";
 import { focus } from "./data.jsx";
 import ArrowL from "./assets/arrow-left.svg";
 import ArrowR from "./assets/arrow-right.svg";
-var x = document.getElementById("this");
 export default function Apps() {
   return (
     <div
@@ -45,10 +44,7 @@ function Row({ msg, dataset }) {
           >
             <img src={ArrowR} alt="" />
           </div>
-          <div
-            id="this"
-            className="flex-1 basis-0 no-scrollbar overflow-x-scroll grid grid-cards"
-          >
+          <div className="flex-1 basis-0 no-scrollbar overflow-x-scroll grid grid-cards">
             {dataset.items.map((data) => {
               return (
                 <div
