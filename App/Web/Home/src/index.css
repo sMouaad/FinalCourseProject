@@ -34,6 +34,12 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .scroll-hover-left {
+    box-shadow: inset 16px 0 9px -7px #00e5bd;
+  }
+  .scroll-hover-right {
+    box-shadow: inset -16px 0 9px -7px #00e5bd;
+  }
 }
 html {
   height: 100vh;
