@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-const App = props => {
-  const { onPress, title = 'C\'EST PARTI !' } = props;
+const App = () => {
+  const [button1, setButton1Color] = useState('#00E5BD');
+  const [button2, setButton2Color] = useState('rgba(0,0,0,0)');
+
+  const handleClick = () => {
+    console.log("younes")
+  };
+
   return (
     <View style={styles.container}>
       <Image style={styles.dhakira} source={require('./Dhakira1.png')} />
       <Text  style={styles.text}>Dhakira</Text>
       <Text  style={styles.text1}>La methode gratuite, fun, et efficace pour t'assister dans tes taches</Text>
-      <Pressable style={styles.button} onPress={onPress}>
-        <Text style={styles.text2}>{title}</Text>
+      <Pressable style={styles.button} onPress={handleClick}>
+        <Text style={styles.text2}>C'EST PARTI !</Text>
       </Pressable>
-      
+      <Pressable style={styles.button2} onPress={handleClick}>
         <Text style={styles.text3}>J'AI DEJA UN COMPTE</Text>
       </Pressable>
     </View>
