@@ -38,7 +38,7 @@ function Row({ msg, dataset }) {
                 className="grid hover:cursor-pointer group overflow-hidden rounded-xl grid-cards border-black border-4"
               >
                 <img
-                  className="relative h-full mx-auto bottom-10 group-hover:bottom-20 transition-all"
+                  className="relative h-full mx-auto right-1 bottom-10 group-hover:bottom-20 transition-all"
                   src={data.thumbnail}
                   alt=""
                 ></img>
