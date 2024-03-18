@@ -8,8 +8,8 @@ import { LuListTodo } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 function Sidebar() {
   return (
-    <div className="fixed z-10 h-screen bg-BgColor w-32 sidebar-shadow">
-      <div className="relative z-10 gap-12 rounded-xl top-10 left-7 h-sidebar w-16 m-0 flex flex-col bg-primary text-white shadow-lg pt-4 pb-4">
+    <div className="fixed z-10 h-screen bg-BgColor w-16 sidebar-shadow">
+      <div className="relative z-10 gap-12 rounded-xl top-10 left-1 sm:left-7 h-sidebar w-16 m-0 flex flex-col bg-primary text-white shadow-lg pt-4 pb-4">
         <SidebarIcon clickable={false} icon={<img src={Brain} />} />
         <div className="flex flex-col gap-1">
           <SidebarIcon msg={"Home"} icon={<FaHome size="30" />} />
