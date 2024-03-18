@@ -3,7 +3,10 @@ import Social from "./assets/social.svg";
 import Game from "./assets/game.svg";
 export default function Games() {
   return (
-    <div className="flex justify-center flex-wrap px-16 pr-32 py-16 gap-16 max-h-fit min-h-card ml-32 ">
+    <div
+      id="Home"
+      className="flex justify-center flex-wrap px-16 pr-32 py-16 gap-16 max-h-fit min-h-card ml-32 "
+    >
       <Card
         cardColor="bg-Chat"
         textShadow="hover:shadow-Chat"

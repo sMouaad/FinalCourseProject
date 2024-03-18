@@ -6,7 +6,10 @@ import ArrowL from "./assets/arrow-left.svg";
 import ArrowR from "./assets/arrow-right.svg";
 export default function Apps() {
   return (
-    <div className="ml-32 flex flex-col py-16 pb-32 pl-16 gap-8 min-h-screen ">
+    <div
+      id="Games"
+      className="ml-32 flex flex-col py-16 pb-32 pl-16 gap-8 min-h-screen "
+    >
       <Row msg="Improve your Social Skills" dataset={social} />
       <Row msg="Improve your Memory" dataset={memory} />
       <Row msg="Improve your Focus" dataset={focus} />
@@ -32,7 +35,7 @@ function Row({ msg, dataset }) {
                   GoToApp(data.link);
                 }}
                 key={data.title}
-                className="grid group overflow-hidden rounded-xl grid-cards border-black border-4"
+                className="grid hover:cursor-pointer group overflow-hidden rounded-xl grid-cards border-black border-4"
               >
                 <img
                   className="relative h-full mx-auto bottom-10 group-hover:bottom-20 transition-all"
