@@ -9,5 +9,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Sidebar />
     <Apps />
+    <Games />
   </React.StrictMode>
 );
