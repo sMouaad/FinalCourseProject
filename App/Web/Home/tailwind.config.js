@@ -10,6 +10,7 @@ export default {
         Gam: "#4150D8",
         Chat: "#4CFF69",
         Social: "#FFD95B",
+        BgColor: "#f0f2f5",
       },
       minHeight: {
         card: "90vh",
