@@ -11,7 +11,7 @@ const App = props => {
       <Pressable style={styles.button} onPress={onPress}>
         <Text style={styles.text2}>{title}</Text>
       </Pressable>
-      
+      <Pressable style={styles.button2} onPress={onPress}>
         <Text style={styles.text3}>J'AI DEJA UN COMPTE</Text>
       </Pressable>
     </View>
