@@ -29,7 +29,7 @@ function Row({ msg, dataset }) {
                 behavior: "smooth",
               });
             }}
-            className="z-10 hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center left-0 hover:scroll-hover-left transition-all ease-linear duration-300"
+            className="z-10 hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center left-0 rounded hover:scroll-hover-left transition-all ease-linear duration-300"
           >
             <img src={ArrowL} alt="" />
           </div>
@@ -40,7 +40,7 @@ function Row({ msg, dataset }) {
                 behavior: "smooth",
               });
             }}
-            className="z-10 hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center justify-end right-0 hover:scroll-hover-right transition-all ease-linar duration-300"
+            className="z-10 hover:cursor-pointer w-20 px-3 py-1 absolute h-full flex items-center justify-end right-2 rounded hover:scroll-hover-right transition-all ease-linear duration-300"
           >
             <img src={ArrowR} alt="" />
           </div>

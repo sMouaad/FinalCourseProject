@@ -32,10 +32,10 @@
     scrollbar-width: none; /* Firefox */
   }
   .scroll-hover-left {
-    box-shadow: inset 16px 0 9px -7px #00e5bd;
+    box-shadow: inset 20px 0 20px -7px #00e5bd;
   }
   .scroll-hover-right {
-    box-shadow: inset -16px 0 9px -7px #00e5bd;
+    box-shadow: inset -20px 0 20px -7px #00e5bd;
   }
   img {
     -moz-user-select: none;
