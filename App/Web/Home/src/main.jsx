@@ -1,14 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Sidebar from "./Sidebar.jsx";
-import Games from "./Games.jsx";
-import Apps from "./Apps.jsx";
+import Router from "./Router";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Sidebar />
-    <Apps />
-    <Games />
+    <Router />
   </React.StrictMode>
 );

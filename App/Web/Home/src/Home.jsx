@@ -1,7 +1,7 @@
 import Chat from "./assets/chat.svg";
 import Social from "./assets/social.svg";
 import Game from "./assets/game.svg";
-export default function Games() {
+export default function Home() {
   return (
     <div
       id="Home"
