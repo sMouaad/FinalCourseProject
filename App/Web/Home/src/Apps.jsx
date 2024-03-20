@@ -10,7 +10,7 @@ export default function Apps() {
       id="Games"
       className="ml-4 sm:ml-32 flex flex-col py-16 pb-32 pl-16 gap-8 min-h-screen "
     >
-      <Row msg="Improve your Focus" dataset={social} />
+      <Row msg="Improve your Social Skills" dataset={social} />
       <Row msg="Improve your Memory" dataset={memory} />
       <Row msg="Improve your Focus" dataset={focus} />
     </div>
