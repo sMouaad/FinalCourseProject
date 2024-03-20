@@ -3,10 +3,10 @@ import { IoIosApps } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 import { IoGameController } from "react-icons/io5";
 import { RiNotification3Fill } from "react-icons/ri";
-import { MdOutlineSupportAgent } from "react-icons/md";
 import { LuListTodo } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { GoCopilot } from "react-icons/go";
 function Sidebar() {
   return (
     <div className="fixed z-10 h-screen bg-BgColor w-20 sidebar-shadow">
@@ -30,10 +30,10 @@ function Sidebar() {
           </Link>
         </div>
         <div className="flex flex-col">
-          <Link to="/support">
+          <Link to="/assistant">
             <SidebarIcon
-              msg={"Support"}
-              icon={<MdOutlineSupportAgent size="30" />}
+              msg={"Virtual Assistant"}
+              icon={<GoCopilot size="30" />}
             />
           </Link>
           <Link to="/to-do-list">
@@ -41,7 +41,7 @@ function Sidebar() {
           </Link>
         </div>
         <div className="mt-auto">
-          <SidebarIcon icon={<LuLogOut size="30" />} />
+          <SidebarIcon msg={"Exit"} icon={<LuLogOut size="30" />} />
         </div>
       </div>
     </div>

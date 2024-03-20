@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from fastapi import FastAPI
 from openai import AsyncOpenAI
 from openai.types.beta.threads.run import RequiredAction, LastError
@@ -10,7 +11,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5174",  # used to run with react server
+        "http://localhost:4173",  # used to run with react server
     ],
     allow_credentials=True,
     allow_methods=["*"],

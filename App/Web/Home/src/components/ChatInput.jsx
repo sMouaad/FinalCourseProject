@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { MdSend } from "react-icons/md";
 import { useState } from "react";
 
@@ -5,7 +6,7 @@ export default function ChatInput({ disabled, onSend }) {
   const [message, setMessage] = useState("");
   return (
     <form
-      className="border-2 border-green-400 rounded-lg p-2 flex flex-row m-2"
+      className="border-2 bg-white border-green-400 rounded-lg p-2 flex flex-row m-2"
       onSubmit={(e) => {
         e.preventDefault();
         onSend(message);
