@@ -3,6 +3,7 @@ import Apps from "./Apps";
 import Home from "./Home";
 import ErrorPage from "./ErrorPage";
 import Sidebar from "./Sidebar";
+import Assistant from "./Assistant";
 const Router = () => {
   const router = createBrowserRouter([
     {
@@ -21,6 +22,15 @@ const Router = () => {
         <>
           <Sidebar />
           <Apps />
+        </>
+      ),
+    },
+    {
+      path: "assistant",
+      element: (
+        <>
+          <Sidebar />
+          <Assistant />
         </>
       ),
     },

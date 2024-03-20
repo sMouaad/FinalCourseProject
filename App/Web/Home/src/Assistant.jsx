@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import Header from "./components/Header";
 import ChatInput from "./components/ChatInput";
 import ChatMessage from "./components/ChatMessage";
@@ -35,9 +34,9 @@ function App() {
     });
 
   return (
-    <div className="md:container md:mx-auto lg:px-32 h-screen flex flex-col">
+    <div className="ml-24 lg:px-32 h-screen flex flex-col">
       <Header onNewChat={clearThread} />
-      <div className="flex flex-col-reverse grow overflow-scroll">
+      <div className="flex flex-col-reverse grow overflow-y-scroll">
         {status !== undefined && <ChatStatusIndicator status={status} />}
         {processing && <Loading />}
         {messageList}
