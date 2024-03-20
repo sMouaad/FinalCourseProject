@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 const App = () => {
-  const [button1, setButton1Color] = useState('#00E5BD');
-  const [button2, setButton2Color] = useState('rgba(0,0,0,0)');
 
   const handleClick = () => {
-    console.log("younes")
+    console.warn("C'EST PARTI CLICKED");
+  };
+  
+  const handleClick2 = () => {
+    console.warn("J'AI DEJA UN COMPTE CLICKED");
   };
 
   return (
@@ -16,11 +18,7 @@ const App = () => {
       <Pressable style={styles.button} onPress={handleClick}>
         <Text style={styles.text2}>C'EST PARTI !</Text>
       </Pressable>
-<<<<<<< HEAD
-      <Pressable style={styles.button2} onPress={handleClick}>
-=======
-      <Pressable style={styles.button2} onPress={onPress}>
->>>>>>> 0acd37ad58a294d2238b40abf6f08ca322b6374a
+      <Pressable style={styles.button2} onPress={handleClick2}>
         <Text style={styles.text3}>J'AI DEJA UN COMPTE</Text>
       </Pressable>
     </View>
