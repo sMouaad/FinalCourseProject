@@ -16,7 +16,11 @@ const App = () => {
       <Pressable style={styles.button} onPress={handleClick}>
         <Text style={styles.text2}>C'EST PARTI !</Text>
       </Pressable>
+<<<<<<< HEAD
       <Pressable style={styles.button2} onPress={handleClick}>
+=======
+      <Pressable style={styles.button2} onPress={onPress}>
+>>>>>>> 0acd37ad58a294d2238b40abf6f08ca322b6374a
         <Text style={styles.text3}>J'AI DEJA UN COMPTE</Text>
       </Pressable>
     </View>

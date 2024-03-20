@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+:root{
+    --sidebar:#00B691;
+    --chat:#8FFFA1;
+    --game:#757FDB;
+    --social:#FFD95B;
+
+}
+*{
+    box-sizing:  border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    background-color: #F0F2F5;
+    height: 100vh;
+}
+.fixed-container{
+    width:93px;
+    margin-left:32px;
+}
+.side-container{
+    top:20px;
+    position:fixed;
+    height:85vh;
+    width:max-content;
+    padding:3px;
+    display:flex;
+    flex-direction: column;
+    background-color: var(--sidebar);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    margin-left:32px;
+}
+.side-container a{
+    color: #ccc;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    align-items: center;
+    justify-content: center;
+    flex:1;
+}
+
+
+.child{
+    background-color: #F5BD036E;
+    border-radius: 100%;
+    min-height: 120px;
+    min-width: 350px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.container2{
+    background-color: #FFB9506E;
+    border-radius: 15px;
+    min-width: 200px;
+    min-height: 350px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.container3{
+    background-color: #FFBA826E;
+    border-radius: 15px;
+    min-width: 200px;
+    min-height: 350px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+.flex-container{
+    display:flex;
+}
+.wink{
+    height:100%;
+}
+.column{
+    flex-direction: column;
+}
+.icons{
+    gap:32px;
+}
+.main{
+    padding-top:16px;
+    padding-bottom:16px;
+    height:100%
+}
+.exit{
+    margin-top: auto;
+    margin-bottom:24px;
+}
+.space-between{
+    height: 70%;
+    justify-content: space-around;
+}
+.chat{
+ background-color: var(--chat);
+ transition: 0.5s;
+}
+.games{
+background-color: var(--game);
+transition: 0.5s;
+}
+.social{
+background-color: var(--social);
+transition: 0.5s;
+}
+.social-image,
+.game-image,
+.chat-image{
+    position:relative;
+    height:22rem;
+    top:100px;
+    z-index:2;
+}
+.flex-wrap{
+    flex-wrap:wrap;
+}
+span.green{
+    color:var(--chat);
+}
+span.purple{
+    color:var(--game);
+}
+span.social{
+    color:var(--social);
+}
+div{
+    text-align: center;
+}
+p{
+    font-size: 2rem;
+    font-weight: bold;
+}
+.chat-image:hover + .chat{
+    box-shadow: 0 5px 15px var(--chat);
+}
+.game-image:hover + .games{
+    box-shadow: 0 5px 15px var(--game);
+}
+.social-image:hover + .social{
+    box-shadow: 0 5px 15px var(--social);
+}
+img:hover{
+    cursor:pointer;
+}
