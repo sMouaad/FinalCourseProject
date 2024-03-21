@@ -9,29 +9,35 @@ import { Link } from "react-router-dom";
 import { GoCopilot } from "react-icons/go";
 import { useMediaQuery } from "react-responsive";
 import { GiHamburgerMenu } from "react-icons/gi";
-
+import { useState } from "react";
 function Sidebar() {
   const isDesktop = useMediaQuery({
     query: "(min-width: 640px)",
   });
   return (
-    <div className="fixed z-10 sm:gap-10 sm:rounded-xl sm:top-10 sm:left-7 sm:h-sidebar w-screen sm:w-16 m-0 flex sm:flex-col bg-primary text-white shadow-lg sm:pt-4 sm:pb-4">
+    <div className="fixed z-10 sm:gap-10 sm:rounded-xl sm:top-10 sm:left-7 sm:h-sidebar w-screen sm:w-16 m-0 flex sm:flex-col bg-primary text-white shadow-lg pt-1 sm:pt-4 sm:pb-4">
       <SidebarIcon clickable={false} icon={<img src={Brain} />} />
-      {isDesktop ? <DesktopIcons /> : <MobileIcons size=30 />}
+      {isDesktop ? <DesktopIcons /> : <MobileIcons />}
     </div>
   );
 }
 // eslint-disable-next-line react/prop-types
-function SidebarIcon({ icon, clickable = true, msg }) {
-  let sidebarClass = "sidebar-icon group ";
+function SidebarIcon({ route, icon, clickable = true, msg }) {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 640px)",
+  });
+  let sidebarClass = "sidebar-icon group flex";
   if (clickable) sidebarClass += " sidebar-hover";
   return (
-    <div className={sidebarClass}>
-      {icon}
-      {msg ? (
-        <span className="sidebar-msg group-hover:scale-100">{msg}</span>
-      ) : null}
-    </div>
+    <Link className="flex items-center font-Poppins font-bold" to={route}>
+      <div className={sidebarClass}>
+        {icon}
+        {msg ? (
+          <span className="sidebar-msg group-hover:scale-100">{msg}</span>
+        ) : null}
+      </div>
+      {!isDesktop ? <span className="">{msg}</span> : null}
+    </Link>
   );
 }
 export default Sidebar;
@@ -40,35 +46,34 @@ function DesktopIcons() {
   return (
     <>
       <div className="flex sm:flex-col sm:gap-1">
-        <Link to="/">
-          <SidebarIcon
-            msg={"Home"}
-            icon={<FaHome className="size-0 sm:size-8" />}
-          />
-        </Link>
-        <Link to="/apps">
-          <SidebarIcon msg={"Apps"} icon={<IoIosApps size="30" />} />
-        </Link>
-        <Link to="/games">
-          <SidebarIcon msg={"Games"} icon={<IoGameController size="30" />} />
-        </Link>
-        <Link to="/notifications">
-          <SidebarIcon
-            msg={"Notifications"}
-            icon={<RiNotification3Fill size="30" />}
-          />
-        </Link>
+        <SidebarIcon route="/" msg={"Home"} icon={<FaHome size="30" />} />
+        <SidebarIcon
+          route="/apps"
+          msg={"Apps"}
+          icon={<IoIosApps size="30" />}
+        />
+        <SidebarIcon
+          route="/games"
+          msg={"Games"}
+          icon={<IoGameController size="30" />}
+        />
+        <SidebarIcon
+          route="notifications"
+          msg={"Notifications"}
+          icon={<RiNotification3Fill size="30" />}
+        />
       </div>
       <div className="flex sm:flex-col">
-        <Link to="/assistant">
-          <SidebarIcon
-            msg={"Virtual Assistant"}
-            icon={<GoCopilot size="30" />}
-          />
-        </Link>
-        <Link to="/to-do-list">
-          <SidebarIcon msg={"To-do list"} icon={<LuListTodo size="30" />} />
-        </Link>
+        <SidebarIcon
+          route="/assistant"
+          msg={"Virtual Assistant"}
+          icon={<GoCopilot size="30" />}
+        />
+        <SidebarIcon
+          route="/to-do-list"
+          msg={"To-do list"}
+          icon={<LuListTodo size="30" />}
+        />
       </div>
       <div className="sm:mt-auto">
         <SidebarIcon msg={"Exit"} icon={<LuLogOut size="30" />} />
@@ -77,5 +82,53 @@ function DesktopIcons() {
   );
 }
 function MobileIcons() {
-  return <GiHamburgerMenu />;
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <div className="flex font-Poppins items-center ">Dhakira</div>
+      <div
+        onClick={() => setOpen(!open)}
+        className="flex justify-center sidebar-hover self-center h-10 w-10 transition-all ease-linear rounded-full items-center ml-auto mr-2"
+      >
+        <GiHamburgerMenu size={30} />
+        {open && (
+          <div className="absolute bg-primary w-full top-12">
+            <Dropdown>
+              <SidebarIcon route="/" msg={"Home"} icon={<FaHome size="30" />} />
+              <SidebarIcon
+                route="/apps"
+                msg={"Apps"}
+                icon={<IoIosApps size="30" />}
+              />
+              <SidebarIcon
+                route="/games"
+                msg={"Games"}
+                icon={<IoGameController size="30" />}
+              />
+              <SidebarIcon
+                route="notifications"
+                msg={"Notifications"}
+                icon={<RiNotification3Fill size="30" />}
+              />
+              <SidebarIcon
+                route="/assistant"
+                msg={"Virtual Assistant"}
+                icon={<GoCopilot size="30" />}
+              />
+              <SidebarIcon
+                route="/to-do-list"
+                msg={"To-do list"}
+                icon={<LuListTodo size="30" />}
+              />
+              <SidebarIcon msg={"Exit"} icon={<LuLogOut size="30" />} />
+            </Dropdown>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+function Dropdown(props) {
+  // eslint-disable-next-line react/prop-types
+  return <div>{props.children}</div>;
 }
