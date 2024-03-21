@@ -34,7 +34,7 @@ function App() {
     });
 
   return (
-    <div className="sm:ml-24 lg:px-32 h-screen flex flex-col">
+    <div className="sm:ml-24 mt-10 lg:px-32 h-[80vh] sm:h-screen sm:mt-0 flex flex-col">
       <Header onNewChat={clearThread} />
       <div className="flex flex-col-reverse grow overflow-y-scroll">
         {status !== undefined && <ChatStatusIndicator status={status} />}

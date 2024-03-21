@@ -15,7 +15,7 @@ function Sidebar() {
     query: "(min-width: 640px)",
   });
   return (
-    <div className="fixed z-10 sm:gap-10 sm:rounded-xl sm:top-10 sm:left-7 sm:h-sidebar w-screen sm:w-16 m-0 flex sm:flex-col bg-primary text-white shadow-lg pt-1 sm:pt-4 sm:pb-4">
+    <div className="fixed top-0 z-10 sm:gap-10 sm:rounded-xl sm:top-10 sm:left-7 sm:h-sidebar w-screen sm:w-16 m-0 flex sm:flex-col bg-primary text-white shadow-lg pt-1 sm:pt-4 sm:pb-4">
       <SidebarIcon clickable={false} icon={<img src={Brain} />} />
       {isDesktop ? <DesktopIcons /> : <MobileIcons />}
     </div>
