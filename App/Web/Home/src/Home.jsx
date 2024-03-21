@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div
       id="Home"
-      className="flex justify-center flex-wrap px-16 pr-32 py-16 gap-16 max-h-fit min-h-card ml-32 "
+      className="flex justify-center flex-wrap sm:px-16 pr-32 py-16 gap-16 max-h-fit min-h-card ml-32 "
     >
       <Card
         cardColor="bg-Chat"

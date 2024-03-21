@@ -8,7 +8,7 @@ export default function Apps() {
   return (
     <div
       id="Games"
-      className="sm:ml-32 flex flex-col py-16 pb-32 pl-16 gap-8 min-h-screen "
+      className="sm:ml-32 flex flex-col py-16 pb-32 pl-14 sm:pl-16 gap-8 min-h-screen "
     >
       <Row msg="Improve your Social Skills" dataset={social} />
       <Row msg="Improve your Memory" dataset={memory} />
@@ -19,9 +19,9 @@ export default function Apps() {
 function Row({ msg, dataset }) {
   return (
     <>
-      <div className="relative flex flex-col flex-1">
+      <div className="relative w-[308px] h-auto sm:w-auto flex flex-col flex-1">
         <p className="font-Poppins text-xl font-bold">{msg}</p>
-        <div className="relative flex-1 basis-0 no-scrollbar overflow-x-scroll grid grid-cols-1">
+        <div className="relative flex-1 border-4 basis-0 no-scrollbar overflow-x-scroll grid grid-cols-1">
           <div
             onClick={(e) => {
               e.currentTarget.nextSibling.nextSibling.scrollBy({
@@ -29,7 +29,7 @@ function Row({ msg, dataset }) {
                 behavior: "smooth",
               });
             }}
-            className="z-10 hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center left-0 rounded hover:scroll-hover-left transition-all ease-linear duration-300"
+            className="z-[1] hover:cursor-pointer w-20 px-1 py-1 absolute h-full flex items-center left-0 rounded hover:scroll-hover-left transition-all ease-linear duration-300"
           >
             <img src={ArrowL} alt="" />
           </div>
@@ -40,7 +40,7 @@ function Row({ msg, dataset }) {
                 behavior: "smooth",
               });
             }}
-            className="z-10 hover:cursor-pointer w-20 px-3 py-1 absolute h-full flex items-center justify-end right-2 rounded hover:scroll-hover-right transition-all ease-linear duration-300"
+            className="z-[1] hover:cursor-pointer w-20 sm:px-3 py-1 absolute  h-full flex items-center justify-end right-0 rounded hover:scroll-hover-right transition-all ease-linear duration-300"
           >
             <img src={ArrowR} alt="" />
           </div>
