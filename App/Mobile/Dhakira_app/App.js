@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   textImage: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: '#00E5BD'
+    color: '#6930C3'
   },
   textSousImage: {
     fontSize: 15,
