@@ -8,8 +8,8 @@ import { LuLogOut } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { GoCopilot } from "react-icons/go";
 import { useMediaQuery } from "react-responsive";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
+import { RxHamburgerMenu } from "react-icons/rx";
 function Sidebar() {
   const isDesktop = useMediaQuery({
     query: "(min-width: 640px)",
@@ -32,7 +32,7 @@ function SidebarIcon({ route, icon, clickable = true, msg }) {
     <Link className="flex items-center font-Poppins font-bold" to={route}>
       <div className={sidebarClass}>
         {icon}
-        {msg ? (
+        {msg && isDesktop ? (
           <span className="sidebar-msg group-hover:scale-100">{msg}</span>
         ) : null}
       </div>
@@ -90,9 +90,9 @@ function MobileIcons() {
         onClick={() => setOpen(!open)}
         className="flex justify-center sidebar-hover self-center h-10 w-10 transition-all ease-linear rounded-full items-center ml-auto mr-2"
       >
-        <GiHamburgerMenu size={30} />
+        <RxHamburgerMenu size={30} />
         {open && (
-          <div className="absolute bg-primary w-full top-12">
+          <div className="fixed z-50 bg-primary rounded-lg w-full top-12">
             <Dropdown>
               <SidebarIcon route="/" msg={"Home"} icon={<FaHome size="30" />} />
               <SidebarIcon
