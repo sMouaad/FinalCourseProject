@@ -8,7 +8,7 @@ export default function Apps() {
   return (
     <div
       id="Games"
-      className="sm:ml-32 items-center flex flex-col py-16 pb-32 pl-14 sm:pl-16 gap-8 min-h-screen "
+      className="sm:ml-32 items-center flex flex-col py-16 pb-32 sm:pl-16 gap-8 min-h-screen "
     >
       <Row msg="Improve your Social Skills" dataset={social} />
       <Row msg="Improve your Memory" dataset={memory} />
