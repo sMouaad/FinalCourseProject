@@ -18,7 +18,7 @@ const ButtonJaiDejaUnCompte = ({onPress, text}) => {
 const styles = StyleSheet.create({
     button:{
         borderWidth: 1,
-        borderColor: '#00E5BD',
+        borderColor: '#6930C3',
         borderRadius: 20,
         width: 300,
         height: 67,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
       },
     text:
     {
-        color: '#00E5BD',
+        color: '#6930C3',
         textAlign: 'center',
         fontSize: 18,
         fontWeight: '600',
