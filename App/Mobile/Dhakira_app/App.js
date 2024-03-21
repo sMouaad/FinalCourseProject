@@ -14,23 +14,11 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-<<<<<<< HEAD
       <Image style={styles.dhakiraImage} source={require('./Dhakira1.png')} />
       <Text  style={styles.textImage}>Dhakira</Text>
       <Text  style={styles.textSousImage}>La methode gratuite, fun, et efficace pour t'assister dans tes taches</Text>
       <ButtonCestParti onPress={handleClick} text={"C'EST PARTI"}/>
       <ButtonJaiDejaUnCompte onPress = {handleClick2} text ={"J'AI DEJA UN COMPTE"}/>
-=======
-      <Image style={styles.dhakira} source={require('./Dhakira1.png')} />
-      <Text  style={styles.text}>Dhakira</Text>
-      <Text  style={styles.text1}>La methode gratuite, fun, et efficace pour t'assister dans tes taches</Text>
-      <Pressable style={styles.button} onPress={handleClick}>
-        <Text style={styles.text2}>C'EST PARTI !</Text>
-      </Pressable>
-      <Pressable style={styles.button2} onPress={handleClick2}>
-        <Text style={styles.text3}>J'AI DEJA UN COMPTE</Text>
-      </Pressable>
->>>>>>> e7afae8ae5cbe6a224b70313717e16dc267e897d
     </View>
   );
 };
