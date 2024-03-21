@@ -7,10 +7,10 @@ from openai.types.beta.threads.run_submit_tool_outputs_params import ToolOutput
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = ["localhost:5173",
-           "localhost:4173",
-           "89.168.39.52:4173",
-           "89.168.39.52:5173"]
+origins = ["http://localhost:5173",
+           "http://localhost:4173",
+           "http://89.168.39.52:4173",
+           "http://89.168.39.52:5173"]
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
