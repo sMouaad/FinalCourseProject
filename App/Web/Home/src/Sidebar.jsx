@@ -7,10 +7,38 @@ import { LuListTodo } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { GoCopilot } from "react-icons/go";
+import { useMediaQuery } from "react-responsive";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 function Sidebar() {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 640px)",
+  });
   return (
     <div className="fixed z-10 sm:gap-10 sm:rounded-xl sm:top-10 sm:left-7 sm:h-sidebar w-screen sm:w-16 m-0 flex sm:flex-col bg-primary text-white shadow-lg sm:pt-4 sm:pb-4">
       <SidebarIcon clickable={false} icon={<img src={Brain} />} />
+      {isDesktop ? <DesktopIcons /> : <MobileIcons size=30 />}
+    </div>
+  );
+}
+// eslint-disable-next-line react/prop-types
+function SidebarIcon({ icon, clickable = true, msg }) {
+  let sidebarClass = "sidebar-icon group ";
+  if (clickable) sidebarClass += " sidebar-hover";
+  return (
+    <div className={sidebarClass}>
+      {icon}
+      {msg ? (
+        <span className="sidebar-msg group-hover:scale-100">{msg}</span>
+      ) : null}
+    </div>
+  );
+}
+export default Sidebar;
+
+function DesktopIcons() {
+  return (
+    <>
       <div className="flex sm:flex-col sm:gap-1">
         <Link to="/">
           <SidebarIcon
@@ -45,20 +73,9 @@ function Sidebar() {
       <div className="sm:mt-auto">
         <SidebarIcon msg={"Exit"} icon={<LuLogOut size="30" />} />
       </div>
-    </div>
+    </>
   );
 }
-// eslint-disable-next-line react/prop-types
-function SidebarIcon({ icon, clickable = true, msg }) {
-  let sidebarClass = "sidebar-icon group ";
-  if (clickable) sidebarClass += " sidebar-hover";
-  return (
-    <div className={sidebarClass}>
-      {icon}
-      {msg ? (
-        <span className="sidebar-msg group-hover:scale-100">{msg}</span>
-      ) : null}
-    </div>
-  );
+function MobileIcons() {
+  return <GiHamburgerMenu />;
 }
-export default Sidebar;
