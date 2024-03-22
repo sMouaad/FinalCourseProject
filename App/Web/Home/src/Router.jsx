@@ -4,10 +4,20 @@ import Home from "./Home";
 import ErrorPage from "./ErrorPage";
 import Sidebar from "./Sidebar";
 import Assistant from "./Assistant";
+import HomePage from "./HomePage";
+
 const Router = () => {
   const router = createBrowserRouter([
     {
       path: "",
+      element: (
+        <>
+          <HomePage />
+        </>
+      ),
+    },
+    {
+      path: "home",
       element: (
         <>
           <Sidebar />
