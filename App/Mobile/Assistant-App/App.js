@@ -7,8 +7,8 @@ import Test from "./Comp/WaitingForTheFaceRecognition/WaitingForTheFaceRecogniti
 export default function App() {
   return (
     <View className="flex justify-center h-screen">
-      <Test />
-      {/* <WaitingForTheFaceRecognition /> */}
+      {/* <Test /> */}
+      <WaitingForTheFaceRecognition />
 
       <StatusBar style="auto" />
     </View>
