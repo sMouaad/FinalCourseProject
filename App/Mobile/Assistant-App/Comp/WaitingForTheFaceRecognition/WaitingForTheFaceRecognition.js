@@ -10,7 +10,7 @@ export default function WaitingForTheFaceRecognition() {
           Waiting for the face recognition ...
         </Text>
       </View>
-      <View className="flex justify-center align-middle w-[80%] h-[60%]">
+      <View className="flex justify-center w-[80%] h-[55%]">
         <Image
           className=" border-8 w-full h-full object-contain "
           source={require("../../images/image.png")}
