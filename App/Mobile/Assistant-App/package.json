@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-community/progress-bar-android": "^1.0.5",
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
     "nativewind": "^2.0.11",
@@ -16,6 +17,7 @@
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-animatable": "^1.4.0",
+    "react-native-progress": "^5.0.1",
     "twrnc": "^4.2.0"
   },
   "devDependencies": {

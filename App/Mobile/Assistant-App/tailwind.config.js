@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         Primary: "#00E5BD",
         Secondry: "#D9D9D9",
+        DeepthProgresBar: "#65FCE2",
       },
     },
   },

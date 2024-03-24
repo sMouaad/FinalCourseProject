@@ -6,9 +6,9 @@ import Test from "./Comp/WaitingForTheFaceRecognition/Test.js";
 
 export default function App() {
   return (
-    <View className="flex justify-center box-border h-screen px-[20px]">
-      {/* <Test /> */}
-      <WaitingForTheFaceRecognition />
+    <View className="flex justify-center box-border h-screen p-[20px]">
+      <Test />
+      {/* <WaitingForTheFaceRecognition /> */}
       <StatusBar style="auto" />
     </View>
   );
