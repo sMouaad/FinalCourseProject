@@ -1,17 +1,17 @@
-import React from "react";
-import { useEffect, useState } from "react";
 import Brain from "./assets/brain.svg";
-import { FaBars, FaXmark } from "react-icons/fa6";
-import { Link } from "react-scroll";
+import React, { useEffect, useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-function HomePage(){
+function HomePage() {
     return (
         <>
-    <Navbar />
-    <Landing />
-    <AboutUs />
-    <App />
-    </>)
+            <Navbar />
+            <Landing />
+            <AboutUs />
+            <App />
+        </>
+    )
 }
 
 const Navbar = () => {
@@ -33,11 +33,10 @@ const Navbar = () => {
 
         window.addEventListener("scroll", handleScroll);
 
-        // Cleanup function to remove the event listener
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []); // Empty dependency array to run the effect only once
+    }, []);
 
     const navItems = [
         { link: "AUTISM", path: "autism" },
@@ -50,10 +49,10 @@ const Navbar = () => {
         <header className={`w-full bg-[#00E5BD] rounded-b-[30px] fixed top-0 left-0 right-0 ${isSticky ? "hidden duration-300" : ""}`}>
             <nav className="py-4 lg:px-4">
                 <div className="flex justify-between items-center text-base gap-8">
-                    <a href="/" className="text-2xl font-semibold flex items-center space-x-3">
+                    <Link to="/" className="text-2xl font-semibold flex items-center space-x-3">
                         <img src={Brain} alt="" className="w-10 inline-block items-center" />
                         <span className="text-white">DHAKIRA</span>
-                    </a>
+                    </Link>
 
                     <ul className="lg:flex space-x-12 hidden items-center">
                         {navItems.map(({ link, path }) => (
@@ -69,29 +68,33 @@ const Navbar = () => {
                         <a href="/" className="hidden lg:flex items-center text-white hover:text-black">
                             LOGIN IN
                         </a>
-                        <button className="bg-white text-black rounded-3xl py-2 px-4 transition-all duration-300 rounded hover:bg-transparent">
+                        <Button as={Link} to="home">
                             SIGN IN
-                        </button>
+                        </Button>
                     </div>
 
                     <div className="md:hidden">
                         <button onClick={toggleMenu} className="focus:outline-none focus:text-black">
                             {
-                            isMenuOpen ? (<FaXmark className="h-6 w-6 mx-2 text-black"/>) : (<FaBars className="h-6 w-6 mx-2 text-black"/>)
-                             }
+                                isMenuOpen ? (<FaTimes className="h-6 w-6 mx-2 text-black" />) : (<FaBars className="h-6 w-6 mx-2 text-black" />)
+                            }
                         </button>
                     </div>
                 </div>
 
                 <div className={`space-y-4 px-4 mt-16 py-7 bg-[#00E5BD] ${isMenuOpen ? "block fixed rounded-[30px] top-3 right-0 left-0" : "hidden"}`}>
-                    {
-                        navItems.map(({link, path}) => <Link to={path} spy={true} offset={-100} key={path} className="block text-base text-black">{link}</Link>)
-                    }
+                    {navItems.map(({ link, path }) => <Link to={path} spy={true} offset={-100} key={path} className="block text-base text-black">{link}</Link>)}
                 </div>
             </nav>
         </header>
-    );
-};
+    )
+}
+
+const Button = ({ as: Component = 'button', ...rest }) => {
+    return (
+        <Component className="button" {...rest} />
+    )
+}
 
 const Landing = () => {
     return (
@@ -109,6 +112,7 @@ const Landing = () => {
         
     )
 }
+
 const AboutUs = () => {
     return (
         <div id="about">
