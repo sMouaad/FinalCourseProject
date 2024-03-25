@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, Pressable, Button, SafeAreaView, TextInput} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Text, StyleSheet, Pressable, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {useNavigation } from '@react-navigation/native';
 
 function LoginPageInterface ()
 {
+  const  navigation = useNavigation();
   const Hello = () => {
     console.warn("Login Successfully");
   };
@@ -17,7 +17,8 @@ function LoginPageInterface ()
         <Text style={styles.FirstText}>Login Page!</Text>
         <TextInput placeholder="Entre your Username" style={styles.username}/>
         <TextInput placeholder="Entre your Paswword"  style={styles.inputPassword}  secureTextEntry={true} />
-        <Pressable style={styles.loginButton} onPress={Hello}><Text style={styles.TextLoginButton}>Log in</Text></Pressable>
+        <TouchableOpacity style={styles.loginButton} onPress={Hello}><Text style={styles.TextLoginButton}>Log in</Text></TouchableOpacity>
+        <Pressable><Text style={{ color: '#77B5FE' , fontWeight: 'bold', marginTop:10 }} onPress={() => navigation.navigate('SignUpPage')}>You don't have account? </Text></Pressable> 
       </SafeAreaView>
     
     </>
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     borderColor: '#6930C3',
     width: 300,
     height: 60,
-    borderWidth: 3,
+    borderWidth: 4,
     borderBottomLeftRadius: 22,
     borderBottomRightRadius: 22, 
     textAlign: 'center',
@@ -66,9 +67,9 @@ const styles = StyleSheet.create({
     borderColor: '#6930C3',
     width: 300,
     height: 60,
-    borderLeftWidth: 3,
-    borderRightWidth: 3,
-    borderTopWidth: 3,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopWidth: 4,
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22, 
     textAlign: 'center'

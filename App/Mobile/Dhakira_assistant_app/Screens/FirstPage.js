@@ -9,7 +9,7 @@ function First_Page({navigation})
 {
     return (
       <View  style={styles.container}>
-        <Image style={styles.dhakiraImage} source={require('../Dhakira1.png')} />
+        <Image style={styles.dhakiraImage} source={require('../Images/DhakiraCool.png')} />
         <Text  style={styles.textImage}>Dhakira</Text>
         <Text  style={styles.textSousImage}>La methode gratuite, fun, et efficace pour t'assister dans tes taches</Text>
         <ButtonCestParti onPress={() => navigation.navigate('SignUpPage')} text={"C'EST PARTI"}/>

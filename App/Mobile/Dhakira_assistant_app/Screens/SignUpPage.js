@@ -3,11 +3,11 @@ import {View, Text, StyleSheet, Image, Pressable, Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-function SignUpPageInter ()
+function SignUpPageInter()
 {
   return (
     <View  style={styles.container}>
-      <Text  style={styles.textSousImage}>SignUp_Page</Text>
+      <Text>SignUp_Page</Text>
     </View>
 
   );
@@ -39,6 +39,4 @@ const styles = StyleSheet.create({
   },
 }
 );
-
-
-export {SignUpPageInter};
+export {SignUpPageInter}
