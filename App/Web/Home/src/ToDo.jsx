@@ -88,7 +88,7 @@ const Create = () => {
     }
 
     return (
-        <div className="border-2 bg-white border-green-400 rounded-xl p-2 flex flex-row m-2 h-20 w-screen">
+        <div className="border-2 bg-white border-green-400 rounded-xl p-2 flex flex-row m-2 h-20 w-90">
             <input className="rounded-xl w-full focus:outline-none" type="text" placeholder="enter task" onChange={(e) => setTask(e.target.value)} />
             <button type="button" onClick={handleAdd}>ADD</button>
         </div>
