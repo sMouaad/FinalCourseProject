@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Brain from "./assets/brain.svg";
 import { FaBars, FaXmark } from "react-icons/fa6";
-import { Link } from "react-scroll";
+import { Link as Linker } from "react-scroll";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   return (
@@ -80,15 +81,17 @@ const Navbar = () => {
           </ul>
 
           <div className="space-x-12 hidden lg:flex items-center">
-            <a
-              href="/"
+            <Link
+              to="/login"
               className="hidden lg:flex items-center text-white hover:text-black"
             >
               LOGIN IN
-            </a>
-            <button className="bg-white text-black rounded-3xl py-2 px-4 transition-all duration-300 hover:bg-transparent">
-              SIGN IN
-            </button>
+            </Link>
+            <Link to="/login">
+              <button className="bg-white text-black rounded-3xl py-2 px-4 transition-all duration-300 hover:bg-transparent">
+                SIGN IN
+              </button>
+            </Link>
           </div>
 
           <div className="md:hidden">
@@ -113,7 +116,7 @@ const Navbar = () => {
           }`}
         >
           {navItems.map(({ link, path }) => (
-            <Link
+            <Linker
               to={path}
               spy={true}
               offset={-100}
@@ -121,7 +124,7 @@ const Navbar = () => {
               className="block text-base text-black"
             >
               {link}
-            </Link>
+            </Linker>
           ))}
         </div>
       </nav>
