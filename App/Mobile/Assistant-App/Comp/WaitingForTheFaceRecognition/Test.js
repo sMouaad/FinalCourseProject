@@ -1,31 +1,26 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { Text, View, Image, StyleSheet, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, TextInput, View, Image, Pressable } from "react-native";
+import Progress_Bar from "./Progres_Bar";
 
-// Adjust import based on the actual library name
 function Test() {
-  const [wi, setWi] = useState(10);
-  function progres() {
-    setWi(wi + 10);
-    if (wi >= 100) {
-      setWi(10);
-    }
+  const [width, setWidth] = useState(10);
+  const step = 10;
+  function increaseWidth() {
+    setWidth(width + step);
   }
   return (
-    <View className="box-border h-full ">
-      <View className=" mt-[60] mb-4  bg-Secondry relative rounded-[22px] flex-row">
-        <View
-          style={{ width: wi + "%" }}
-          className="duration-500 min-w-[10%] max-w-[100%]  bg-Primary relative rounded-[22px] flex flex-row items-center justify-center"
-        >
-          {/* {progres(20)} */}
-          <View className="mx-[10px] max-w-[80%] flex-1  mt-[5] mb-[11] py-[3px]  bg-DeepthProgresBar relative rounded-[22px]" />
-        </View>
+    <View className="box-border flex h-full">
+      <Progress_Bar width={width} />
+      <View className="m-5 flex h-[60%] items-center ">
+        <Image
+          className="h-[82.2%] w-full object-contain rounded-2xl "
+          source={require("../../images/image copy.png")}
+        />
       </View>
-      <View className=""></View>
+      <TextInput className="w-full h-[50px] border rounded-2xl" />
       <Pressable
-        onPress={progres}
-        className="bg-Primary items-center  px-10 py-4 m-10 rounded-2xl"
+        onPress={increaseWidth}
+        className="bg-Primary items-center px-10 py-4 m-10 rounded-2xl"
       >
         <Text className="text-base text-white font-bold ">Click me!</Text>
       </Pressable>
