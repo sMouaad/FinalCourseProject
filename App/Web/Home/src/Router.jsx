@@ -5,6 +5,7 @@ import ErrorPage from "./ErrorPage";
 import Sidebar from "./Sidebar";
 import Assistant from "./Assistant";
 import HomePage from "./HomePage";
+import ToDo from "./ToDo";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -41,6 +42,15 @@ const Router = () => {
         <>
           <Sidebar />
           <Assistant />
+        </>
+      ),
+    },
+    {
+      path: "to-do-list",
+      element: (
+        <>
+        <Sidebar />
+        <ToDo />
         </>
       ),
     },
