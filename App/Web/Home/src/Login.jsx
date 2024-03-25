@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import brain from "./assets/cerveau_idea.png";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import "./LOGIN.css";
+import "./styles/LOGIN.css";
 
 export default function Login() {
   useEffect(() => {

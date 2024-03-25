@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Router from "./Router";
-import "./index.css";
+import "./styles/index.css";
 import Login from "./Login";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
