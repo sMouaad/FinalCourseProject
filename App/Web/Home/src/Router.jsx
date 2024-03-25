@@ -5,6 +5,7 @@ import ErrorPage from "./ErrorPage";
 import Sidebar from "./Sidebar";
 import Assistant from "./Assistant";
 import HomePage from "./HomePage";
+import Login from "./Login";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -25,6 +26,14 @@ const Router = () => {
         </>
       ),
       errorElement: <ErrorPage />,
+    },
+    {
+      path: "login",
+      element: (
+        <>
+          <Login />
+        </>
+      ),
     },
     {
       path: "apps",
