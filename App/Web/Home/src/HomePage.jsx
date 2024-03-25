@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
 import Brain from "./assets/brain.svg";
-import { FaBars, FaXmark } from "react-icons/fa6";
-import { Link as Linker } from "react-scroll";
+import React, { useEffect, useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function HomePage() {
-  return (
-    <>
-      <Navbar />
-      <Landing />
-      <AboutUs />
-      <App />
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+            <Landing />
+            <AboutUs />
+            <App />
+        </>
+    )
 }
 
 const Navbar = () => {
@@ -34,11 +33,10 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup function to remove the event listener
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // Empty dependency array to run the effect only once
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
   const navItems = [
     { link: "AUTISM", path: "autism" },
@@ -47,25 +45,14 @@ const Navbar = () => {
     { link: "APP", path: "app" },
   ];
 
-  return (
-    <header
-      className={`w-full bg-[#00E5BD] rounded-b-[30px] fixed top-0 left-0 right-0 ${
-        isSticky ? "hidden duration-300" : ""
-      }`}
-    >
-      <nav className="py-4 lg:px-4">
-        <div className="flex justify-between items-center text-base gap-8">
-          <a
-            href="/"
-            className="text-2xl font-semibold flex items-center space-x-3"
-          >
-            <img
-              src={Brain}
-              alt=""
-              className="w-10 inline-block items-center"
-            />
-            <span className="text-white">DHAKIRA</span>
-          </a>
+    return (
+        <header className={`w-full bg-[#00E5BD] rounded-b-[30px] fixed top-0 left-0 right-0 ${isSticky ? "hidden duration-300" : ""}`}>
+            <nav className="py-4 lg:px-4">
+                <div className="flex justify-between items-center text-base gap-8">
+                    <Link to="/" className="text-2xl font-semibold flex items-center space-x-3">
+                        <img src={Brain} alt="" className="w-10 inline-block items-center" />
+                        <span className="text-white">DHAKIRA</span>
+                    </Link>
 
           <ul className="lg:flex space-x-12 hidden items-center">
             {navItems.map(({ link, path }) => (
@@ -80,57 +67,37 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <div className="space-x-12 hidden lg:flex items-center">
-            <Link
-              to="/login"
-              className="hidden lg:flex items-center text-white hover:text-black"
-            >
-              LOGIN IN
-            </Link>
-            <Link to="/login">
-              <button className="bg-white text-black rounded-3xl py-2 px-4 transition-all duration-300 hover:bg-transparent">
-                SIGN IN
-              </button>
-            </Link>
-          </div>
+                    <div className="space-x-12 hidden lg:flex items-center">
+                        <a href="/" className="hidden lg:flex items-center text-white hover:text-black">
+                            LOGIN IN
+                        </a>
+                        <Button as={Link} to="home">
+                            SIGN IN
+                        </Button>
+                    </div>
 
-          <div className="md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="focus:outline-none focus:text-black"
-            >
-              {isMenuOpen ? (
-                <FaXmark className="h-6 w-6 mx-2 text-black" />
-              ) : (
-                <FaBars className="h-6 w-6 mx-2 text-black" />
-              )}
-            </button>
-          </div>
-        </div>
+                    <div className="md:hidden">
+                        <button onClick={toggleMenu} className="focus:outline-none focus:text-black">
+                            {
+                                isMenuOpen ? (<FaTimes className="h-6 w-6 mx-2 text-black" />) : (<FaBars className="h-6 w-6 mx-2 text-black" />)
+                            }
+                        </button>
+                    </div>
+                </div>
 
-        <div
-          className={`space-y-4 px-4 mt-16 py-7 bg-[#00E5BD] ${
-            isMenuOpen
-              ? "block fixed rounded-[30px] top-3 right-0 left-0"
-              : "hidden"
-          }`}
-        >
-          {navItems.map(({ link, path }) => (
-            <Linker
-              to={path}
-              spy={true}
-              offset={-100}
-              key={path}
-              className="block text-base text-black"
-            >
-              {link}
-            </Linker>
-          ))}
-        </div>
-      </nav>
-    </header>
-  );
-};
+                <div className={`space-y-4 px-4 mt-16 py-7 bg-[#00E5BD] ${isMenuOpen ? "block fixed rounded-[30px] top-3 right-0 left-0" : "hidden"}`}>
+                    {navItems.map(({ link, path }) => <Link to={path} spy={true} offset={-100} key={path} className="block text-base text-black">{link}</Link>)}
+                </div>
+            </nav>
+        </header>
+    )
+}
+
+const Button = ({ as: Component = 'button', ...rest }) => {
+    return (
+        <Component className="button" {...rest} />
+    )
+}
 
 const Landing = () => {
   return (
@@ -140,12 +107,14 @@ const Landing = () => {
         <p className="text-black ">OUR SOLUTION TO YOUR PROBLEM</p>
       </div>
 
-      <div className="my-12 flex justify-center">
-        <img src="/src/assets/dhakira-phone.png" alt="" />
-      </div>
-    </div>
-  );
-};
+            <div className="my-12 flex justify-center">
+                <img src="/src/assets/dhakira-phone.png" alt="" />
+            </div>
+        </div>
+        
+    )
+}
+
 const AboutUs = () => {
   return (
     <div id="about">
