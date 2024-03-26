@@ -42,4 +42,16 @@ router.get("/logout", (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({ status: true, message: "logout successful" });
 });
+
+router.post("/reset-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.json({ message: "user is not registered" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 export { router as UserRouter };
