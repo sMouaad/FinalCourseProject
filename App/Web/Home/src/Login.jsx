@@ -12,33 +12,40 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailLogin, setEmailLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
+  const [error, setError] = useState(false);
+  const [fill, setFill] = useState(false);
   const navigate = useNavigate();
 
   Axios.defaults.withCredentials = true;
   const handleSubmitRegister = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:3000/auth/signup", { name, email, password })
-      .then((res) => {
-        if (res.data.status) navigate("/home");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (name && email && password) {
+      Axios.post("http://localhost:3000/auth/signup", { name, email, password })
+        .then((res) => {
+          if (res.data.status) navigate("/home");
+        })
+        .catch((err) => {
+          console.log(err);
+          setFill(true);
+        });
+    }
   };
   const handleSubmitLogin = (e) => {
     e.preventDefault();
-    console.log("what");
-    Axios.post("http://localhost:3000/auth/login", {
-      emailLogin,
-      passwordLogin,
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.data.status) navigate("/home");
+    if (emailLogin && passwordLogin) {
+      Axios.post("http://localhost:3000/auth/login", {
+        emailLogin,
+        passwordLogin,
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          console.log(res);
+          if (res.data.status) navigate("/home");
+        })
+        .catch((err) => {
+          setError(true);
+          console.log(err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -87,6 +94,7 @@ export default function Login() {
               or use your email for registration
             </span>
             <input
+              required={true}
               className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
               type="text"
               name="name"
@@ -96,6 +104,7 @@ export default function Login() {
               }}
             />
             <input
+              required={true}
               className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
               type="email"
               name="email"
@@ -106,6 +115,7 @@ export default function Login() {
               }}
             />
             <input
+              required={true}
               className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
               type="password"
               name="password"
@@ -114,6 +124,9 @@ export default function Login() {
                 setPassword(e.target.value);
               }}
             />
+            <div className="h-3 text-xs text-red-600">
+              {fill ? <p>You cannot register with this email</p> : null}
+            </div>
             <button
               type="submit"
               className=" bg-[#00e5bd] text-white text-[12px] py-[10px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
@@ -146,6 +159,7 @@ export default function Login() {
             </div>
             <span className=" text-[12px]">or use your email password</span>
             <input
+              required={true}
               name="emailLogin"
               className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
               type="email"
@@ -156,6 +170,7 @@ export default function Login() {
               }}
             />
             <input
+              required={true}
               name="passwordLogin"
               className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
               type="password"
@@ -164,6 +179,9 @@ export default function Login() {
                 setPasswordLogin(e.target.value);
               }}
             />
+            <div className="text-xs h-2 text-red-600">
+              {error ? <p>Incorrect email or password</p> : null}
+            </div>
             <Link
               to="forgot-password"
               className="text-[#333] text-[13px] no-underline mt-[15px] mx-0 mb-[10px]"
