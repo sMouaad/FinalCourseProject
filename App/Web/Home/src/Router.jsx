@@ -7,7 +7,7 @@ import Assistant from "./Assistant";
 import HomePage from "./HomePage";
 import Login from "./Login";
 import ToDo from "./ToDo";
-
+import ForgotPassword from "./ForgotPass";
 const Router = () => {
   const router = createBrowserRouter([
     {
@@ -15,6 +15,14 @@ const Router = () => {
       element: (
         <>
           <HomePage />
+        </>
+      ),
+    },
+    {
+      path: "login/forgot-password",
+      element: (
+        <>
+          <ForgotPassword />
         </>
       ),
     },
@@ -58,8 +66,8 @@ const Router = () => {
       path: "to-do-list",
       element: (
         <>
-        <Sidebar />
-        <ToDo />
+          <Sidebar />
+          <ToDo />
         </>
       ),
     },
