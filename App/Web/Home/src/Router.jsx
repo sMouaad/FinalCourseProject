@@ -8,6 +8,7 @@ import HomePage from "./HomePage";
 import Login from "./Login";
 import ToDo from "./ToDo";
 import ForgotPassword from "./ForgotPass";
+import ResetPassword from "./ResetPassword";
 const Router = () => {
   const router = createBrowserRouter([
     {
@@ -17,6 +18,7 @@ const Router = () => {
           <HomePage />
         </>
       ),
+      errorElement: <ErrorPage />,
     },
     {
       path: "login/forgot-password",
@@ -27,6 +29,15 @@ const Router = () => {
       ),
     },
     {
+      path: "login/reset-password/:token",
+      element: (
+        <>
+          <ResetPassword />
+        </>
+      ),
+      errorElement: <div>link expired</div>,
+    },
+    {
       path: "home",
       element: (
         <>
@@ -34,7 +45,6 @@ const Router = () => {
           <Home />
         </>
       ),
-      errorElement: <ErrorPage />,
     },
     {
       path: "login",
