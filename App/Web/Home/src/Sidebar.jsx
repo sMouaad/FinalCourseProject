@@ -57,7 +57,7 @@ function DesktopIcons() {
   return (
     <>
       <div className="flex sm:flex-col sm:gap-1">
-        <SidebarIcon route="/" msg={"Home"} icon={<FaHome size="30" />} />
+        <SidebarIcon route="/home" msg={"Home"} icon={<FaHome size="30" />} />
         <SidebarIcon
           route="/apps"
           msg={"Apps"}
