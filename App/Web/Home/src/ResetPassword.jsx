@@ -16,6 +16,7 @@ export default function ResetPassword() {
       .then((res) => {
         if (res.data.status) {
           alert("Email reset with success");
+          navigate("/login");
         }
         console.log(res.data);
       })
