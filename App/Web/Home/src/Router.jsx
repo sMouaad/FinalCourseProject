@@ -9,16 +9,17 @@ import Login from "./Login";
 import ToDo from "./ToDo";
 import ForgotPassword from "./ForgotPass";
 import ResetPassword from "./ResetPassword";
+import Dashboard from "./Dashboard";
 const Router = () => {
   const router = createBrowserRouter([
     {
       path: "",
-      element: (
-        <>
-          <HomePage />
-        </>
-      ),
+      element: <HomePage />,
       errorElement: <ErrorPage />,
+    },
+    {
+      path: "dashboard",
+      element: <Dashboard />,
     },
     {
       path: "login/forgot-password",
