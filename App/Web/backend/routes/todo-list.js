@@ -1,4 +1,4 @@
-import { Todo } from "../models/Todo";
+import { Todo } from "../models/Todo.js";
 import express from "express";
 const router = express.Router();
 
