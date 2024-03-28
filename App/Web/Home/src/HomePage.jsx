@@ -1,4 +1,10 @@
 import Brain from "./assets/brain.svg";
+import Laptop from "./assets/dhakira-laptop.png";
+import Mobile from "./assets/dhakira-mobile.png";
+import Phone from "./assets/dhakira-phone.png";
+import Notif from "./assets/notif.png";
+import Qrcode from "./assets/qrcode.png";
+import Rectangle from "./assets/Rectangle 120.svg";
 import { useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -142,7 +148,7 @@ const Landing = () => {
       </div>
 
       <div className="my-12 flex justify-center">
-        <img src="/src/assets/dhakira-phone.png" alt="" />
+        <img src={Phone} alt="" />
       </div>
     </div>
   );
@@ -171,11 +177,7 @@ const AboutUs = () => {
           </p>
         </div>
         <div>
-          <img
-            src="/src/assets/dhakira-laptop.png"
-            alt=""
-            className="w-100 object-right"
-          />
+          <img src={Laptop} alt="" className="w-100 object-right" />
         </div>
       </div>
       <div className="mx-auto flex flex-row md:flex-row justify-between items-center gap-12">
@@ -198,7 +200,7 @@ const AboutUs = () => {
           </p>
         </div>
         <div>
-          <img src="/src/assets/notif.png" alt="" className="w-90" />
+          <img src={Notif} alt="" className="w-90" />
         </div>
       </div>
     </div>
@@ -224,18 +226,14 @@ const App = () => {
       </div>
       <div className="flex">
         <div className="md:w-3/5 p-10 flex-col">
-          <img src="/src/assets/qrcode.png" alt="" className="w-60" />
+          <img src={Qrcode} alt="" className="w-60" />
           <p className="text-wrap w-40 py-4">
             Scannez le code pour telecherger l’app sur votre telephone
           </p>
         </div>
         <div className="flex">
-          <img
-            src="/src/assets/dhakira-mobile.png"
-            alt=""
-            className="w-80 absolute z-10 right-20"
-          />
-          <img src="/src/assets/Rectangle 120.svg" alt="" className="z-0" />
+          <img src={Mobile} alt="" className="w-80 absolute z-10 right-20" />
+          <img src={Rectangle} alt="" className="z-0" />
         </div>
       </div>
       <footer className="bg-[#4CFF69] h-20 flex justify-start">
