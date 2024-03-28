@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { UserRouter } from "./routes/user.js";
+import { TodoRouter } from "./routes/todo-list.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -17,8 +18,8 @@ app.use(
 );
 app.use(cookieParser());
 app.use("/auth", UserRouter);
-
-mongoose.connect(`${process.env.DATABASE_URI}/authentication`);
+app.use("/todo", TodoRouter);
+mongoose.connect(`${process.env.DATABASE_URI}/pfe`);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at http://localhost:${process.env.PORT}`);
