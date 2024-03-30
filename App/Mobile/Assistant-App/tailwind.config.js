@@ -7,6 +7,7 @@ module.exports = {
         Primary: "#00E5BD",
         Secondry: "#D9D9D9",
         DeepthProgresBar: "#65FCE2",
+        background: "#f0f2f5",
       },
     },
   },
