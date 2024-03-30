@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Text, TextInput, View, Pressable, ScrollView } from "react-native";
-import Progress_Bar from "./Progres_Bar.js";
+import Progress_Bar from "./Progres_Bar.jsx";
+import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
-import Animated from "react-native-reanimated";
+import dhakira from "../assets/images/happyDahkira.png"
+
+
 
 function Test({ questions }) {
   const colors = [
@@ -26,8 +29,9 @@ function Test({ questions }) {
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(questionIndex + 1);
       } else {
-        setQuestionIndex(0);
-        setWidth(step);
+        // setQuestionIndex(0);
+        // setWidth(step);
+        setCompleted(true);
       }
       setcolorIndex((colorIndex + 2) % colors.length);
     }
@@ -37,37 +41,36 @@ function Test({ questions }) {
 
   return (
     <ScrollView>
-      <View className="bg box-border flex h-full ">
+      <View className="bg box-border flex h-screen justify-between ">
         <Progress_Bar
           width={width}
           color={colors[colorIndex]}
           deepColor={colors[colorIndex + 1]}
         />
-        {!completed && (
+        {!completed &&  <QuestionComponent
+            question={questions[questionIndex].question}
+            imageUri={questions[questionIndex].image}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            color={colors[colorIndex]}
+          />}
+          {completed&&
+          <>
           <View className="m-5 flex items-center shadow-md shadow-black">
-            <Image
-              className="rounded-2xl w-[300px] h-[350px] border-[6px]"
-              style={{ borderColor: colors[colorIndex] }}
-              source={{
-                uri: questions[questionIndex]["image"],
-              }}
-            />
-            <Text className="text-xl text-black font-bold mt-7 mb-5">
-              {questions[questionIndex].question}
-            </Text>
-            <TextInput
-              placeholder="eg: Ahmed"
-              value={inputValue}
-              onChangeText={setInputValue} // Update input value based on state
-              style={{ borderColor: colors[colorIndex] }}
-              className="w-full px-4 h-[50px] border rounded-2xl"
-            />
+              <Image 
+              contentFit='contain'
+              className="rounded-2xl w-[240] h-[230]"
+              source={dhakira}></Image>
+              <Text className="text-xl text-black font-bold mt-7 mb-5">
+              Thank You,{'\n'} Very Good!
+              </Text>
           </View>
-        )}
+          </>
+          } 
         <Pressable
           onPress={goToNextQst}
           style={{ backgroundColor: colors[colorIndex] }}
-          className="items-center px-10 py-4 m-14 shadow-sm shadow-black rounded-2xl"
+          className="items-center px-10 py-4 m-3 shadow-sm shadow-black rounded-2xl mb-12"
         >
           <Text className="text-base text-white font-bold">
             {completed ? "Finish" : "Submit"}

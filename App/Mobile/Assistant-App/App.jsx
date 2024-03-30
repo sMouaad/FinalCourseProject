@@ -1,8 +1,8 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { View, ScrollView } from "react-native";
-import Test from "./Comp/Test.js";
-import Question from "./Comp/Question.js";
+import Test from "./Comp/Test.jsx";
+import Question from "./Comp/Question.jsx";
 
 export default function App() {
   const questions = [];
