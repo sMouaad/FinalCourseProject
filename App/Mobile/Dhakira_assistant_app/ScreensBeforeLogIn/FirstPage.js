@@ -1,7 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, Pressable, Button} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {View, Text, StyleSheet, Image, Pressable, Button, TouchableOpacity} from 'react-native';
 import ButtonCestParti from '../buttons/button_cestParti.js';
 import ButtonJaiDejaUnCompte from '../buttons/button_jaiDejaUnCompte.js';
 
@@ -12,8 +10,8 @@ function First_Page({navigation})
         <Image style={styles.dhakiraImage} source={require('../Images/DhakiraCool.png')} />
         <Text  style={styles.textImage}>Dhakira</Text>
         <Text  style={styles.textSousImage}>La methode gratuite, fun, et efficace pour t'assister dans tes taches</Text>
-        <ButtonCestParti onPress={() => navigation.navigate('SignUpPage')} text={"C'EST PARTI"}/>
-        <ButtonJaiDejaUnCompte onPress = {() => navigation.navigate('LoginPage')} text ={"J'AI DEJA UN COMPTE"}/>
+        <ButtonCestParti onPress={() => navigation.navigate('LoginPage')} text={"C'EST PARTI"}/>
+        <ButtonJaiDejaUnCompte onPress = {() => navigation.navigate('SignUpPage')} text ={"J'AI DEJA UN COMPTE"}/>
       </View>
 
     );
