@@ -25,6 +25,7 @@ const QuestionComponent = ({
         source={{
           uri: imageUri,
         }}
+        transition={130}
       />
       <Text className="text-xl text-black font-bold mt-7 mb-5">{question}</Text>
 

@@ -11,6 +11,7 @@ import Progress_Bar from "./Progres_Bar.jsx";
 import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
 import dhakira from "../assets/images/happyDahkira.png";
+import App from "../App.jsx";
 
 function Test({ questions }) {
   const colors = [
@@ -68,6 +69,7 @@ function Test({ questions }) {
                 contentFit="contain"
                 className="rounded-2xl w-[240] h-[230]"
                 source={dhakira}
+                transition={130}
               ></Image>
               <Text className="text-xl text-black font-bold mt-7 mb-5">
                 Thank You,{"\n"} Very Good!
@@ -82,7 +84,7 @@ function Test({ questions }) {
               ? colors[colorIndex + 1]
               : colors[colorIndex],
             alignItems: "center",
-            paddingVertical: 10,
+            paddingVertical: 15,
             paddingHorizontal: 20,
             margin: 10,
             shadowColor: "black",
@@ -90,6 +92,7 @@ function Test({ questions }) {
             shadowOffset: { width: 0, height: 2 },
             shadowRadius: 4,
             borderRadius: 10,
+            elevation: pressed ? 2 : 4,
           })}
         >
           <Text className="text-base text-white font-bold">
@@ -102,15 +105,3 @@ function Test({ questions }) {
 }
 
 export default Test;
-const style = StyleSheet.create({
-  shadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-});
