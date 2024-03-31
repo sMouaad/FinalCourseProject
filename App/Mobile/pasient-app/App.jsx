@@ -31,6 +31,7 @@ export default function App() {
               <Stack.Screen
                 name="WaitingPage"
                 component={WaitingForTheFaceRecognition}
+                options={{ unmountOnBlur: true }}
               />
             </Stack.Navigator>
           </TouchableWithoutFeedback>
