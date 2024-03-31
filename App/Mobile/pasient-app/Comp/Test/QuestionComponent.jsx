@@ -1,13 +1,7 @@
 // QuestionComponent.js
 
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
+import { View, Text, TextInput } from "react-native";
 import { Image } from "expo-image";
 const QuestionComponent = ({
   question,
