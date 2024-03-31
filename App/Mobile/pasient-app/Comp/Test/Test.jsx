@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import {
   Text,
   View,
-  Pressable,
   StyleSheet,
+  Pressable,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
@@ -78,25 +78,25 @@ function Test({ questions }) {
         )}
         <Pressable
           onPress={goToNextQst}
-          style={({ pressed }) => ({
-            backgroundColor: pressed
-              ? colors[colorIndex + 1]
-              : colors[colorIndex],
-            alignItems: "center",
-            paddingVertical: 15,
-            paddingHorizontal: 20,
-            margin: 10,
-            shadowColor: "black",
-            shadowOpacity: 0.3,
-            shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 4,
-            borderRadius: 10,
-            elevation: pressed ? 2 : 4,
-          })}
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: colors[colorIndex] },
+            pressed && {
+              elevation: 2,
+              backgroundColor: colors[colorIndex + 1],
+            },
+          ]}
         >
-          <Text className="text-base text-white font-bold">
-            {completed ? "Finish" : "Submit"}
-          </Text>
+          {({ pressed }) => {
+            return (
+              <Text
+                className="text-base text-white font-bold"
+                style={[pressed && { color: colors[colorIndex]  }]}
+              >
+                {completed ? "Finish" : "Submit"}
+              </Text>
+            );
+          }}
         </Pressable>
       </View>
     </TouchableWithoutFeedback>
@@ -104,3 +104,17 @@ function Test({ questions }) {
 }
 
 export default Test;
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    margin: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    borderRadius: 10,
+    elevation: 4,
+  },
+});
