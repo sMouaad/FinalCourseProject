@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, Pressable, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import Progress_Bar from "./Progres_Bar.jsx";
 import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
-import dhakira from "../assets/images/happyDahkira.png"
-
-
+import dhakira from "../assets/images/happyDahkira.png";
 
 function Test({ questions }) {
   const colors = [
@@ -40,45 +45,72 @@ function Test({ questions }) {
   }
 
   return (
-    <ScrollView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="bg box-border flex h-screen justify-between ">
         <Progress_Bar
           width={width}
           color={colors[colorIndex]}
           deepColor={colors[colorIndex + 1]}
         />
-        {!completed &&  <QuestionComponent
+        {!completed && (
+          <QuestionComponent
             question={questions[questionIndex].question}
             imageUri={questions[questionIndex].image}
             inputValue={inputValue}
             setInputValue={setInputValue}
             color={colors[colorIndex]}
-          />}
-          {completed&&
+          />
+        )}
+        {completed && (
           <>
-          <View className="m-5 flex items-center shadow-md shadow-black">
-              <Image 
-              contentFit='contain'
-              className="rounded-2xl w-[240] h-[230]"
-              source={dhakira}></Image>
+            <View className="m-5 flex items-center shadow-md shadow-black">
+              <Image
+                contentFit="contain"
+                className="rounded-2xl w-[240] h-[230]"
+                source={dhakira}
+              ></Image>
               <Text className="text-xl text-black font-bold mt-7 mb-5">
-              Thank You,{'\n'} Very Good!
+                Thank You,{"\n"} Very Good!
               </Text>
-          </View>
+            </View>
           </>
-          } 
+        )}
         <Pressable
           onPress={goToNextQst}
-          style={{ backgroundColor: colors[colorIndex] }}
-          className="items-center px-10 py-4 m-3 shadow-sm shadow-black rounded-2xl mb-12"
+          style={({ pressed }) => ({
+            backgroundColor: pressed
+              ? colors[colorIndex + 1]
+              : colors[colorIndex],
+            alignItems: "center",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            margin: 10,
+            shadowColor: "black",
+            shadowOpacity: 0.3,
+            shadowOffset: { width: 0, height: 2 },
+            shadowRadius: 4,
+            borderRadius: 10,
+          })}
         >
           <Text className="text-base text-white font-bold">
             {completed ? "Finish" : "Submit"}
           </Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </TouchableWithoutFeedback>
   );
 }
 
 export default Test;
+const style = StyleSheet.create({
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+});
