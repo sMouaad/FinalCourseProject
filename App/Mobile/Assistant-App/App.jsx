@@ -1,8 +1,8 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { View, ScrollView, KeyboardAvoidingView } from "react-native";
-import Test from "./Comp/Test.jsx";
-import { questions } from "./Comp/Question.js";
+import Test from "./Comp/Test/Test.jsx";
+import { questions } from "./Comp/Test/Question.js";
 
 export default function App() {
   return (

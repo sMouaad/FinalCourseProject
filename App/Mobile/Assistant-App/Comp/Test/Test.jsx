@@ -10,8 +10,7 @@ import {
 import Progress_Bar from "./Progres_Bar.jsx";
 import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
-import dhakira from "../assets/images/happyDahkira.png";
-import App from "../App.jsx";
+import dhakira from "../../assets/images/happyDahkira.png";
 
 function Test({ questions }) {
   const colors = [
