@@ -23,9 +23,9 @@
     "react-native": "0.73.6",
     "react-native-animatable": "^1.4.0",
     "react-native-progress": "^5.0.1",
+    "react-native-reanimated": "~3.6.2",
     "typescript": "^5.3.0",
-    "uuid": "^9.0.1",
-    "react-native-reanimated": "~3.6.2"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
