@@ -12,6 +12,8 @@
     "@babel/plugin-transform-export-namespace-from": "^7.24.1",
     "@babel/plugin-transform-optional-catch-binding": "^7.24.1",
     "@react-native-community/progress-bar-android": "^1.0.5",
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/native-stack": "^6.9.26",
     "@types/react": "~18.2.45",
     "core-js": "^3.36.1",
     "expo": "^50.0.14",
@@ -24,6 +26,8 @@
     "react-native-animatable": "^1.4.0",
     "react-native-progress": "^5.0.1",
     "react-native-reanimated": "~3.6.2",
+    "react-native-safe-area-context": "4.8.2",
+    "react-native-screens": "~3.29.0",
     "typescript": "^5.3.0",
     "uuid": "^9.0.1"
   },

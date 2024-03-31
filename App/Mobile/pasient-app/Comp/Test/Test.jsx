@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   Pressable,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
@@ -12,7 +13,8 @@ import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
 import dhakira from "../../assets/images/happyDahkira.png";
 
-function Test({ questions }) {
+function Test({ route }) {
+  const { questions } = route.params;
   const colors = [
     "#00E5BD",
     "#65FCE2",
@@ -45,61 +47,65 @@ function Test({ questions }) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="bg box-border flex h-screen justify-between ">
-        <Progress_Bar
-          width={width}
-          color={colors[colorIndex]}
-          deepColor={colors[colorIndex + 1]}
-        />
-        {!completed && (
-          <QuestionComponent
-            question={questions[questionIndex].question}
-            imageUri={questions[questionIndex].image}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            color={colors[colorIndex]}
-          />
-        )}
-        {completed && (
-          <>
-            <View className="m-5 flex items-center shadow-md shadow-black">
-              <Image
-                contentFit="contain"
-                className="rounded-2xl w-[240] h-[230]"
-                source={dhakira}
-                transition={130}
-              ></Image>
-              <Text className="text-xl text-black font-bold mt-7 mb-5">
-                Thank You,{"\n"} Very Good!
-              </Text>
-            </View>
-          </>
-        )}
-        <Pressable
-          onPress={goToNextQst}
-          style={({ pressed }) => [
-            styles.button,
-            { backgroundColor: colors[colorIndex] },
-            pressed && {
-              elevation: 2,
-              backgroundColor: colors[colorIndex + 1],
-            },
-          ]}
-        >
-          {({ pressed }) => {
-            return (
-              <Text
-                className="text-base text-white font-bold"
-                style={[pressed && { color: colors[colorIndex]  }]}
-              >
-                {completed ? "Finish" : "Submit"}
-              </Text>
-            );
-          }}
-        </Pressable>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View className="bg box-border flex h-screen justify-between ">
+            <Progress_Bar
+              width={width}
+              color={colors[colorIndex]}
+              deepColor={colors[colorIndex + 1]}
+            />
+            {!completed && (
+              <QuestionComponent
+                question={questions[questionIndex].question}
+                imageUri={questions[questionIndex].image}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+                color={colors[colorIndex]}
+              />
+            )}
+            {completed && (
+              <>
+                <View className="m-5 flex items-center shadow-md shadow-black">
+                  <Image
+                    contentFit="contain"
+                    className="rounded-2xl w-[240] h-[230]"
+                    source={dhakira}
+                    transition={130}
+                  ></Image>
+                  <Text className="text-xl text-black font-bold mt-7 mb-5">
+                    Thank You,{"\n"} Very Good!
+                  </Text>
+                </View>
+              </>
+            )}
+            <Pressable
+              onPress={goToNextQst}
+              style={({ pressed }) => [
+                styles.button,
+                { backgroundColor: colors[colorIndex] },
+                pressed && {
+                  elevation: 2,
+                  backgroundColor: colors[colorIndex + 1],
+                },
+              ]}
+            >
+              {({ pressed }) => {
+                return (
+                  <Text
+                    className="text-base text-white font-bold"
+                    style={[pressed && { color: colors[colorIndex] }]}
+                  >
+                    {completed ? "Finish" : "Submit"}
+                  </Text>
+                );
+              }}
+            </Pressable>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
-    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
