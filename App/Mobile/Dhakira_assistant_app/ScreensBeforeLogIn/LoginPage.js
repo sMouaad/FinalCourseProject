@@ -1,25 +1,22 @@
 import React from 'react';
-import {Text, StyleSheet, Pressable, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, Pressable, View, TextInput, TouchableOpacity} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
 
 function LoginPageInterface ()
 {
   const  navigation = useNavigation();
-  const Hello = () => {
-    console.warn("Login Successfully");
-  };
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <SafeAreaView style={styles.Firstcontainer}>
-          <SafeAreaView style={styles.Secondcontainer}></SafeAreaView>
-        </SafeAreaView>
-        <Text style={styles.FirstText}>Login Page!</Text>
-        <TextInput placeholder="Entre your Username" style={styles.username}/>
-        <TextInput placeholder="Entre your Paswword"  style={styles.inputPassword}  secureTextEntry={true} />
-        <TouchableOpacity style={styles.loginButton} onPress={Hello}><Text style={styles.TextLoginButton}>Log in</Text></TouchableOpacity>
-        <Pressable><Text style={{ color: '#77B5FE' , fontWeight: 'bold', marginTop:10 }} onPress={() => navigation.navigate('SignUpPage')}>You don't have account? </Text></Pressable> 
-      </SafeAreaView>
+      <View style={styles.container}>
+        <View style={styles.Firstcontainer}>
+          <View style={styles.Secondcontainer}></View>
+        </View>
+
+        <TextInput placeholder="Enter your Username" style={styles.username}/>
+        <TextInput placeholder="Enter your Paswword"  style={styles.inputPassword}  secureTextEntry={true} />
+        <TouchableOpacity style={styles.loginButton} onPress={()=> navigation.navigate('Main')}><Text style={styles.TextLoginButton}>Log in</Text></TouchableOpacity>
+        <Text style={{ color: '#6930C3' , fontWeight: 'bold', marginTop:10, fontSize:20}}>You don't have account?, <Text style={{color:'#42b72a', textDecorationLine: 'underline'}} onPress={() => navigation.navigate('SignUpPage')}>Sign Up.</Text></Text>
+      </View>
     
     </>
 
@@ -54,29 +51,31 @@ const styles = StyleSheet.create({
   inputPassword: 
   {
     borderColor: '#6930C3',
-    width: 300,
+    width: "90%",
     height: 60,
     borderWidth: 4,
     borderBottomLeftRadius: 22,
     borderBottomRightRadius: 22, 
     textAlign: 'center',
     marginBottom: 20,
+    fontSize:20
   },
   username:
   {
     borderColor: '#6930C3',
-    width: 300,
+    width: "90%",
     height: 60,
     borderLeftWidth: 4,
     borderRightWidth: 4,
     borderTopWidth: 4,
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22, 
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize:20
   },
   loginButton:
   {
-    width: 300,
+    width: "90%",
     height: 60,
     borderRadius: 22, 
     backgroundColor: '#6930C3',

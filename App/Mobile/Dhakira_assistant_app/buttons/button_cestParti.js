@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, StyleSheet, Pressable, View} from 'react-native';
+import {Text, StyleSheet, Pressable, View, TouchableOpacity} from 'react-native';
 
 const ButtonCestParti = ({onPress, text}) => {
     return (
         <>
-            <Pressable style={styles.button} onPress={onPress}>
+            <TouchableOpacity style={styles.button} onPress={onPress}>
               <Text style={styles.text}>{text}</Text>
-            </Pressable>
+            </TouchableOpacity>
         </>
 
     )
