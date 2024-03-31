@@ -32,7 +32,7 @@ const QuestionComponent = ({
       <TextInput
         placeholder="eg: Ahmed"
         value={inputValue}
-        onChangeText={setInputValue} // Update input value based on state
+        onChangeText={setInputValue}
         style={{ borderColor: color }}
         className="w-full px-4 h-[50px] border rounded-2xl"
       />
