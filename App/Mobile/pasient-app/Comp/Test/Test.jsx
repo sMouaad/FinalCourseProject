@@ -35,9 +35,6 @@ function Test({ route }) {
       setWidth(width + step);
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(questionIndex + 1);
-      } else {
-        // setQuestionIndex(0);
-        // setWidth(step);
         setCompleted(true);
       }
       setcolorIndex((colorIndex + 2) % colors.length);
