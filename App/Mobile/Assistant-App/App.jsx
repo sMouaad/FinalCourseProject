@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 import Test from "./Comp/Test.jsx";
 import Question from "./Comp/Question.jsx";
 
@@ -42,12 +42,12 @@ export default function App() {
   );
 
   return (
-    <ScrollView>
-      <View className="flex justify-center box-border h-screen px-[10px]">
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
         <Test questions={questions} />
         {/* <WaitingForTheFaceRecognition /> */}
         <StatusBar style="auto" />
       </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
