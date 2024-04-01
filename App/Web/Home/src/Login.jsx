@@ -19,33 +19,29 @@ export default function Login() {
   Axios.defaults.withCredentials = true;
   const handleSubmitRegister = (e) => {
     e.preventDefault();
-    if (name && email && password) {
-      Axios.post("http://localhost:3000/auth/signup", { name, email, password })
-        .then((res) => {
-          if (res.data.status) navigate("/home");
-        })
-        .catch((err) => {
-          console.log(err);
-          setFill(true);
-        });
-    }
+    Axios.post("http://localhost:3000/auth/signup", { name, email, password })
+      .then((res) => {
+        if (res.data.status) navigate("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+        setFill(true);
+      });
   };
   const handleSubmitLogin = (e) => {
     e.preventDefault();
-    if (emailLogin && passwordLogin) {
-      Axios.post("http://localhost:3000/auth/login", {
-        emailLogin,
-        passwordLogin,
+    Axios.post("http://localhost:3000/auth/login", {
+      emailLogin,
+      passwordLogin,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.status) navigate("/home");
       })
-        .then((res) => {
-          console.log(res);
-          if (res.data.status) navigate("/home");
-        })
-        .catch((err) => {
-          setError(true);
-          console.log(err);
-        });
-    }
+      .catch((err) => {
+        setError(true);
+        console.log(err);
+      });
   };
 
   useEffect(() => {
