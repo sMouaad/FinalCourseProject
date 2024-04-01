@@ -34,7 +34,11 @@ router.post("/login", async (req, res) => {
   });
   //expires in 1 hour
   res.cookie("token", token, { httpOnly: true, maxAge: 360000 });
-  return res.json({ status: true, message: "login successful" });
+  return res.json({
+    status: true,
+    message: "login successful",
+    accessToken: token,
+  });
 });
 
 router.get("/logout", (req, res) => {

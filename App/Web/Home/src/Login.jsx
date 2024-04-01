@@ -30,7 +30,11 @@ export default function Login() {
     e.preventDefault();
     Axios.post("http://localhost:3000/auth/signup", { name, email, password })
       .then((res) => {
-        if (res.data.status) navigate(from, { replace: true });
+        if (res.data.status) {
+          const accessToken = res?.data?.accessToken;
+          setAuth({ accessToken });
+          navigate(from, { replace: true });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -46,7 +50,11 @@ export default function Login() {
     })
       .then((res) => {
         console.log(res);
-        if (res.data.status) navigate("/home");
+        if (res.data.status) {
+          const accessToken = res?.data?.accessToken;
+          setAuth({ accessToken });
+          navigate(from, { replace: true });
+        }
       })
       .catch((err) => {
         setError(true);
