@@ -1,10 +1,75 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Router from "./Router";
+import RequireAuth from "./RequireAuth";
+import { AuthProvider } from "./context/AuthProvider";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Apps from "./Apps";
+import Home from "./Home";
+import ErrorPage from "./ErrorPage";
+import Sidebar from "./Sidebar";
+import Assistant from "./Assistant";
+import HomePage from "./HomePage";
+import Login from "./Login";
+import ToDo from "./ToDo";
+import ForgotPassword from "./ForgotPass";
+import ResetPassword from "./ResetPassword";
+import Dashboard from "./Dashboard";
 import "./styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Router />
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/to-do-list"
+            element={
+              <>
+                <Sidebar />
+                <ToDo />
+              </>
+            }
+          />
+          <Route path="/login/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/login/reset-password/:token"
+            element={<ResetPassword />}
+          />
+          <Route element={<RequireAuth />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/home"
+              element={
+                <>
+                  <Sidebar />
+                  <Home />
+                </>
+              }
+            />
+            <Route
+              path="/apps"
+              element={
+                <>
+                  <Sidebar />
+                  <Apps />
+                </>
+              }
+            />
+            <Route
+              path="/assistant"
+              element={
+                <>
+                  <Sidebar />
+                  <Assistant />
+                </>
+              }
+            />
+          </Route>
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
