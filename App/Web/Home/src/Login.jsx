@@ -5,6 +5,8 @@ import { AiFillGoogleCircle } from "react-icons/ai";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Lottie from "lottie-react";
+import animation from "./assets/loading.json";
 
 export default function Login() {
   const [name, setName] = useState("");
@@ -14,6 +16,7 @@ export default function Login() {
   const [passwordLogin, setPasswordLogin] = useState("");
   const [error, setError] = useState(false);
   const [fill, setFill] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   Axios.defaults.withCredentials = true;
@@ -30,6 +33,7 @@ export default function Login() {
   };
   const handleSubmitLogin = (e) => {
     e.preventDefault();
+    setLoading(false);
     Axios.post("http://localhost:3000/auth/login", {
       emailLogin,
       passwordLogin,
@@ -41,6 +45,9 @@ export default function Login() {
       .catch((err) => {
         setError(true);
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(true);
       });
   };
 
@@ -78,23 +85,32 @@ export default function Login() {
             onSubmit={handleSubmitRegister}
             className="bg-white flex items-center justify-center flex-col py-0 px-[40px] h-full"
           >
-            <h1 className="text-3xl font-bold">Create Account</h1>
-            <div className="my-[20px] mx-0">
-              <a
-                className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                href="#"
-              >
-                <FaFacebook size={20} />
-              </a>
-              <a
-                className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                href="#"
-              >
-                <AiFillGoogleCircle size={20} />
-              </a>
-            </div>
+            {!loading ? (
+              <>
+                <Lottie className="h-28 mb-8" animationData={animation} />
+                Loading
+              </>
+            ) : (
+              <>
+                <h1 className="text-3xl font-bold">Create Account</h1>
+                <div className="my-[20px] mx-0">
+                  <a
+                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
+                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
+                    href="#"
+                  >
+                    <FaFacebook size={20} />
+                  </a>
+                  <a
+                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
+                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
+                    href="#"
+                  >
+                    <AiFillGoogleCircle size={20} />
+                  </a>
+                </div>
+              </>
+            )}
             <span className=" text-[12px]">
               or use your email for registration
             </span>
@@ -145,23 +161,29 @@ export default function Login() {
             onSubmit={handleSubmitLogin}
             className="bg-white flex items-center justify-center flex-col py-0 px-[40px] h-full"
           >
-            <h1 className="text-3xl font-bold">Sign In</h1>
-            <div className="my-[20px] mx-0">
-              <a
-                className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                href="#"
-              >
-                <FaFacebook size={20} />
-              </a>
-              <a
-                className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                href="#"
-              >
-                <AiFillGoogleCircle size={20} />
-              </a>
-            </div>
+            {!loading ? (
+              <Lottie className="h-28 mb-8" animationData={animation} />
+            ) : (
+              <>
+                <h1 className="text-3xl font-bold">Sign In</h1>
+                <div className="my-[20px] mx-0">
+                  <a
+                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
+                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
+                    href="#"
+                  >
+                    <FaFacebook size={20} />
+                  </a>
+                  <a
+                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
+                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
+                    href="#"
+                  >
+                    <AiFillGoogleCircle size={20} />
+                  </a>
+                </div>
+              </>
+            )}
             <span className=" text-[12px]">or use your email password</span>
             <input
               required={true}

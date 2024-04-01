@@ -21,15 +21,13 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
-  console.log(emailLogin);
-  console.log(user);
   if (!user) {
-    return res.json({ message: "user is not registered" });
+    return res.status(401).json({ message: "user is not registered" });
   }
 
   const validPassword = await bcryt.compare(passwordLogin, user.password);
   if (!validPassword) {
-    return res.json({ message: "password is incorrect" });
+    return res.status(401).json({ message: "password is incorrect" });
   }
   const token = jwt.sign({ nameLogin: user.nameLogin }, process.env.KEY, {
     expiresIn: "1h",
