@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import Progress_Bar from "./Progres_Bar.jsx";
+import QuestionComponent from "./QuestionComponent.jsx";
+import { Image } from "expo-image";
+import dhakira from "../../assets/images/happyDahkira.png";
 import {
   Text,
   View,
@@ -8,12 +12,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import Progress_Bar from "./Progres_Bar.jsx";
-import QuestionComponent from "./QuestionComponent.jsx";
-import { Image } from "expo-image";
-import dhakira from "../../assets/images/happyDahkira.png";
 
-function Test({ route }) {
+const Test = ({ route }) => {
   const { questions } = route.params;
   const colors = [
     "#00E5BD",
@@ -35,8 +35,7 @@ function Test({ route }) {
       setWidth(width + step);
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(questionIndex + 1);
-        setCompleted(true);
-      }
+      } else setCompleted(true);
       setcolorIndex((colorIndex + 2) % colors.length);
     }
     // Clear input value when the "Submit" button is clicked
@@ -104,7 +103,7 @@ function Test({ route }) {
       </View>
     </KeyboardAvoidingView>
   );
-}
+};
 
 export default Test;
 const styles = StyleSheet.create({
