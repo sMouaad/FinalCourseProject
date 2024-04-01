@@ -62,6 +62,15 @@ export default function Login() {
       container.classList.remove("active");
     });
   }, []);
+
+  useEffect(() => {
+    setFill(false);
+  }, [name, password, email]);
+
+  useEffect(() => {
+    setError(false);
+  }, [emailLogin, passwordLogin]);
+
   return (
     <div id="login-form">
       <div
