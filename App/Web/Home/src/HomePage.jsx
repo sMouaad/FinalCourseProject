@@ -85,12 +85,12 @@ const Navbar = () => {
           </ul>
 
           <div className="space-x-12 hidden lg:flex items-center">
-            <a
-              href="/"
-              className="hidden lg:flex items-center text-white hover:text-black"
+            <Link
+              to="/dashboard"
+              className="hidden text-Poppins lg:flex items-center text-white hover:text-black"
             >
-              LOGIN IN
-            </a>
+              DASHBOARD
+            </Link>
             <Button as={Link} to="login">
               SIGN IN
             </Button>
