@@ -3,12 +3,19 @@ import brain from "./assets/cerveau_idea.png";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import animation from "./assets/loading.json";
+import useAuth from "./hooks/useAuth";
 
 export default function Login() {
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,14 +24,13 @@ export default function Login() {
   const [error, setError] = useState(false);
   const [fill, setFill] = useState(false);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   Axios.defaults.withCredentials = true;
   const handleSubmitRegister = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:3000/auth/signup", { name, email, password })
       .then((res) => {
-        if (res.data.status) navigate("/home");
+        if (res.data.status) navigate(from, { replace: true });
       })
       .catch((err) => {
         console.log(err);
