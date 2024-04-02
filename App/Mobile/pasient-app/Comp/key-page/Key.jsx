@@ -16,24 +16,26 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import welcomToDhakira from "../../assets/images/welcomToDhakira.png";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
+import { useIsFocused } from "@react-navigation/native";
 
 const DURATION = 1000;
 const DELAY = 500;
 const text = ["Welcome ", "to ", "Dhakira..."];
 
-const Key = () => {
-  const navigation = useNavigation(); // Access navigation object using useNavigation hook
-  const [isShown, setShown] = useState(false);
+const Key = ({ navigation }) => {
   const [inputValue, setInputValue] = useState("");
+  const isFocused = useIsFocused();
 
   const opacity1 = useSharedValue(0);
   const opacity2 = useSharedValue(0);
   const opacity3 = useSharedValue(0);
 
   useEffect(() => {
+    opacity1.value = 0;
+    opacity2.value = 0;
+    opacity3.value = 0;
     show();
-  }, [isShown]);
+  }, [isFocused]);
 
   // prettier-ignore
   const show = () => {
@@ -44,7 +46,7 @@ const Key = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
       <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View className="h-screen py-[60] gap-20">
@@ -66,6 +68,7 @@ const Key = () => {
                 transition={130}
               />
             </View>
+
             <View>
               <TextInput
                 placeholder="Enter the keyword"
@@ -76,7 +79,7 @@ const Key = () => {
               <Pressable
                 onPress={() => {
                   setInputValue("");
-                  navigation.navigate("WaitingPage"); // Use string instead of variable
+                  navigation.navigate("WaitingPage");
                 }}
                 style={({ pressed }) => [
                   styles.button,

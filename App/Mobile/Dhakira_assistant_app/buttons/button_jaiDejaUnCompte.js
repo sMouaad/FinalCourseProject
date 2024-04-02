@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
 
 const ButtonJaiDejaUnCompte = ({onPress, text}) => {
     return (
         <>
-            <Pressable style={styles.button} onPress={onPress}>
+            <TouchableOpacity style={styles.button} onPress={onPress}>
                 <Text style={styles.text}>{text}</Text>
-            </Pressable>
+            </TouchableOpacity>
         </>
 
     )
