@@ -27,6 +27,7 @@ const App = () => {
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
+
   );
 };
 export default App;
