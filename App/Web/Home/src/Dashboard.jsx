@@ -72,7 +72,7 @@ export default function Dashboard() {
           <div className="flex flex-col bg-white rounded-xl pt-0">
             <table className=" border-collapse">
               <tr className="text-sm h-16 text-black tracking-widest">
-                <th className="w-1/4 text-left border-none tracking-normal text-lg font-bold">
+                <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
                   PATIENTS
                 </th>
                 <th className="w-1/6 border-none ">
