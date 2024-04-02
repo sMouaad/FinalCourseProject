@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}", "./Comp/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./App.{js,jsx,ts,tsx}",
+    "./Comp/**/*.{js,jsx,ts,tsx}",
+    "./NavigationAfterLogin/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {

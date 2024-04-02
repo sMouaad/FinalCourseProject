@@ -5,7 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Test from "./Comp/Test/Test.jsx";
 import Key from "./Comp/key-page/Key.jsx";
+import MainContainer from "./NavigationAfterLogin/mainContainer.js";
 import WaitingForTheFaceRecognition from "./Comp/WaitingForTheFaceRecognition/WaitingForTheFaceRecognition.jsx";
+import { HomePage } from "./NavigationAfterLogin/Screens/HomePage.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,10 +26,11 @@ const App = () => {
           name="WaitingPage"
           component={WaitingForTheFaceRecognition}
         />
+        <Stack.Screen name="mainContainer" component={MainContainer} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
-
+    // <HomePage />
   );
 };
 export default App;

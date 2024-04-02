@@ -12,6 +12,7 @@
     "@babel/plugin-transform-export-namespace-from": "^7.24.1",
     "@babel/plugin-transform-optional-catch-binding": "^7.24.1",
     "@react-native-community/progress-bar-android": "^1.0.5",
+    "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@types/react": "~18.2.45",
