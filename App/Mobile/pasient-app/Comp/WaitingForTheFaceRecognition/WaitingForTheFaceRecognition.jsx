@@ -7,10 +7,9 @@ import { questions } from "../Test/Question.js";
 
 // Adjust import based on the actual library name
 
-export default function WaitingForTheFaceRecognition() {
-  const navigation = useNavigation();
+export default function WaitingForTheFaceRecognition({ navigation }) {
   setTimeout(() => {
-    navigation.navigate("Test", { questions: questions });
+    navigation.replace("Test", { questions: questions });
   }, 2000);
   return (
     <View className="justify-center flex flex-col items-center">
