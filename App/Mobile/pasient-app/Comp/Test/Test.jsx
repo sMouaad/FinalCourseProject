@@ -13,7 +13,7 @@ import {
   Keyboard,
 } from "react-native";
 
-const Test = ({ route }) => {
+const Test = ({ route, navigation }) => {
   const { questions } = route.params;
   const colors = [
     "#00E5BD",
@@ -37,6 +37,9 @@ const Test = ({ route }) => {
         setQuestionIndex(questionIndex + 1);
       } else setCompleted(true);
       setcolorIndex((colorIndex + 2) % colors.length);
+    }
+    if (completed) {
+      navigation.navigate("mainContainer");
     }
     // Clear input value when the "Submit" button is clicked
     setInputValue("");
