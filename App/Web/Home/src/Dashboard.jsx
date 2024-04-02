@@ -31,10 +31,10 @@ export default function Dashboard() {
   // }, []);
 
   return (
-    <div className="flex-wrap flex font-Roboto">
+    <div className="flex-wrap h-screen flex font-Roboto">
       <Sidebar />
-      <section className="flex-[6] grid">
-        <nav className=" grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
+      <section className="flex-[6] flex flex-col">
+        <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
           <div className="items-center justify-between gap-12 flex">
             <div className="flex shrink gap-4 basis-[75%]">
               <div className="items-center flex">
@@ -63,95 +63,59 @@ export default function Dashboard() {
                 <h1 className="text-lg">Mouaad Sadi &#40;@grreatest&#41;</h1>
               </div>
             </div>
-            <div className="flex flex-wrap justify-evenly gap-6">
-              <button className="hover:cursor-pointer border-none w-[100px] rounded-lg py-[8px] px-2 bg-sidebar text-background font-bold text-sm">
-                New
-              </button>
-              <button className="hover:cursor-pointer border-none w-[100px] rounded-lg py-[8px] px-2 bg-sidebar text-background font-bold text-sm">
-                Upload
-              </button>
-              <button className="hover:cursor-pointer border-none w-[100px] rounded-lg py-[8px] px-2 bg-sidebar text-background font-bold text-sm">
-                Share
-              </button>
-            </div>
+            <button className="hover:cursor-pointer border-none w-[100px] rounded-lg py-[8px] px-2 bg-sidebar text-background font-bold text-sm">
+              Delete
+            </button>
           </div>
         </nav>
-        <main className="multiple p-4 bg-contrast grid">
-          <div className="flex flex-col spanning2">
-            <h3 className="my-4 font-bold text-lg">My Projects</h3>
-            <div className="gap-8 mr-8 projects flex-1 grid">
-              <Card
-                title="Some title"
-                msg="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-                    mollitia dolores fugiat error magni commodi, illo minima
-                    neque ipsum quis. Dolorem at labore molestias illo
-                    dignissimos modi, ex dolorum sed."
-              />
-              <Card
-                title="Some title"
-                msg="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-                    mollitia dolores fugiat error magni commodi, illo minima
-                    neque ipsum quis. Dolorem at labore molestias illo
-                    dignissimos modi, ex dolorum sed."
-              />
-              <Card
-                title="Some title"
-                msg="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-                    mollitia dolores fugiat error magni commodi, illo minima
-                    neque ipsum quis. Dolorem at labore molestias illo
-                    dignissimos modi, ex dolorum sed."
-              />
-              <Card
-                title="Some title"
-                msg="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-                    mollitia dolores fugiat error magni commodi, illo minima
-                    neque ipsum quis. Dolorem at labore molestias illo
-                    dignissimos modi, ex dolorum sed."
-              />
-              <Card
-                title="Some title"
-                msg="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-                  mollitia dolores fugiat error magni commodi, illo minima
-                  neque ipsum quis. Dolorem at labore molestias illo
-                  dignissimos modi, ex dolorum sed."
-              />
-              <Card
-                title="Some title"
-                msg="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-                mollitia dolores fugiat error magni commodi, illo minima
-                neque ipsum quis. Dolorem at labore molestias illo
-                dignissimos modi, ex dolorum sed."
-              />
-            </div>
-          </div>
-          <div className="flex-col flex">
-            <h3 className="my-4">Announcements</h3>
-            <div className="flex-1 bg-background border-none rounded-md shadow-md flex flex-col p-8">
-              <Announcement
-                title="New Projects"
-                msg="Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Natus eos atque, excepturi s."
-              />
-              <Announcement
-                title="New Projects"
-                msg="Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Natus eos atque, excepturi s."
-              />
-              <Announcement
-                title="New Projects"
-                msg="Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Natus eos atque, excepturi s."
-              />
-            </div>
-          </div>
-          <div className="my-8 flex flex-col">
-            <h3 className="my-4">Trending</h3>
-            <div className="flex-1 bg-background border-none rounded-md shadow-md py-4 flex flex-col p-8 justify-evenly">
-              <User name="Mouaad" job="Web Developer" />
-              <User name="Mouaad" job="Web Developer" />
-              <User name="Mouaad" job="Web Developer" />
-              <User name="Mouaad" job="Web Developer" />
-            </div>
+        <main className="flex-1 p-4 bg-contrast grid">
+          <div className="flex flex-col bg-white rounded-xl pt-0">
+            <table className=" border-collapse">
+              <tr className="text-sm h-16 text-black tracking-widest">
+                <th className="w-1/4 text-left border-none tracking-normal text-lg font-bold">
+                  PATIENTS
+                </th>
+                <th className="w-1/6 border-none ">
+                  <button className=" bg-[#00e5bd] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                    Invite Assistants
+                  </button>
+                </th>
+                <th className="w-1/6 border-none ">
+                  <button className=" bg-[#00e5bd] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                    Add Doctors
+                  </button>
+                </th>
+                <th className=" border-none ">&nbsp;</th>
+                <th className=" border-none ">&nbsp;</th>
+                <th className=" border-none ">&nbsp;</th>
+              </tr>
+              <tr className="text-xs text-slate-500 tracking-widest">
+                <th className="text-left">PATIENT</th>
+                <th>ASSISTANT</th>
+                <th>DOCTOR</th>
+                <th>SOCIAL SKILLS</th>
+                <th>TRACK PATIENT</th>
+                <th>TRACK FOCUS</th>
+              </tr>
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+              <Row />
+            </table>
           </div>
         </main>
       </section>
@@ -159,31 +123,28 @@ export default function Dashboard() {
   );
 }
 
-function Card({ title, msg }) {
+function Row({ patient, assistant, doctor }) {
   return (
-    <div className="bg-background py-8 px-4 rounded-md border-solid border-l-8 border-l-card pb-8 shadow-lg flex-col justify-between flex ">
-      <div>
-        <h4 className="font-bold">{title}</h4>
-        <p className="text-[#36454f]">{msg}</p>
-      </div>
-      <div className="flex justify-end gap-8 mr-2 ">
-        <img
-          className="h-[25px] mt-4 hover:cursor-pointer"
-          src="assets/star.svg"
-          alt=""
-        />
-        <img
-          className="h-[25px] mt-4 hover:cursor-pointer"
-          src="assets/eye.svg"
-          alt=""
-        />
-        <img
-          className="h-[25px] mt-4 hover:cursor-pointer"
-          src="assets/fork.svg"
-          alt=""
-        />
-      </div>
-    </div>
+    <tr className="h-16">
+      <td>data</td>
+      <td>data</td>
+      <td>data</td>
+      <td className="px-2">
+        <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+          Improve Social Skills
+        </button>
+      </td>
+      <td className="px-2">
+        <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+          Track your Patient
+        </button>
+      </td>
+      <td className="px-2">
+        <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+          Track his Focus
+        </button>
+      </td>
+    </tr>
   );
 }
 
@@ -204,14 +165,6 @@ function User({ img, name, job }) {
         <p className="text-green-600">{name}</p>
         <p className="text-[#36454f]">{job}</p>
       </div>
-    </div>
-  );
-}
-function Announcement({ title, msg }) {
-  return (
-    <div className="last:border-none flex flex-col items-center flex-1 p-2 border-b-[#36454f] border-b-[1px] border-solid">
-      <h5>{title}</h5>
-      <p className="text-[#36454f] text-sm my-2">{msg}</p>
     </div>
   );
 }
