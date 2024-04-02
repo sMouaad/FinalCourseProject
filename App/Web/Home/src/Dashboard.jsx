@@ -16,19 +16,19 @@ import Settings from "./assets/dashboard/settings.svg";
 import Star from "./assets/dashboard/star.svg";
 import Support from "./assets/dashboard/support.svg";
 export default function Dashboard() {
-  Axios.defaults.withCredentials = true;
-  const navigate = useNavigate();
-  useEffect(() => {
-    Axios.get("http://localhost:3000/auth/verify").then((res) => {
-      if (res.data.status) {
-        console.log(res.data.message);
-      } else {
-        navigate("/login");
-      }
-      console.log(res);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Axios.defaults.withCredentials = true;
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   Axios.get("http://localhost:3000/auth/verify").then((res) => {
+  //     if (res.data.status) {
+  //       console.log(res.data.message);
+  //     } else {
+  //       navigate("/login");
+  //     }
+  //     console.log(res);
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <div className="flex-wrap flex font-Roboto">
