@@ -1,18 +1,33 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { HomePage } from './Screens/HomePage';
 import { ToDoPage } from './Screens/ToDoPage';
 import { MessagesPage } from './Screens/MessagesPage';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Home_Patient } from './Screens//HomeScreens/Home_Patients';
+import { Chats } from './Screens//HomeScreens/Home_Chats';
+import Home_Track from './Screens/HomeScreens/Home_Track';
+
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackGroup() {
+  return(
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }}></HomeStack.Screen>
+      <HomeStack.Screen name="Patients" component={Home_Patient}></HomeStack.Screen>
+      <HomeStack.Screen name="Chat" component={Chats}></HomeStack.Screen>
+      <HomeStack.Screen name="Track" component={Home_Track}></HomeStack.Screen>
+    </HomeStack.Navigator>
+  )
+}
 
 
 const Tab = createBottomTabNavigator();
 
 export default function MainContainer() {
   return (
-<Tab.Navigator
+    <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -27,7 +42,6 @@ export default function MainContainer() {
             {
                 iconName = focused ? 'chatbubbles': 'chatbubbles-outline';
             }
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: '#4EA8DE',
@@ -35,7 +49,7 @@ export default function MainContainer() {
           tabBarStyle: { backgroundColor: '#5E60CE' }
         })}
       >
-        <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }}/>
+        <Tab.Screen name="Home" component={HomeStackGroup} options={{ headerShown: false }}/>
         <Tab.Screen name="Todo" component={ToDoPage} options={{ headerShown: false }}/>
         <Tab.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }}/>
       </Tab.Navigator>
