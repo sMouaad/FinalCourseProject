@@ -12,17 +12,19 @@ export default function WaitingForTheFaceRecognition({ navigation }) {
     navigation.replace("Test", { questions: questions });
   }, 2000);
   return (
-    <View className="justify-center flex flex-col items-center">
-      <View className="font-bold border-Primary border-[4px] p-4 rounded-[21px] justify-center flex">
-        <Text className="text-base font-bold">
-          Waiting for the face recognition ...
-        </Text>
-      </View>
-      <View className="flex justify-center w-[80%] h-[55%]">
-        <Image
-          className="mt-[40px] w-full h-full object-contain "
-          source={waitingDhakira}
-        />
+    <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
+      <View className="justify-center flex items-center">
+        <View className="font-bold border-Primary border-[4px] p-4 rounded-[21px] justify-center flex">
+          <Text className="text-base font-bold">
+            Waiting for the face recognition ...
+          </Text>
+        </View>
+        <View className="flex justify-center w-[60%] h-[45%]">
+          <Image
+            className="mt-[40px] w-full h-full object-contain "
+            source={waitingDhakira}
+          />
+        </View>
       </View>
     </View>
   );
