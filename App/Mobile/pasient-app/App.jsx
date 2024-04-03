@@ -7,7 +7,7 @@ import Test from "./Comp/Test/Test.jsx";
 import Key from "./Comp/key-page/Key.jsx";
 import MainContainer from "./NavigationAfterLogin/mainContainer.js";
 import WaitingForTheFaceRecognition from "./Comp/WaitingForTheFaceRecognition/WaitingForTheFaceRecognition.jsx";
-import { HomePage } from "./NavigationAfterLogin/Screens/HomePage.js";
+import { HomePage } from "./NavigationAfterLogin/Screens/HomePage";
 
 const Stack = createNativeStackNavigator();
 

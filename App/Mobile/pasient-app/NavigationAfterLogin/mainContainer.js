@@ -30,6 +30,7 @@ export default function MainContainer() {
         tabBarActiveTintColor: "#00E5BD",
         tabBarInactiveTintColor: "white",
         tabBarStyle: { backgroundColor: "#00A588" },
+        contentStyle: { backgroundColor: "transparent" },
       })}
     >
       <Tab.Screen
