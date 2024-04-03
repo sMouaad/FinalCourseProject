@@ -19,7 +19,6 @@ function Scroll(){
         <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold' }}>Younes BENSAFIA</Text></TouchableOpacity>
         <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold' }}>Younes BENSAFIA</Text></TouchableOpacity>
         <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold' }}>Younes BENSAFIA</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold' }}>Younes BENSAFIA</Text></TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
