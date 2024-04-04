@@ -1,7 +1,30 @@
-import { View, Text, Pressable } from "react-native";
-import React from "react";
+import { Pressable, Text } from "react-native";
+import React, { useEffect } from "react";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 
-export default function TabButton({ active, onPress, children }) {
+export default function TabButton({ active, onPress, children, bgColor }) {
+  // Define animated values for opacity and scale
+  const opacity = useSharedValue(active ? 1 : 0.5);
+  const scale = useSharedValue(active ? 1 : 0.9);
+
+  // Define animated styles for the button
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withSpring(opacity.value),
+      transform: [{ scale: withSpring(scale.value) }],
+    };
+  });
+
+  // Update animated values when active state changes
+  useEffect(() => {
+    opacity.value = active ? 1 : 0.5;
+    scale.value = active ? 1 : 0.9;
+  }, [active]);
+
   return (
     <Pressable
       style={{
@@ -14,14 +37,16 @@ export default function TabButton({ active, onPress, children }) {
       }}
       onPress={onPress}
     >
-      <Text
-        style={{
-          color: active ? "white" : "black",
-          fontWeight: active ? "bold" : "400",
-        }}
-      >
-        {children}
-      </Text>
+      <Animated.View style={animatedStyle}>
+        <Text
+          style={{
+            color: active ? "white" : "black",
+            fontWeight: active ? "bold" : "400",
+          }}
+        >
+          {children}
+        </Text>
+      </Animated.View>
     </Pressable>
   );
 }

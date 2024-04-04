@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import TabButton from "./TabButton";
 import React, { useState } from "react";
 
-const TabBar = () => {
-  const [activeTab, setActiveTab] = useState("all");
+const TabBar = ({ activeTab, setActiveTab, bgColor }) => {
+  // const [activeTab, setActiveTab] = useState("all");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -13,6 +13,7 @@ const TabBar = () => {
       <TabButton
         active={activeTab === "all"}
         onPress={() => handleTabClick("all")}
+        bgColor={bgColor}
       >
         All Chats
       </TabButton>
