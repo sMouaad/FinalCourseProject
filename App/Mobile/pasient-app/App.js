@@ -1,13 +1,11 @@
 import React from "react";
-
 import { StatusBar } from "expo-status-bar";
+import { Text, View, TouchableOpacity, Image, Animated } from "react-native";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Test from "./Comp/Test/Test.jsx";
-import Key from "./Comp/key-page/Key.jsx";
 import MainContainer from "./NavigationAfterLogin/mainContainer.js";
-import WaitingForTheFaceRecognition from "./Comp/WaitingForTheFaceRecognition/WaitingForTheFaceRecognition.jsx";
-import { HomePage } from "./NavigationAfterLogin/Screens/HomePage";
+import MessagesPage from "./NavigationAfterLogin/Screens/Chat/MessagesPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,18 +18,12 @@ const App = () => {
           contentStyle: { backgroundColor: "transparent" },
         }}
       >
-        <Stack.Screen name="Home" component={Key} />
-        <Stack.Screen name="Test" component={Test} />
-        <Stack.Screen
-          name="WaitingPage"
-          component={WaitingForTheFaceRecognition}
-        />
-        <Stack.Screen name="mainContainer" component={MainContainer} />
+        {/* Define your screens here */}
+        <Stack.Screen name="MainContainer" component={MainContainer} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
-    // <HomePage />
   );
 };
+
 export default App;
-2;
