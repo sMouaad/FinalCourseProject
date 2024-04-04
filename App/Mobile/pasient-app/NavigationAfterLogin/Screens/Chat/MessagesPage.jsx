@@ -19,7 +19,6 @@ const Home = () => {
     const tabs = ["all", "group", "assistants"];
     const { contentOffset, layoutMeasurement } = event.nativeEvent;
     const offsetX = contentOffset.x;
-    console.log(offsetX);
     const screenWidth = layoutMeasurement.width;
     const activeTabIndex = Math.floor(offsetX / screenWidth);
     const scrollFraction = (offsetX % screenWidth) / screenWidth;
@@ -70,6 +69,7 @@ const Home = () => {
         setActiveTab={setActiveTab}
       />
       <ScrollView
+        className
         ref={scrollview}
         style={{ flex: 1 }}
         horizontal
@@ -81,7 +81,6 @@ const Home = () => {
         <Group />
         <Assistants />
       </ScrollView>
-      <NewChatButton />
     </View>
   );
 };

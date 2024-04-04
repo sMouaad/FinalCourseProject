@@ -2,7 +2,8 @@ import { View, Dimensions, ScrollView } from "react-native";
 import React from "react";
 
 const ChatContainer = ({ children, ClassName, svClassName }) => {
-  let styleContainer = `justify-center items-center ${ClassName}`;
+  let styleContainer = `${ClassName}`;
+  let styleSV = `${svClassName}`;
   return (
     <View
       style={{
@@ -10,7 +11,7 @@ const ChatContainer = ({ children, ClassName, svClassName }) => {
       }}
       className={styleContainer}
     >
-      <ScrollView className={svClassName} showsVerticalScrollIndicator={false}>
+      <ScrollView className={styleSV} showsVerticalScrollIndicator={false}>
         {children}
       </ScrollView>
     </View>
