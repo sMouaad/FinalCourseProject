@@ -19,10 +19,11 @@ export default NewChatButton;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "flex-end",
     alignItems: "flex-end",
     backgroundColor: "#fff",
+    alignSelf: "flex-end",
+    width: 100,
   },
   chatButton: {
     backgroundColor: "#00E5BD",
