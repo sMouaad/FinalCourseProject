@@ -1,9 +1,9 @@
 import React from 'react';
-import { Scroll } from './ScrollingBarPatients';
+import { HomePage } from './ScrollingBarPatientsP';
 
 function ToDoPage(){
   return (
-    <Scroll/>
+    <HomePage/>
   );
 };
 
