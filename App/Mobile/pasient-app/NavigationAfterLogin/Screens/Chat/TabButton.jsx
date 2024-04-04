@@ -6,7 +6,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 
-export default function TabButton({ active, onPress, children, bgColor }) {
+export default function TabButton({ active, onPress, children }) {
   // Define animated values for opacity and scale
   const opacity = useSharedValue(active ? 1 : 0.5);
   const scale = useSharedValue(active ? 1 : 0.9);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -8,25 +8,74 @@ import Assistants from "./Assistants";
 import TabBar from "./TabBar";
 import NewChatButton from "./NewChatButton";
 
+let previousOffsetX = 0; // Initialize previousOffsetX outside the component or function
+
 const Home = () => {
+  const scrollview = useRef();
   // const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState("all");
 
+  const handleScroll = (event) => {
+    const tabs = ["all", "group", "assistants"];
+    const { contentOffset, layoutMeasurement } = event.nativeEvent;
+    const offsetX = contentOffset.x;
+    console.log(offsetX);
+    const screenWidth = layoutMeasurement.width;
+    const activeTabIndex = Math.floor(offsetX / screenWidth);
+    const scrollFraction = (offsetX % screenWidth) / screenWidth;
+
+    let nextTabIndex = activeTabIndex + 1;
+    if (nextTabIndex >= tabs.length) nextTabIndex = activeTabIndex;
+
+    // Determine the direction of scrolling
+    const direction = offsetX > previousOffsetX ? 1 : -1;
+    const isScrollingRight = direction === 1;
+
+    // Smoothly transition between tabs
+    const interpolateTab = (currentIndex, nextIndex, fraction) => {
+      const currentTab = currentIndex;
+      const nextTab = nextIndex;
+      const interpolatedTab = currentTab + (nextTab - currentTab) * fraction;
+      return interpolatedTab;
+    };
+
+    const interpolatedTab = interpolateTab(
+      activeTabIndex,
+      nextTabIndex,
+      scrollFraction
+    );
+    const newActiveTabIndex = isScrollingRight
+      ? Math.ceil(interpolatedTab)
+      : Math.floor(interpolatedTab);
+
+    // Update active tab directly
+    setActiveTab(tabs[newActiveTabIndex]);
+
+    // Update previousOffsetX for the next scroll event
+    previousOffsetX = offsetX;
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TabBar
+        onPress1={() => {
+          scrollview.current.scrollTo({ x: 0 });
+        }}
+        onPress2={() => {
+          scrollview.current.scrollTo({ x: 411.4285583496094 });
+        }}
+        onPress3={() => {
+          scrollview.current.scrollToEnd();
+        }}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
       <ScrollView
+        ref={scrollview}
         style={{ flex: 1 }}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(event) => {
-          const offsetX = event.nativeEvent.contentOffset.x;
-          const screenWidth = event.nativeEvent.layoutMeasurement.width;
-          const activeTabIndex = Math.floor(offsetX / screenWidth);
-          const tabs = ["all", "group", "assistants"];
-          setActiveTab(tabs[activeTabIndex]);
-        }}
+        onScroll={handleScroll}
       >
         <AllChats />
         <Group />
