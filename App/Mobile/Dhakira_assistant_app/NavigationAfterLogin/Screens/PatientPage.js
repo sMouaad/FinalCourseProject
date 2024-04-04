@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 
-function HomePage({ navigation })
+function PatientPage({ navigation })
 {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -12,4 +12,4 @@ function HomePage({ navigation })
   );
 }
 
-export{HomePage};
+export{PatientPage};
