@@ -13,12 +13,12 @@ function Todo({navigation}){
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Abderraouf MAHDJOUB</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Mouaad SADI</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Younes BENSAFIA</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Younes BENSAFIA</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>      
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>   
       </ScrollView>
       </SafeAreaView>
   );
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
   patient: {
     height: 100,
     width: "100%",
-    backgroundColor: "#B752FF",
+    backgroundColor: "#4EA8DE",
     marginBottom: 30,
     borderRadius: 45,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth:4,
-    borderColor:'#6c5ce7'
+    borderColor:'#ffd700'
   }
 });
 

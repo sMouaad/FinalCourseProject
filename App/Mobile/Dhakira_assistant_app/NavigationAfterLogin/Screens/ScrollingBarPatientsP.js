@@ -13,7 +13,7 @@ function HomePage({navigation}){
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-        <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("Home_Patient")}style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></TouchableOpacity>
         <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Abderraouf MAHDJOUB</Text></TouchableOpacity>
         <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Mouaad SADI</Text></TouchableOpacity>
         <TouchableOpacity style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff'}}>Younes BENSAFIA</Text></TouchableOpacity>
