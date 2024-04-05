@@ -6,6 +6,8 @@ import { MessagesPage } from './Screens/MessagesPage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomePage } from './Screens/ScrollingBarPatientsP';
 import { Todo } from './Screens/ScrollingBarPatientsTD';
+import { Home_PatientX } from './Screens/HomeScreens/Home_PatientX';
+
 
 const HomeStack = createNativeStackNavigator();
 
@@ -13,6 +15,7 @@ function HomeStackGroup() {
   return(
     <HomeStack.Navigator>
       <HomeStack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }}></HomeStack.Screen>
+      <HomeStack.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: false }}></HomeStack.Screen>
     </HomeStack.Navigator>
   )
 }
@@ -45,7 +48,7 @@ export default function MainContainer() {
         })}
       >
         <Tab.Screen name="Home" component={HomeStackGroup} options={{ headerShown: false }}/>
-        <Tab.Screen name="Todo" component={Todo} options={{ headerShown: false}}/>
+        <Tab.Screen name="Todo" component={ToDoPage} options={{ headerShown: false}}/>
         <Tab.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }}/>
       </Tab.Navigator>
   );
