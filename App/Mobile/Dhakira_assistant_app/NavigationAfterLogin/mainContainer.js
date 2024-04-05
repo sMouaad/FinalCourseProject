@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { ToDoPage } from './Screens/ToDoPage';
+
 import { MessagesPage } from './Screens/MessagesPage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomePage } from './Screens/ScrollingBarPatientsP';
-import { Todo } from './Screens/ScrollingBarPatientsTD';
+import { HomePage } from './Screens/HomeScreens/ScrollingBarPatientsP';
+import { Todo } from './Screens/TodoScreens/ScrollingBarPatientsTD';
 import { Home_PatientX } from './Screens/HomeScreens/Home_PatientX';
+import { ToDoPage } from './Screens/TodoScreens/ToDoPage';
 
 const TodoStack = createNativeStackNavigator();
 
@@ -15,7 +16,7 @@ function TodoStackGroup() {
   return(
   <TodoStack.Navigator>
     <TodoStack.Screen name="TodoPage" component={ToDoPage} options={{ headerShown: false }}></TodoStack.Screen>
-    <TodoStack.Screen name="TodoPatient" component={Todo} options={{ headerShown: false }}></TodoStack.Screen>
+    <TodoStack.Screen name="TodoPatient" component={Todo} options={{ headerShown: true}}></TodoStack.Screen>
   </TodoStack.Navigator>
   );
 }
