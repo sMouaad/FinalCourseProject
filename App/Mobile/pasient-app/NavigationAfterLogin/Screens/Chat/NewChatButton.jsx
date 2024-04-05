@@ -19,11 +19,9 @@ export default NewChatButton;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
-    backgroundColor: "#fff",
-    alignSelf: "flex-end",
-    width: 100,
+    position: "absolute",
+    bottom: 16, // Adjust the bottom value as per your requirement
+    right: 16, // Adjust the right value as per your requirement
   },
   chatButton: {
     backgroundColor: "#00E5BD",
@@ -40,7 +38,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 8,
     elevation: 6,
-    marginRight: 20,
-    marginBottom: 50,
   },
 });

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 
 export function Chat() {
   const [messages, setMessages] = useState([]);
@@ -13,7 +14,8 @@ export function Chat() {
         user: {
           _id: 2,
           name: "React Native",
-          avatar: "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
+          avatar:
+            "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
         },
       },
     ]);

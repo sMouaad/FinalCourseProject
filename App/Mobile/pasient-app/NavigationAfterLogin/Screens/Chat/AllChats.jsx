@@ -1,7 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  Pressable,
+  ImageBackground,
+} from "react-native";
 import ChatContainer from "./ChatContainer";
 import NewChatButton from "./NewChatButton";
+import { Entypo } from "@expo/vector-icons";
+import { setStatusBarBackgroundColor } from "expo-status-bar";
 
 const messages = [
   {
@@ -47,46 +57,6 @@ const messages = [
       imageUrl: `https://png.pngtree.com/png-clipart/20231103/ourmid/pngtree-palestine-flag-sphere-circle-vector-transparent-png-image_10437277.png`,
     },
   },
-  {
-    id: 6,
-    text: "gg",
-    sender: {
-      name: "Ananymos",
-      imageUrl: `https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg`,
-    },
-  },
-  {
-    id: 7,
-    text: "gg",
-    sender: {
-      name: "Ananymos",
-      imageUrl: `https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg`,
-    },
-  },
-  {
-    id: 8,
-    text: "gg",
-    sender: {
-      name: "Ananymos",
-      imageUrl: `https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg`,
-    },
-  },
-  {
-    id: 9,
-    text: "gg",
-    sender: {
-      name: "Ananymos",
-      imageUrl: `https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg`,
-    },
-  },
-  {
-    id: 10,
-    text: "gg",
-    sender: {
-      name: "Ananymos",
-      imageUrl: `https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg`,
-    },
-  },
 ];
 
 const MessageItem = ({ message }) => {
@@ -108,11 +78,24 @@ const MessageItem = ({ message }) => {
 
 const AllChats = () => {
   return (
-    <View className="h-full">
+    <View className="h-full w-screen box-border">
       <FlatList
+        className="mx-[10] box-border mb-[10] py-2  "
         data={messages}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <MessageItem message={item} />}
+        renderItem={({ item }) => {
+          return (
+            <>
+              {item.id.toString() != 1 ? (
+                <View className="border mx-1 border-[#F2F2F2]   " />
+              ) : (
+                <></>
+              )}
+
+              <MessageItem message={item} />
+            </>
+          );
+        }}
       ></FlatList>
       <NewChatButton />
     </View>
@@ -120,16 +103,36 @@ const AllChats = () => {
 };
 
 const styles = StyleSheet.create({
+  btn: {
+    backgroundColor: "white",
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#00E5BD",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    elevation: 6,
+  },
   messageContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    width: "80%",
+    marginHorizontal: 10,
+    paddingVertical: 10,
   },
   profileImage: {
     width: 50,
     height: 50,
     borderRadius: 25, // half of width and height to make it circular
     marginRight: 10,
+    borderColor: "#00E5BD",
+    borderWidth: 2,
   },
   messageContent: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import AllChats from "./AllChats";
@@ -60,7 +60,7 @@ const Home = () => {
           scrollview.current.scrollTo({ x: 0 });
         }}
         onPress2={() => {
-          scrollview.current.scrollTo({ x: 411.4285583496094 });
+          scrollview.current.scrollTo({ x: Dimensions.get("window").width });
         }}
         onPress3={() => {
           scrollview.current.scrollToEnd();
