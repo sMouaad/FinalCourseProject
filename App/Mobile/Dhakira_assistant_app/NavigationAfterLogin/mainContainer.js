@@ -8,6 +8,25 @@ import { HomePage } from './Screens/HomeScreens/ScrollingBarPatientsP';
 import { Todo } from './Screens/TodoScreens/ScrollingBarPatientsTD';
 import { Home_PatientX } from './Screens/HomeScreens/Home_PatientX';
 import { ToDoPage } from './Screens/TodoScreens/ToDoPage';
+import Record from './Screens/HomeScreens/Record';
+import Track from './Screens/HomeScreens/Track';
+import Settings from './Screens/HomeScreens/Settings';
+
+
+const RTC = createNativeStackNavigator();
+
+function  RecordTrackSettingsGroup() {
+  return (
+    <RTC.Navigator>
+      <RTC.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: false }}></RTC.Screen>
+      <RTC.Screen name="Record" component={Record} options={{headerShown:true}}></RTC.Screen>
+      <RTC.Screen name="Track" component={Track} options={{headerShown:true}}></RTC.Screen>
+      <RTC.Screen name="Settings" component={Settings} options={{headerShown:true}}></RTC.Screen>
+    </RTC.Navigator>
+  );
+}
+
+
 
 const TodoStack = createNativeStackNavigator();
 
@@ -29,7 +48,7 @@ function HomeStackGroup() {
   return(
     <HomeStack.Navigator>
       <HomeStack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }}></HomeStack.Screen>
-      <HomeStack.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: false }}></HomeStack.Screen>
+      <HomeStack.Screen name="Home_RTC" component={RecordTrackSettingsGroup} options={{ headerShown: false }}></HomeStack.Screen>
     </HomeStack.Navigator>
   )
 }
