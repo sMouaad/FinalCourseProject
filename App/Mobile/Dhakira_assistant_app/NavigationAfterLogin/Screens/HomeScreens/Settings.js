@@ -1,20 +1,36 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 export default function Settings() {
   return (
-    
     <View style={{flex:1, justifyContent:'center', alignItems: 'center'}}>
-        <View style={styles.Delete}></View>
-        <View style={{flexDirection:'row'}}>
-            <View style={styles.buttons}></View>
-            <View style={styles.buttons}></View>
-        </View>
-        <View style={{flexDirection:'row'}}>
-            <View style={styles.buttons}></View>
-            <View style={styles.buttons}></View>
-        </View>
-        <View style={styles.Delete}></View>
+        <View style={styles.PatientName}><View><Text style={{fontSize:20, fontWeight:'bold', color:'white'}}>Younes BENSAFIA</Text></View></View>
+
+
+
+
+        <TouchableOpacity style={{flexDirection:'row'}}>
+
+            <TouchableOpacity style={styles.buttons}>
+                <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/photoFamille.png')}/>
+                <Text style={styles.buttonText}>Family Camera</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.buttons}>
+                <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/doute.png')}/>
+                <Text style={styles.buttonText}>Family Test</Text>
+            </TouchableOpacity>
+
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttons}>
+            <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/crayon.png')}/>
+            <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.Delete}>
+            <Text style={styles.DeleteText}>Delete</Text>
+        </TouchableOpacity>
     </View>
   )
 }
@@ -23,11 +39,55 @@ const styles = StyleSheet.create({
 
 buttons:
 {
-    backgroundColor:'#fff', width:150,height:150, marginHorizontal: 10, marginVertical:10, borderRadius:31,justifyContent:'center', alignItems: 'center', borderWidth:5, borderColor:'#5E60CE'
+    backgroundColor:'#fff', 
+    width:150,
+    height:150, 
+    marginHorizontal: 10, 
+    marginVertical:10, 
+    borderRadius:31,
+    justifyContent:'center',
+    alignItems: 'center',
+    borderWidth:5, 
+    borderColor:'#5E60CE'
 },
 Delete:
 {
-    backgroundColor:'#fff', width:310,height:60, marginHorizontal: 10, marginVertical:10, borderRadius:31,justifyContent:'center', alignItems: 'center', borderWidth:5, borderColor:'red'
+    backgroundColor:'#fff', 
+    marginTop:80,
+    width:310,
+    height:60, 
+    marginHorizontal: 10, 
+    marginVertical:10, 
+    borderRadius:31,
+    justifyContent:'center', 
+    alignItems: 'center', 
+    borderWidth:5, 
+    borderColor:'red'
+}, 
+PatientName:
+{
+    backgroundColor:'#5E60CE', 
+    width:310,
+    height:60, 
+    marginHorizontal: 10,
+    marginVertical:10, 
+    borderRadius:31,
+    justifyContent:'center',
+    alignItems: 'center', 
+    borderWidth:5, 
+    borderColor:'#000',
+},
+buttonText: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight:'bold'
+},
+DeleteText:
+{
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight:'bold',
+    color:'red'  
 }
 
 })
