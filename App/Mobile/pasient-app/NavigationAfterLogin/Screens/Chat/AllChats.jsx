@@ -22,6 +22,8 @@ const messages = [
       imageUrl:
         "https://scontent.falg2-2.fna.fbcdn.net/v/t39.30808-1/348300667_640497520826755_1443922682255819799_n.jpg?stp=c0.7.200.200a_dst-jpg_p200x200&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEvuA9B5jCtiDulwX9keJL3AnCIyZyMwMsCcIjJnIzAyy_A__S8Ed3qG0jOERz_jyN-5Rh8fbZfQJvEY6aFSMUU&_nc_ohc=wKbdUZKCR6gAb7e6KXS&_nc_pt=1&_nc_ht=scontent.falg2-2.fna&oh=00_AfDtCXqqzBotFiclXUwPmCQ11NIG998FwBbfC_-xlFgZgA&oe=661426CE",
     },
+    messageCount: 1,
+    time: "10:00 AM", // Replace with actual time
   },
   {
     id: 2,
@@ -31,6 +33,8 @@ const messages = [
       imageUrl:
         "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
     },
+    messageCount: 1,
+    time: "11:00 AM", // Replace with actual time
   },
   {
     id: 3,
@@ -40,6 +44,8 @@ const messages = [
       imageUrl:
         "https://scontent.falg2-2.fna.fbcdn.net/v/t1.6435-9/39453865_1935146083451500_4672188320783007744_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEtbouyonUuR_qmldciaTF6StBMzdxpKgdK0EzN3GkqB06edootKxRUZ0w7sVba6V-nvOwIMEfEoz21v8ubDr6B&_nc_ohc=iq2jhEdHZ1kAb66Sy1L&_nc_pt=1&_nc_ht=scontent.falg2-2.fna&oh=00_AfCetjPLvV4fR9AQPse0kW0BgcJ4TkvpvFYPRs-zjxOjww&oe=6635E123",
     },
+    messageCount: 1,
+    time: "12:00 PM", // Replace with actual time
   },
   {
     id: 4,
@@ -48,6 +54,8 @@ const messages = [
       name: "Aissam",
       imageUrl: `https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg`,
     },
+    messageCount: 1,
+    time: "1:00 PM", // Replace with actual time
   },
   {
     id: 5,
@@ -56,6 +64,8 @@ const messages = [
       name: "Free Palastine",
       imageUrl: `https://png.pngtree.com/png-clipart/20231103/ourmid/pngtree-palestine-flag-sphere-circle-vector-transparent-png-image_10437277.png`,
     },
+    messageCount: 1,
+    time: "2:00 PM", // Replace with actual time
   },
 ];
 
@@ -63,12 +73,23 @@ const MessageItem = ({ message }) => {
   return (
     <ChatContainer>
       <View style={styles.messageContainer}>
-        <Image
-          source={{ uri: message.sender.imageUrl }}
-          style={styles.profileImage}
-        />
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={{ uri: message.sender.imageUrl }}
+            style={styles.profileImage}
+          />
+          <View style={styles.badgeContainer}>
+            <Text style={[styles.badge, styles.redIndicator]}>
+              {message.messageCount}
+            </Text>
+          </View>
+        </View>
+
         <View style={styles.messageContent}>
-          <Text style={styles.senderName}>{message.sender.name}</Text>
+          <View style={styles.messageHeader}>
+            <Text style={styles.senderName}>{message.sender.name}</Text>
+            <Text style={styles.time}>{message.time}</Text>
+          </View>
           <Text>{message.text}</Text>
         </View>
       </View>
@@ -101,7 +122,6 @@ const AllChats = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   btn: {
     backgroundColor: "white",
@@ -122,17 +142,32 @@ const styles = StyleSheet.create({
   messageContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "80%",
+    width: "90%",
     marginHorizontal: 10,
     paddingVertical: 10,
+  },
+  profileImageContainer: {
+    position: "relative",
+    marginRight: 10,
   },
   profileImage: {
     width: 50,
     height: 50,
-    borderRadius: 25, // half of width and height to make it circular
-    marginRight: 10,
+    borderRadius: 25,
     borderColor: "#00E5BD",
     borderWidth: 2,
+  },
+  badgeContainer: {
+    position: "absolute",
+    top: -8, // Adjust this value as needed to properly position the badge
+    right: -10, // Adjust this value as needed to properly position the badge
+  },
+  badge: {
+    backgroundColor: "red",
+    color: "#fff",
+    fontSize: 12,
+    paddingHorizontal: 6,
+    borderRadius: 10,
   },
   messageContent: {
     flex: 1,
@@ -140,6 +175,25 @@ const styles = StyleSheet.create({
   senderName: {
     fontWeight: "bold",
     marginBottom: 5,
+  },
+  messageHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  messageCount: {
+    marginRight: 10,
+    color: "#555",
+  },
+  time: {
+    color: "#555",
+  },
+  redIndicator: {
+    backgroundColor: "red",
+    color: "white",
+    paddingHorizontal: 6,
+    borderRadius: 10,
+    marginRight: 10,
   },
 });
 

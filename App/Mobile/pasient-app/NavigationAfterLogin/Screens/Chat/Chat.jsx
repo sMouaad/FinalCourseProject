@@ -1,6 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { GiftedChat } from "react-native-gifted-chat";
+import {
+  GiftedChat,
+  InputToolbar,
+  Composer,
+  Send,
+} from "react-native-gifted-chat";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export function Chat() {
   const [messages, setMessages] = useState([]);
@@ -26,14 +32,62 @@ export function Chat() {
       GiftedChat.append(previousMessages, messages)
     );
   }, []);
+  const renderInputToolbar = (props) => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          // Apply styling to the input toolbar container
+          backgroundColor: "#FFFFFF",
+          borderTopWidth: 1,
+          borderTopColor: "#E5E5E5",
+        }}
+      />
+    );
+  };
+
+  const renderComposer = (props) => {
+    return (
+      <Composer
+        {...props}
+        textInputStyle={{
+          // Apply styling to the input field
+          backgroundColor: "#F2F2F2",
+          borderWidth: 1,
+          borderColor: "#E5E5E5",
+          borderRadius: 25,
+          paddingHorizontal: 20,
+          paddingTop: 10,
+          paddingBottom: 10,
+        }}
+      />
+    );
+  };
+
+  // Custom send button component to replace the default "send" button with an icon
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <View style={{ marginRight: 10, marginBottom: 5 }}>
+          <Ionicons name="send" size={24} color="#00A588" />
+        </View>
+      </Send>
+    );
+  };
 
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-    />
+    <View style={{ flex: 1 }}>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+        renderInputToolbar={renderInputToolbar}
+        renderComposer={renderComposer}
+        renderSend={renderSend}
+        // Add additional UI and interactive features here
+      />
+    </View>
   );
 }
