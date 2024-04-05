@@ -8,8 +8,21 @@ import { HomePage } from './Screens/ScrollingBarPatientsP';
 import { Todo } from './Screens/ScrollingBarPatientsTD';
 import { Home_PatientX } from './Screens/HomeScreens/Home_PatientX';
 
+const TodoStack = createNativeStackNavigator();
+
+
+function TodoStackGroup() {
+  return(
+  <TodoStack.Navigator>
+    <TodoStack.Screen name="TodoPage" component={ToDoPage} options={{ headerShown: false }}></TodoStack.Screen>
+    <TodoStack.Screen name="TodoPatient" component={Todo} options={{ headerShown: false }}></TodoStack.Screen>
+  </TodoStack.Navigator>
+  );
+}
+
 
 const HomeStack = createNativeStackNavigator();
+
 
 function HomeStackGroup() {
   return(
@@ -48,7 +61,7 @@ export default function MainContainer() {
         })}
       >
         <Tab.Screen name="Home" component={HomeStackGroup} options={{ headerShown: false }}/>
-        <Tab.Screen name="Todo" component={ToDoPage} options={{ headerShown: false}}/>
+        <Tab.Screen name="Todo" component={TodoStackGroup} options={{ headerShown: false}}/>
         <Tab.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }}/>
       </Tab.Navigator>
   );
