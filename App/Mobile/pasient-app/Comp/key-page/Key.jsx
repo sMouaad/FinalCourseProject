@@ -79,7 +79,7 @@ const Key = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   setInputValue("");
-                  navigation.navigate("WaitingPage");
+                  navigation.navigate("Test");
                 }}
                 style={({ pressed }) => [
                   styles.button,

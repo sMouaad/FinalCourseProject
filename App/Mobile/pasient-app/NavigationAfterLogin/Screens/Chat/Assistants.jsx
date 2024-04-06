@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React from "react";
 import ChatContainer from "./ChatContainer";
-import NewChatButton from "./NewChatButton";
 import { Ionicons } from "@expo/vector-icons";
 
 const messages = [
@@ -141,7 +140,6 @@ const Assistants = () => {
             );
           }}
         ></FlatList>
-        <NewChatButton />
       </View>
     </>
   );

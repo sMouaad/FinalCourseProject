@@ -6,7 +6,6 @@ import AllChats from "./AllChats";
 import Group from "./Group";
 import Assistants from "./Assistants";
 import TabBar from "./TabBar";
-import NewChatButton from "./NewChatButton";
 
 let previousOffsetX = 0; // Initialize previousOffsetX outside the component or function
 
