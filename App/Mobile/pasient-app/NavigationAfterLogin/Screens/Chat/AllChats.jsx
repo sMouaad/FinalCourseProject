@@ -9,10 +9,6 @@ import {
   ImageBackground,
 } from "react-native";
 import ChatContainer from "./ChatContainer";
-import NewChatButton from "./NewChatButton";
-import { Entypo } from "@expo/vector-icons";
-import { setStatusBarBackgroundColor } from "expo-status-bar";
-
 const messages = [
   {
     id: 1,
@@ -78,17 +74,15 @@ const MessageItem = ({ message }) => {
             source={{ uri: message.sender.imageUrl }}
             style={styles.profileImage}
           />
-          <View style={styles.badgeContainer}>
-            <Text style={[styles.badge, styles.redIndicator]}>
-              {message.messageCount}
-            </Text>
-          </View>
         </View>
 
         <View style={styles.messageContent}>
           <View style={styles.messageHeader}>
             <Text style={styles.senderName}>{message.sender.name}</Text>
             <Text style={styles.time}>{message.time}</Text>
+            <View style={styles.badgeContainer}>
+              <Text style={styles.badge}>{message.messageCount}</Text>
+            </View>
           </View>
           <Text>{message.text}</Text>
         </View>
@@ -118,7 +112,6 @@ const AllChats = () => {
           );
         }}
       ></FlatList>
-      <NewChatButton />
     </View>
   );
 };
@@ -159,13 +152,13 @@ const styles = StyleSheet.create({
   },
   badgeContainer: {
     position: "absolute",
-    top: -8, // Adjust this value as needed to properly position the badge
-    right: -10, // Adjust this value as needed to properly position the badge
+    bottom: -20,
+    right: 15,
   },
   badge: {
-    backgroundColor: "red",
+    backgroundColor: "#00E5BD",
     color: "#fff",
-    fontSize: 12,
+    fontSize: 14,
     paddingHorizontal: 6,
     borderRadius: 10,
   },
@@ -187,13 +180,6 @@ const styles = StyleSheet.create({
   },
   time: {
     color: "#555",
-  },
-  redIndicator: {
-    backgroundColor: "red",
-    color: "white",
-    paddingHorizontal: 6,
-    borderRadius: 10,
-    marginRight: 10,
   },
 });
 

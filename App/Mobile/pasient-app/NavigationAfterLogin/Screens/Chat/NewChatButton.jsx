@@ -2,7 +2,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import React from "react";
 
-const NewChatButton = () => {
+const atButton = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
