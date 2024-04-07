@@ -101,6 +101,12 @@
   tr:last-child > td {
     border: none;
   }
+  .selected {
+    @apply cursor-pointer py-2  font-bold rounded-xl bg-slate-200 border-green-400 w-32 flex justify-center items-center;
+  }
+  #checkboxes input[type="radio"]:checked + .selected {
+    @apply text-white bg-[#00e5bd];
+  }
 
   @keyframes move {
     0%,
