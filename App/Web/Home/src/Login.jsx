@@ -19,6 +19,7 @@ export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [type, setType] = useState("assistant");
   const [emailLogin, setEmailLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
   const [error, setError] = useState(false);
@@ -28,7 +29,12 @@ export default function Login() {
   Axios.defaults.withCredentials = true;
   const handleSubmitRegister = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:3000/auth/signup", { name, email, password })
+    Axios.post("http://localhost:3000/auth/signup", {
+      name,
+      email,
+      password,
+      type,
+    })
       .then((res) => {
         if (res.data.status) {
           const accessToken = res?.data?.accessToken;
@@ -96,6 +102,7 @@ export default function Login() {
       >
         <div className="form-container left-0 w-1/2 opacity-0 z-[1] sign-up">
           <form
+            id="loginform"
             onSubmit={handleSubmitRegister}
             className="bg-white flex items-center justify-center flex-col py-0 px-[40px] h-full"
           >
@@ -107,27 +114,47 @@ export default function Login() {
             ) : (
               <>
                 <h1 className="text-3xl font-bold">Create Account</h1>
-                <div className="my-[20px] mx-0">
-                  <a
-                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                    href="#"
+                <div
+                  className="my-[20px] flex gap-8 justify-center"
+                  id="checkboxes"
+                >
+                  <input
+                    form="loginform"
+                    type="radio"
+                    name="type"
+                    id="assistant"
+                    className="absolute opacity-0 w-0 h-0"
+                    defaultChecked="true"
+                  />
+                  <label
+                    onClick={() => {
+                      setType("assistant");
+                    }}
+                    htmlFor="assistant"
+                    className="selected"
                   >
-                    <FaFacebook size={20} />
-                  </a>
-                  <a
-                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                    href="#"
+                    Assistant
+                  </label>
+                  <input
+                    form="loginform"
+                    type="radio"
+                    name="type"
+                    id="doctor"
+                    className="absolute opacity-0 w-0 h-0"
+                  />
+                  <label
+                    onClick={() => {
+                      setType("doctor");
+                    }}
+                    htmlFor="doctor"
+                    className="selected"
                   >
-                    <AiFillGoogleCircle size={20} />
-                  </a>
+                    Doctor
+                  </label>
                 </div>
               </>
             )}
-            <span className=" text-[12px]">
-              or use your email for registration
-            </span>
+
             <input
               required={true}
               className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
@@ -179,26 +206,9 @@ export default function Login() {
               <Lottie className="h-28 mb-8" animationData={animation} />
             ) : (
               <>
-                <h1 className="text-3xl font-bold">Sign In</h1>
-                <div className="my-[20px] mx-0">
-                  <a
-                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                    href="#"
-                  >
-                    <FaFacebook size={20} />
-                  </a>
-                  <a
-                    className=" border-[1px] border-[#ccc] inline-flex justify-center items-center rounded-[20%] my-0 mx-[3px] w-[40px] h-[40px]
-                  text-[#333] text-[13px] no-underline mt-[15px] mb-[10px]"
-                    href="#"
-                  >
-                    <AiFillGoogleCircle size={20} />
-                  </a>
-                </div>
+                <h1 className="text-3xl font-bold mb-16">Sign In</h1>
               </>
             )}
-            <span className=" text-[12px]">or use your email password</span>
             <input
               required={true}
               name="emailLogin"

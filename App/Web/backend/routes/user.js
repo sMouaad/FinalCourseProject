@@ -6,14 +6,14 @@ import nodemailer from "nodemailer";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, type, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     return res.json({ message: "user already exists" });
   }
 
   const hashPassword = await bcryt.hash(password, 10);
-  const newUser = new User({ name, email, password: hashPassword });
+  const newUser = new User({ name, email, password: hashPassword, type });
   await newUser.save();
   return res.json({ status: true, message: "record registered" });
 });
