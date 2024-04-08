@@ -11,6 +11,8 @@ import { ToDoPage } from './Screens/TodoScreens/ToDoPage';
 import Record from './Screens/HomeScreens/Record';
 import Track from './Screens/HomeScreens/Track';
 import Settings from './Screens/HomeScreens/Settings';
+import UserSettings from './Screens/UserSettings';
+import RDV from './Screens/TodoScreens/RDV';
 
 
 const RTC = createNativeStackNavigator();
@@ -36,6 +38,7 @@ function TodoStackGroup() {
   <TodoStack.Navigator>
     <TodoStack.Screen name="TodoPage" component={ToDoPage} options={{ headerShown: false }}></TodoStack.Screen>
     <TodoStack.Screen name="TodoPatient" component={Todo} options={{ headerShown: true}}></TodoStack.Screen>
+    <TodoStack.Screen name="Rdv" component={RDV} options={{ headerShown: true}}></TodoStack.Screen>
   </TodoStack.Navigator>
   );
 }
@@ -67,22 +70,29 @@ export default function MainContainer() {
               iconName = focused
                 ? 'home'
                 : 'home-outline';
-            } else if (route.name === 'Todo') {
-              iconName = focused ? 'checkmark-circle': 'checkmark-circle-outline';
+            } else if (route.name === 'Schedule & ToDo') {
+              iconName = focused ? 'calendar': 'calendar-outline';
             } else if (route.name == 'Messages')
             {
                 iconName = focused ? 'chatbubbles': 'chatbubbles-outline';
             }
+            else if (route.name == 'Settings')
+            {
+                iconName = focused ? 'cog': 'cog-outline';
+            }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
+
+          
           tabBarActiveTintColor: '#4EA8DE',
           tabBarInactiveTintColor: 'white',
           tabBarStyle: { backgroundColor: '#5E60CE' }
         })}
       >
         <Tab.Screen name="Home" component={HomeStackGroup} options={{ headerShown: false }}/>
-        <Tab.Screen name="Todo" component={TodoStackGroup} options={{ headerShown: false}}/>
+        <Tab.Screen name="Schedule & ToDo" component={TodoStackGroup} options={{ headerShown: false}}/>
         <Tab.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }}/>
+        <Tab.Screen name="Settings" component={UserSettings} options={{ headerShown: false }}/>
       </Tab.Navigator>
   );
 }
