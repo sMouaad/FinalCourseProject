@@ -9,6 +9,8 @@ import {
   ImageBackground,
 } from "react-native";
 import ChatContainer from "./ChatContainer";
+
+
 const messages = [
   {
     id: 1,

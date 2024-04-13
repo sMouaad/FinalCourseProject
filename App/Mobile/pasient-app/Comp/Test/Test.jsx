@@ -3,7 +3,7 @@ import Progress_Bar from "./Progres_Bar.jsx";
 import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
 import dhakira from "../../assets/images/happyDahkira.png";
-import { Questions } from "../Test/Question.js";
+import { Questions } from "./Question.js";
 import {
   Text,
   View,
@@ -14,7 +14,7 @@ import {
   Keyboard,
 } from "react-native";
 
-const { questions } = Questions;
+const questions = Questions;
 
 const Test = ({ navigation }) => {
   const colors = [
@@ -43,7 +43,6 @@ const Test = ({ navigation }) => {
     if (completed) {
       navigation.navigate("mainContainer");
     }
-    // Clear input value when the "Submit" button is clicked
     setInputValue("");
   }
 

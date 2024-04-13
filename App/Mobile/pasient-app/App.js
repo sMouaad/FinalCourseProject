@@ -14,6 +14,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="mainContainer"
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: "transparent" },
