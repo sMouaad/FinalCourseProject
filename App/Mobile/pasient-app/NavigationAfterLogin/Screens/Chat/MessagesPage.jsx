@@ -7,11 +7,10 @@ import Group from "./Group";
 import Assistants from "./Assistants";
 import TabBar from "./TabBar";
 
-let previousOffsetX = 0; // Initialize previousOffsetX outside the component or function
+let previousOffsetX = 0;
 
 const Home = () => {
   const scrollview = useRef();
-  // const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState("all");
 
   const handleScroll = (event) => {
