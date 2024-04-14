@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import Axios from "axios";
 
 function LoginPageInterface() {
   const navigation = useNavigation();
+  Axios.defaults.withCredentials = true;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState(""),
   return (
     <>
       <View style={styles.container}>
@@ -19,15 +23,39 @@ function LoginPageInterface() {
           <View style={styles.Secondcontainer}></View>
         </View>
 
-        <TextInput placeholder="Enter your Username" style={styles.username} />
+        <TextInput
+          placeholder="Enter your email"
+          style={styles.username}
+          inputMode="email"
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+        />
         <TextInput
           placeholder="Enter your Paswword"
           style={styles.inputPassword}
           secureTextEntry={true}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
         />
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => navigation.navigate("Main")}
+          onPress={() => {
+            Axios.post("http://localhost:3000/auth/login", {
+              email,
+              password,
+            })
+              .then((res) => {
+                console.log(res);
+                if (res.data.status) {
+                  navigation.navigate("Main");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }}
         >
           <Text style={styles.TextLoginButton}>Log in</Text>
         </TouchableOpacity>
