@@ -15,7 +15,7 @@ function LoginPageInterface() {
   const navigation = useNavigation();
   Axios.defaults.withCredentials = true;
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""),
+  const [password, setPassword] = useState("");
   return (
     <>
       <View style={styles.container}>
