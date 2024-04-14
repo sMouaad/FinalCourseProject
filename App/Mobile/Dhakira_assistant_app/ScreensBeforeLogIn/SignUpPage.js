@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Axios from "axios";
 function SignUpPageInter() {
+  Axios.defaults.withCredentials = true;
   const navigation = useNavigation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
