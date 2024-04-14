@@ -6,8 +6,7 @@ import Assistance from "./assets/dashboard/assistance.svg";
 import { MdDashboard } from "react-icons/md";
 import Home from "./assets/dashboard/home.svg";
 import Community from "./assets/dashboard/community.svg";
-import Eye from "./assets/dashboard/eye.svg";
-import Fork from "./assets/dashboard/fork.svg";
+import ProfilePic from "./assets/dashboard/pfp.svg";
 import History from "./assets/dashboard/history.svg";
 import Message from "./assets/dashboard/message.svg";
 import Privacy from "./assets/dashboard/privacy.svg";
@@ -44,8 +43,8 @@ export default function Dashboard() {
             <div className="pr-4 items-center gap-6 flex">
               <img className="h-[25px] button" src="assets/bell.svg" alt="" />
               <img
-                className="rounded-full h-[40px]"
-                src="https://cdn.discordapp.com/avatars/684441534766252115/6a8822a10520f8bfd81dd53973275b54?size=1024"
+                className="bg-yellow-300 rounded-full h-[40px]"
+                src={ProfilePic}
                 alt=""
               />
               <p className="font-bold">Mouaad Sadi</p>
@@ -54,8 +53,8 @@ export default function Dashboard() {
           <div className="flex gap-4 justify-between items-center">
             <div className="gap-4 flex">
               <img
-                className="h-[60px] rounded-full"
-                src="https://cdn.discordapp.com/avatars/684441534766252115/6a8822a10520f8bfd81dd53973275b54?size=1024"
+                className="bg-yellow-300  h-[60px] rounded-full"
+                src={ProfilePic}
                 alt=""
               />
               <div className="flex flex-col justify-center gap-1">
@@ -63,9 +62,6 @@ export default function Dashboard() {
                 <h1 className="text-lg">Mouaad Sadi &#40;@grreatest&#41;</h1>
               </div>
             </div>
-            <button className="hover:cursor-pointer border-none w-[100px] rounded-lg py-[8px] px-2 bg-sidebar text-background font-bold text-sm">
-              Delete
-            </button>
           </div>
         </nav>
         <main className="flex-1 p-4 bg-contrast grid">
@@ -87,7 +83,11 @@ export default function Dashboard() {
                 </th>
                 <th className=" border-none ">&nbsp;</th>
                 <th className=" border-none ">&nbsp;</th>
-                <th className=" border-none ">&nbsp;</th>
+                <th className=" border-none ">
+                  <button className="hover:cursor-pointer transition-all duration-400 ease-linear w-[100px] rounded-full py-[8px] hover:rounded-lg px-2 bg-red-700 text-background font-bold text-sm">
+                    Delete
+                  </button>
+                </th>
               </tr>
               <tr className="text-xs text-slate-500 tracking-widest">
                 <th className="text-left">PATIENT</th>
