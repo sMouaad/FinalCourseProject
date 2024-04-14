@@ -43,24 +43,24 @@ function SignUpPageInter() {
           </View>
         </View>
         <TextInput
-          onChange={(e) => {
-            setName(e.target.value);
+          onChangeText={(text) => {
+            setName(text);
           }}
           style={styles.FirstInputSignUp}
           placeholder="Enter your Name"
           inputMode="text"
         ></TextInput>
         <TextInput
-          onChange={(e) => {
-            setEmail(e.target.value);
+          onChangeText={(text) => {
+            setEmail(text);
           }}
           style={styles.InputSignUpS}
           placeholder=" Enter your E-mail"
           inputMode="email"
         ></TextInput>
         <TextInput
-          onChange={(e) => {
-            setPassword(e.target.value);
+          onChangeText={(text) => {
+            setPassword(text);
           }}
           style={styles.InputSignUpS}
           placeholder="Password"
@@ -95,8 +95,8 @@ function SignUpPageInter() {
               })
                 .then((res) => {
                   if (res.data.status) {
-                    const accessToken = res?.data?.accessToken;
-                    setAuth({ accessToken });
+                    // const accessToken = res?.data?.accessToken;
+                    // setAuth({ accessToken });
                     navigation.navigate("Main");
                   }
                 })
