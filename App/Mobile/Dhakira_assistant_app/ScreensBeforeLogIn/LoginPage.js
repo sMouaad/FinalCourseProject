@@ -14,8 +14,8 @@ import Axios from "axios";
 function LoginPageInterface() {
   const navigation = useNavigation();
   Axios.defaults.withCredentials = true;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailLogin, setEmail] = useState("");
+  const [passwordLogin, setPassword] = useState("");
   return (
     <>
       <View style={styles.container}>
@@ -43,8 +43,8 @@ function LoginPageInterface() {
           style={styles.loginButton}
           onPress={() => {
             Axios.post("http://localhost:3000/auth/login", {
-              email,
-              password,
+              emailLogin,
+              passwordLogin,
             })
               .then((res) => {
                 console.log(res);
