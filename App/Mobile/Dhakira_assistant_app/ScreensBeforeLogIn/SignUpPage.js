@@ -67,8 +67,8 @@ function SignUpPageInter() {
           secureTextEntry={true}
         ></TextInput>
         <TextInput
-          onChange={(e) => {
-            setConfirm(e.target.value);
+          onChangeText={(text) => {
+            setConfirm(text);
           }}
           style={styles.LastInputSignUp}
           placeholder="Confirm your password"
