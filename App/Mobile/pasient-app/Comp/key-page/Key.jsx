@@ -17,14 +17,18 @@ import Animated, {
 } from "react-native-reanimated";
 import welcomToDhakira from "../../assets/images/welcomToDhakira.png";
 import { useIsFocused } from "@react-navigation/native";
+import Axios from "axios";
 
 const DURATION = 1000;
 const DELAY = 500;
 const text = ["Welcome ", "to ", "Dhakira..."];
-
+const name = "test";
+const email = "test@gmail.com";
+const password = "1234";
 const Key = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  Axios.defaults.withCredentials = true;
+  const [emailLogin, setEmail] = useState("");
+  const [passwordLogin, setPassword] = useState("");
   const isFocused = useIsFocused();
 
   const opacity1 = useSharedValue(0);
@@ -77,7 +81,7 @@ const Key = ({ navigation }) => {
               <TextInput
                 placeholder="Email: example@mail.com"
                 className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
-                value={email}
+                value={emailLogin}
                 onChangeText={setEmail}
               />
               <Text className=" items-center mx-[20] font-bold rounded-[20px]">
@@ -87,13 +91,31 @@ const Key = ({ navigation }) => {
                 secureTextEntry={true}
                 placeholder="Password"
                 className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
-                value={password}
+                value={passwordLogin}
                 onChangeText={setPassword}
               />
               <Pressable
                 onPress={() => {
-                  setPassword("");
-                  navigation.navigate("Test");
+                  // this is for creating test account
+                  // Axios.post("http://192.168.8.101:3000/auth/signup", {
+                  //   name,
+                  //   email,
+                  //   password,
+                  // });
+
+                  const trimmedEmail = emailLogin.trim();
+                  Axios.post("http://192.168.8.101:3000/auth/login", {
+                    emailLogin: trimmedEmail,
+                    passwordLogin,
+                  })
+                    .then((res) => {
+                      if (res.data.status) {
+                        navigation.navigate("mainContainer");
+                      }
+                    })
+                    .catch((err) => {
+                      console.warn(err);
+                    });
                 }}
                 style={({ pressed }) => [
                   styles.button,
