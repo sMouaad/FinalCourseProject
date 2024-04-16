@@ -23,7 +23,8 @@ const DELAY = 500;
 const text = ["Welcome ", "to ", "Dhakira..."];
 
 const Key = ({ navigation }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const isFocused = useIsFocused();
 
   const opacity1 = useSharedValue(0);
@@ -47,9 +48,9 @@ const Key = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
-      <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
+      <View className="flex-1 flex justify-center box-border h-screen px-[10px] pt-7">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="h-screen py-[60] gap-20">
+          <View className="h-screen py-[40] gap-3 ">
             <View className="items-center justify-start flex-col ">
               <View className="flex flex-row mb-2">
                 {[opacity1, opacity2, opacity3].map((opacity, index) => (
@@ -70,15 +71,28 @@ const Key = ({ navigation }) => {
             </View>
 
             <View>
+              <Text className="items-center mx-[20] font-bold rounded-[20px]">
+                Email:
+              </Text>
               <TextInput
-                placeholder="Enter the keyword"
+                placeholder="Email: example@mail.com"
                 className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
-                value={inputValue}
-                onChangeText={setInputValue}
+                value={email}
+                onChangeText={setEmail}
+              />
+              <Text className=" items-center mx-[20] font-bold rounded-[20px]">
+                Password:
+              </Text>
+              <TextInput
+                secureTextEntry={true}
+                placeholder="Password"
+                className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
+                value={password}
+                onChangeText={setPassword}
               />
               <Pressable
                 onPress={() => {
-                  setInputValue("");
+                  setPassword("");
                   navigation.navigate("Test");
                 }}
                 style={({ pressed }) => [
