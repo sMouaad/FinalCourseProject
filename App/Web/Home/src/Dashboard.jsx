@@ -19,7 +19,7 @@ export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
-
+  const [patientName, setPatientName] = useState("");
   const close = () => setModalOpen(false);
   const open = () => setModalOpen(true);
   // Axios.defaults.withCredentials = true;
@@ -93,7 +93,37 @@ export default function Dashboard() {
                     onExitComplete={() => null}
                   >
                     {modalOpen && (
-                      <Modal modalOpen={modalOpen} handleClose={close} />
+                      <Modal
+                        modalOpen={modalOpen}
+                        handleClose={close}
+                        text={
+                          <div>
+                            <form id="patient" action="">
+                              <label htmlFor="patientName">
+                                Enter Assistant&apos;s Email
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setPatientName(e.target.value);
+                                }}
+                                id="patientName"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Name"
+                              />
+                              <div className="flex justify-center">
+                                <button
+                                  form="forget"
+                                  type="submit"
+                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  Invite
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        }
+                      />
                     )}
                   </AnimatePresence>
                 </th>
