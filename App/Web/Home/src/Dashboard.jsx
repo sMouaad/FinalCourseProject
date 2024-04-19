@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import Modal from "./components/Modal/index";
 import Assistance from "./assets/dashboard/assistance.svg";
 import { MdDashboard } from "react-icons/md";
 import Home from "./assets/dashboard/home.svg";
@@ -14,8 +16,12 @@ import Profile from "./assets/dashboard/profile.svg";
 import Settings from "./assets/dashboard/settings.svg";
 import Support from "./assets/dashboard/support.svg";
 export default function Dashboard() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
+
+  const close = () => setModalOpen(false);
+  const open = () => setModalOpen(true);
   // Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
   useEffect(() => {
@@ -73,21 +79,41 @@ export default function Dashboard() {
                   PATIENTS
                 </th>
                 <th className="w-1/6 border-none ">
-                  <button className=" bg-[#00e5bd] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                  <motion.button
+                    onClick={() => (modalOpen ? close() : open())}
+                    whileTap={{ scale: 0.95 }}
+                    className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                  >
                     Invite Assistants
-                  </button>
+                  </motion.button>
+
+                  <AnimatePresence
+                    initial={false}
+                    mode="wait"
+                    onExitComplete={() => null}
+                  >
+                    {modalOpen && (
+                      <Modal modalOpen={modalOpen} handleClose={close} />
+                    )}
+                  </AnimatePresence>
                 </th>
                 <th className="w-1/6 border-none ">
-                  <button className=" bg-[#00e5bd] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                  >
                     Add Doctors
-                  </button>
+                  </motion.button>
                 </th>
                 <th className=" border-none ">&nbsp;</th>
                 <th className=" border-none ">&nbsp;</th>
                 <th className=" border-none ">
-                  <button className="hover:cursor-pointer transition-all duration-400 ease-linear w-[100px] rounded-full py-[8px] hover:rounded-lg px-2 bg-red-700 text-background font-bold text-sm">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="hover:cursor-pointer w-[100px] rounded-full py-[8px]  px-2 bg-red-700 text-background font-bold text-sm hover:bg-red-800 transition-all ease-linear duration-100"
+                  >
                     Delete
-                  </button>
+                  </motion.button>
                 </th>
               </tr>
               <tr className="text-xs text-slate-500 tracking-widest">
