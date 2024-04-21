@@ -16,12 +16,20 @@ import Profile from "./assets/dashboard/profile.svg";
 import Settings from "./assets/dashboard/settings.svg";
 import Support from "./assets/dashboard/support.svg";
 export default function Dashboard() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
+  const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
+  const [modalDeleteOpen, setDeleteModalOpen] = useState(false);
+  const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
-  const [patientName, setPatientName] = useState("");
-  const close = () => setModalOpen(false);
-  const open = () => setModalOpen(true);
+  const [assistantEmail, setAssistantEmail] = useState("");
+  const [doctorEmail, setDoctorEmail] = useState("");
+  const closeAssistant = () => setAssistantModalOpen(false);
+  const openAssistant = () => setAssistantModalOpen(true);
+  const closeDoctor = () => setDoctorModalOpen(false);
+  const openDoctor = () => setDoctorModalOpen(true);
+  const closeDelete = () => setDeleteModalOpen(false);
+  const openDelete = () => setDeleteModalOpen(true);
   // Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
   useEffect(() => {
@@ -80,7 +88,9 @@ export default function Dashboard() {
                 </th>
                 <th className="w-1/6 border-none ">
                   <motion.button
-                    onClick={() => (modalOpen ? close() : open())}
+                    onClick={() =>
+                      modalAssistantOpen ? closeAssistant() : openAssistant()
+                    }
                     whileTap={{ scale: 0.95 }}
                     className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
                   >
@@ -92,21 +102,21 @@ export default function Dashboard() {
                     mode="wait"
                     onExitComplete={() => null}
                   >
-                    {modalOpen && (
+                    {modalAssistantOpen && (
                       <Modal
-                        modalOpen={modalOpen}
-                        handleClose={close}
+                        modalAssistantOpen={modalAssistantOpen}
+                        handleClose={closeAssistant}
                         text={
                           <div>
-                            <form id="patient" action="">
-                              <label htmlFor="patientName">
+                            <form id="assistantForm" action="">
+                              <label htmlFor="assistantEmail">
                                 Enter Assistant&apos;s Email
                               </label>
                               <input
                                 onChange={(e) => {
-                                  setPatientName(e.target.value);
+                                  setAssistantEmail(e.target.value);
                                 }}
-                                id="patientName"
+                                id="assistantEmail"
                                 autoComplete="off"
                                 className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                                 placeholder="Name"
@@ -129,21 +139,107 @@ export default function Dashboard() {
                 </th>
                 <th className="w-1/6 border-none ">
                   <motion.button
+                    onClick={() =>
+                      modalDoctorOpen ? closeDoctor() : openDoctor()
+                    }
                     whileTap={{ scale: 0.95 }}
                     className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
                   >
                     Add Doctors
                   </motion.button>
+
+                  <AnimatePresence
+                    initial={false}
+                    mode="wait"
+                    onExitComplete={() => null}
+                  >
+                    {modalDoctorOpen && (
+                      <Modal
+                        modalDoctorOpen={modalDoctorOpen}
+                        handleClose={closeDoctor}
+                        text={
+                          <div>
+                            <form id="doctorForm" action="">
+                              <label htmlFor="doctorEmail">
+                                Enter Doctor&apos;s Email
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setDoctorEmail(e.target.value);
+                                }}
+                                id="doctorEmail"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Name"
+                              />
+                              <div className="flex justify-center">
+                                <button
+                                  form="forget"
+                                  type="submit"
+                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  Invite
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        }
+                      />
+                    )}
+                  </AnimatePresence>
                 </th>
                 <th className=" border-none ">&nbsp;</th>
 
                 <th className=" border-none ">
                   <motion.button
+                    onClick={() =>
+                      modalDeleteOpen ? closeDelete() : openDelete()
+                    }
                     whileTap={{ scale: 0.95 }}
                     className="hover:cursor-pointer w-[100px] rounded-full py-[8px]  px-2 bg-red-700 text-background font-bold text-sm hover:bg-red-800 transition-all ease-linear duration-100"
                   >
                     Delete
                   </motion.button>
+
+                  <AnimatePresence
+                    initial={false}
+                    mode="wait"
+                    onExitComplete={() => null}
+                  >
+                    {modalDeleteOpen && (
+                      <Modal
+                        modalDeleteOpen={modalDeleteOpen}
+                        handleClose={closeDelete}
+                        text={
+                          <div>
+                            <form id="DeleteForm" action="">
+                              <label htmlFor="DeleteEmail">
+                                Type &quot;Delete Patient&quot; to confirm.
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setDelete(e.target.value);
+                                }}
+                                id="DeleteEmail"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Confirm"
+                              />
+                              <div className="flex justify-center">
+                                <button
+                                  form="forget"
+                                  type="submit"
+                                  className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  I am sure!
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        }
+                      />
+                    )}
+                  </AnimatePresence>
                 </th>
               </tr>
               <tr className="text-xs text-slate-500 tracking-widest">
@@ -153,6 +249,9 @@ export default function Dashboard() {
                 <th>SOCIAL SKILLS</th>
                 <th>TRACK PATIENT</th>
               </tr>
+              <form action="" className="border-4 border-black">
+                hello
+              </form>
               <Row />
               <Row />
               <Row />
