@@ -186,7 +186,7 @@ function Row({ patient, assistant, doctor }) {
       <td>
         <input
           type="checkbox"
-          className="rounded-full mr-2 text-green-400 appearance-none"
+          className="rounded-full mr-2 text-green-400 transition-all focus:ring-green-500 appearance-none"
         />
         Patient
       </td>
