@@ -42,6 +42,15 @@ export default function Dashboard() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeAssistant();
+        closeDoctor();
+        closeDelete();
+      }
+    });
+  }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <Sidebar />
