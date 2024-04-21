@@ -136,7 +136,7 @@ export default function Dashboard() {
                   </motion.button>
                 </th>
                 <th className=" border-none ">&nbsp;</th>
-                <th className=" border-none ">&nbsp;</th>
+
                 <th className=" border-none ">
                   <motion.button
                     whileTap={{ scale: 0.95 }}
@@ -152,7 +152,6 @@ export default function Dashboard() {
                 <th>DOCTOR</th>
                 <th>SOCIAL SKILLS</th>
                 <th>TRACK PATIENT</th>
-                <th>TRACK FOCUS</th>
               </tr>
               <Row />
               <Row />
@@ -186,25 +185,20 @@ function Row({ patient, assistant, doctor }) {
       <td>
         <input
           type="checkbox"
-          className="rounded-full mr-2 text-green-400 transition-all focus:ring-green-500 appearance-none"
+          className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
         />
         Patient
       </td>
       <td>data</td>
       <td>data</td>
-      <td className="px-2">
+      <td className="text-center px-2">
         <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
           Improve Social Skills
         </button>
       </td>
-      <td className="px-2">
+      <td className="text-center px-2">
         <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
           Track your Patient
-        </button>
-      </td>
-      <td className="px-2">
-        <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-          Track his Focus
         </button>
       </td>
     </tr>
