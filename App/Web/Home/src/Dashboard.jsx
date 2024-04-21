@@ -183,7 +183,13 @@ export default function Dashboard() {
 function Row({ patient, assistant, doctor }) {
   return (
     <tr className="h-16">
-      <td>data</td>
+      <td>
+        <input
+          type="checkbox"
+          className="rounded-full mr-2 text-green-400 appearance-none"
+        />
+        Patient
+      </td>
       <td>data</td>
       <td>data</td>
       <td className="px-2">
