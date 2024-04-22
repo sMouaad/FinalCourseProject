@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import Modal from "./components/Modal/index";
 import Assistance from "./assets/dashboard/assistance.svg";
@@ -18,10 +19,14 @@ import Support from "./assets/dashboard/support.svg";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
+  const [modalPatientOpen, setPatientModalOpen] = useState(false);
   const [modalDeleteOpen, setDeleteModalOpen] = useState(false);
+  const [condition, setCondition] = useState("alzheimer");
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
+  const [patientAge, setPatientAge] = useState(0);
+  const [patientName, setPatientName] = useState("");
   const [assistantEmail, setAssistantEmail] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
   const closeAssistant = () => setAssistantModalOpen(false);
@@ -30,8 +35,11 @@ export default function Dashboard() {
   const openDoctor = () => setDoctorModalOpen(true);
   const closeDelete = () => setDeleteModalOpen(false);
   const openDelete = () => setDeleteModalOpen(true);
+  const closePatient = () => setPatientModalOpen(false);
+  const openPatient = () => setPatientModalOpen(true);
   // Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
+  //we use UseEffect to fetch json data of patients of a the current user then display it on the dashboard, postponed to decided on which db to use.
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/verify").then((res) => {
       if (res.data.status) {
@@ -93,7 +101,111 @@ export default function Dashboard() {
             <table className=" border-collapse">
               <tr className="text-sm h-16 text-black tracking-widest">
                 <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
-                  PATIENTS
+                  <motion.button
+                    onClick={() =>
+                      modalPatientOpen ? closePatient() : openPatient()
+                    }
+                    whileTap={{ scale: 0.95 }}
+                    className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                  >
+                    Create Patient
+                  </motion.button>
+
+                  <AnimatePresence
+                    initial={false}
+                    mode="wait"
+                    onExitComplete={() => null}
+                  >
+                    {modalPatientOpen && (
+                      <Modal
+                        modalPatientOpen={modalPatientOpen}
+                        handleClose={closePatient}
+                        text={
+                          <div>
+                            <form
+                              id="patientForm"
+                              className="flex flex-col"
+                              action=""
+                            >
+                              <label
+                                htmlFor="assistantEmail"
+                                className="text-center"
+                              >
+                                Enter Patient&apos;s Informations
+                              </label>
+                              <div
+                                className="my-[20px] flex gap-8 justify-center"
+                                id="checkboxes"
+                              >
+                                <input
+                                  form="loginform"
+                                  type="radio"
+                                  name="type"
+                                  id="assistant"
+                                  className="absolute opacity-0 w-0 h-0"
+                                  defaultChecked="true"
+                                />
+                                <label
+                                  onClick={() => {
+                                    setCondition("alzheimer");
+                                  }}
+                                  htmlFor="assistant"
+                                  className="selected text-sm"
+                                >
+                                  Alzheimer
+                                </label>
+                                <input
+                                  form="loginform"
+                                  type="radio"
+                                  name="type"
+                                  id="doctor"
+                                  className="absolute opacity-0 w-0 h-0"
+                                />
+                                <label
+                                  onClick={() => {
+                                    setCondition("autism");
+                                  }}
+                                  htmlFor="doctor"
+                                  className="selected text-sm"
+                                >
+                                  Autism
+                                </label>
+                              </div>
+                              <input
+                                onChange={(e) => {
+                                  setPatientName(e.target.value);
+                                }}
+                                id="patientName"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Name"
+                              />
+                              <input
+                                onChange={(e) => {
+                                  setPatientAge(e.target.value);
+                                }}
+                                id="patientAge"
+                                type="number"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Age"
+                              />
+
+                              <div className="flex justify-center">
+                                <button
+                                  form="forget"
+                                  type="submit"
+                                  className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  Create
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        }
+                      />
+                    )}
+                  </AnimatePresence>
                 </th>
                 <th className="w-1/6 border-none ">
                   <motion.button
@@ -128,7 +240,7 @@ export default function Dashboard() {
                                 id="assistantEmail"
                                 autoComplete="off"
                                 className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Name"
+                                placeholder="example@example.eg"
                               />
                               <div className="flex justify-center">
                                 <button
@@ -179,7 +291,7 @@ export default function Dashboard() {
                                 id="doctorEmail"
                                 autoComplete="off"
                                 className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Name"
+                                placeholder="example@example.eg"
                               />
                               <div className="flex justify-center">
                                 <button
@@ -297,12 +409,38 @@ function Row({ patient, assistant, doctor }) {
         />
         Patient
       </td>
-      <td>data</td>
-      <td>data</td>
+      <td>
+        <div className="flex select-none w-max">
+          <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+            <img src={Profile} alt="" />
+          </div>
+          <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+            <img src={Profile} alt="" />
+          </div>
+          <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
+            ...
+          </div>
+        </div>
+      </td>
+      <td>
+        <div className="flex select-none">
+          <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+            <img src={Profile} alt="" />
+          </div>
+          <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+            <img src={Profile} alt="" />
+          </div>
+          <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
+            ...
+          </div>
+        </div>
+      </td>
       <td className="text-center px-2">
-        <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-          Improve Social Skills
-        </button>
+        <Link to="/home">
+          <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+            Improve Social Skills
+          </button>
+        </Link>
       </td>
       <td className="text-center px-2">
         <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
