@@ -12,8 +12,8 @@ app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "index.html"));
 });
 
-const server = app.listen(3000, () => {
-  console.log("server running at http://localhost:3000");
+const server = app.listen(4000, () => {
+  console.log("server running at http://localhost:4000");
 });
 
 const io = new Server(server); // Pass the Express server instance to Socket.IO

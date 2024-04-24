@@ -16,7 +16,7 @@ export function Chat() {
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const socket = io("http://192.168.8.103:3000");
+    const socket = io("http://192.168.8.102:4000");
     setSocket(socket);
 
     // Emit a test message to the server

@@ -23,9 +23,8 @@ const DURATION = 1000;
 const DELAY = 500;
 const text = ["Welcome ", "to ", "Dhakira..."];
 const name = "test";
-const email = "test@gmail.com";
-const password = "1234";
-const Key = ({ navigation }) => {
+
+const Login = ({ navigation }) => {
   Axios.defaults.withCredentials = true;
   const [emailLogin, setEmail] = useState("");
   const [passwordLogin, setPassword] = useState("");
@@ -96,15 +95,16 @@ const Key = ({ navigation }) => {
               />
               <Pressable
                 onPress={() => {
+                  const trimmedEmail = emailLogin.trim().toLowerCase();
+
                   // this is for creating test account
                   // Axios.post("http://192.168.8.101:3000/auth/signup", {
                   //   name,
-                  //   email,
-                  //   password,
+                  //   email: trimmedEmail,
+                  //   password: passwordLogin,
                   // });
 
-                  const trimmedEmail = emailLogin.trim();
-                  Axios.post("http://192.168.8.101:3000/auth/login", {
+                  Axios.post("http://192.168.8.102:3000/auth/login", {
                     emailLogin: trimmedEmail,
                     passwordLogin,
                   })
@@ -138,7 +138,7 @@ const Key = ({ navigation }) => {
   );
 };
 
-export default Key;
+export default Login;
 
 const styles = StyleSheet.create({
   button: {
