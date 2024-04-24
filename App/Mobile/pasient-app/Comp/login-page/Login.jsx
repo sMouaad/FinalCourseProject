@@ -17,13 +17,17 @@ import Animated, {
 } from "react-native-reanimated";
 import welcomToDhakira from "../../assets/images/welcomToDhakira.png";
 import { useIsFocused } from "@react-navigation/native";
+import Axios from "axios";
 
 const DURATION = 1000;
 const DELAY = 500;
 const text = ["Welcome ", "to ", "Dhakira..."];
+const name = "test";
 
-const Key = ({ navigation }) => {
-  const [inputValue, setInputValue] = useState("");
+const Login = ({ navigation }) => {
+  Axios.defaults.withCredentials = true;
+  const [emailLogin, setEmail] = useState("");
+  const [passwordLogin, setPassword] = useState("");
   const isFocused = useIsFocused();
 
   const opacity1 = useSharedValue(0);
@@ -47,9 +51,9 @@ const Key = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
-      <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
+      <View className="flex-1 flex justify-center box-border h-screen px-[10px] pt-7">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="h-screen py-[60] gap-20">
+          <View className="h-screen py-[40] gap-3 ">
             <View className="items-center justify-start flex-col ">
               <View className="flex flex-row mb-2">
                 {[opacity1, opacity2, opacity3].map((opacity, index) => (
@@ -70,16 +74,48 @@ const Key = ({ navigation }) => {
             </View>
 
             <View>
+              <Text className="items-center mx-[20] font-bold rounded-[20px]">
+                Email:
+              </Text>
               <TextInput
-                placeholder="Enter the keyword"
+                placeholder="Email: example@mail.com"
                 className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
-                value={inputValue}
-                onChangeText={setInputValue}
+                value={emailLogin}
+                onChangeText={setEmail}
+              />
+              <Text className=" items-center mx-[20] font-bold rounded-[20px]">
+                Password:
+              </Text>
+              <TextInput
+                secureTextEntry={true}
+                placeholder="Password"
+                className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
+                value={passwordLogin}
+                onChangeText={setPassword}
               />
               <Pressable
                 onPress={() => {
-                  setInputValue("");
-                  navigation.navigate("WaitingPage");
+                  const trimmedEmail = emailLogin.trim().toLowerCase();
+
+                  // this is for creating test account
+                  // Axios.post("http://192.168.8.101:3000/auth/signup", {
+                  //   name,
+                  //   email: trimmedEmail,
+                  //   password: passwordLogin,
+                  // });
+
+                  Axios.post("http://192.168.8.102:3000/auth/login", {
+                    emailLogin: trimmedEmail,
+                    passwordLogin,
+                  })
+                    .then((res) => {
+                      if (res.data.status) {
+                        navigation.navigate("mainContainer");
+                      }
+                    })
+                    .catch((err) => {
+                      console.warn(err);
+                    });
                 }}
                 style={({ pressed }) => [
                   styles.button,
@@ -102,7 +138,7 @@ const Key = ({ navigation }) => {
   );
 };
 
-export default Key;
+export default Login;
 
 const styles = StyleSheet.create({
   button: {
