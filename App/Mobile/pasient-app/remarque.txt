@@ -1,0 +1,1 @@
+make sure to chose the correct ip address in file Login.jsx and Chat.jsx

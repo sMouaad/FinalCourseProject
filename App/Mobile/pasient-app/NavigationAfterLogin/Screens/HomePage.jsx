@@ -1,7 +1,7 @@
 // HomePage.js
 import React from "react";
 import { View } from "react-native";
-import PressableButton from "./PressableButton";
+import PressableButton from "../comp/PressableButton";
 import talkDhakira from "../../assets/images/1.png";
 import playDhakira from "../../assets/images/2.png";
 import camera from "../../assets/images/3.png";
