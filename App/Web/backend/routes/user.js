@@ -29,9 +29,13 @@ router.post("/login", async (req, res) => {
   if (!validPassword) {
     return res.status(401).json({ message: "password is incorrect" });
   }
-  const token = jwt.sign({ nameLogin: user.nameLogin }, process.env.KEY, {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    { nameLogin: user.nameLogin, id: user._id },
+    process.env.KEY,
+    {
+      expiresIn: "1h",
+    }
+  );
   //expires in 1 hour
   res.cookie("token", token, { httpOnly: true, maxAge: 360000 });
   return res.json({
@@ -97,21 +101,20 @@ router.post("/reset-password/:token", async (req, res) => {
     return res.json("invalid token");
   }
 });
-const verifyUser = async (req, res, next) => {
+router.get("/verify", async (req, res) => {
   try {
     const token = req.cookies.token;
+
     if (!token) {
       return res.json({ status: false, message: "no token" });
     }
-    const decoded = jwt.verify(token, process.env.KEY);
-    next();
+    const decoded = await jwt.verify(token, process.env.KEY);
+    const id = decoded.id;
+    const info = await User.findById(id);
+    return res.json({ status: true, name: info.name, email: info.email });
   } catch (err) {
     return res.json(err);
   }
-};
-
-router.get("/verify", verifyUser, (req, res) => {
-  return res.json({ status: true, message: "authorized" });
 });
 
 export { router as UserRouter };

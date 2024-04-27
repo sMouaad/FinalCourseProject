@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Assistance from "./assets/dashboard/assistance.svg";
@@ -12,23 +12,22 @@ import Message from "./assets/dashboard/message.svg";
 import Privacy from "./assets/dashboard/privacy.svg";
 import Profile from "./assets/dashboard/profile.svg";
 import Settings from "./assets/dashboard/settings.svg";
-import Star from "./assets/dashboard/star.svg";
 import Support from "./assets/dashboard/support.svg";
 export default function Dashboard() {
+  const [name, setName] = useState("user");
+  const [email, setEmail] = useState("user@email.com");
   // Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
-  // useEffect(() => {
-  //   Axios.get("http://localhost:3000/auth/verify").then((res) => {
-  //     if (res.data.status) {
-  //       console.log(res.data.message);
-  //     } else {
-  //       navigate("/login");
-  //     }
-  //     console.log(res);
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
+  useEffect(() => {
+    Axios.get("http://localhost:3000/auth/verify").then((res) => {
+      if (res.data.status) {
+        setName(res.data.name);
+        setEmail(res.data.email);
+      }
+      console.log(res);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <Sidebar />
@@ -47,7 +46,7 @@ export default function Dashboard() {
                 src={ProfilePic}
                 alt=""
               />
-              <p className="font-bold">Mouaad Sadi</p>
+              <p className="font-bold">{name}</p>
             </div>
           </div>
           <div className="flex gap-4 justify-between items-center">
@@ -59,7 +58,9 @@ export default function Dashboard() {
               />
               <div className="flex flex-col justify-center gap-1">
                 <p className="font-bold text-[0.8rem]">Hi there,</p>
-                <h1 className="text-lg">Mouaad Sadi &#40;@grreatest&#41;</h1>
+                <h1 className="text-lg">
+                  {name} &#40;{email}&#41;
+                </h1>
               </div>
             </div>
           </div>
