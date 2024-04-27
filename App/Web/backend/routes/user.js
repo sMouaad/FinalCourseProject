@@ -111,7 +111,12 @@ router.get("/verify", async (req, res) => {
     const decoded = await jwt.verify(token, process.env.KEY);
     const id = decoded.id;
     const info = await User.findById(id);
-    return res.json({ status: true, name: info.name, email: info.email });
+    return res.json({
+      status: true,
+      name: info.name,
+      email: info.email,
+      type: info.type,
+    });
   } catch (err) {
     return res.json(err);
   }
