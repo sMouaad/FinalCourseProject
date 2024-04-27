@@ -19,6 +19,7 @@ const server = app.listen(4000, () => {
 const io = new Server(server); // Pass the Express server instance to Socket.IO
 
 io.on("connection", (socket) => {
+
   console.log("a user connected");
 
   socket.on("disconnect", () => {
@@ -28,8 +29,9 @@ io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {
     console.log("message: " + msg.text);
   });
-
+  
   socket.on("chat message", (msg) => {
     socket.broadcast.emit("chat message", msg);
   });
+
 });
