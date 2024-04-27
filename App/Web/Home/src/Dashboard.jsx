@@ -64,6 +64,7 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
+      <form action="mainForm"></form>
       <Sidebar role={role} />
       <section className="flex-[6] flex flex-col">
         <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
@@ -126,85 +127,80 @@ export default function Dashboard() {
                           handleClose={closePatient}
                           text={
                             <div>
-                              <form
-                                id="patientForm"
-                                className="flex flex-col"
-                                action=""
+                              <label
+                                htmlFor="assistantEmail"
+                                className="text-center"
                               >
+                                Enter Patient&apos;s Informations
+                              </label>
+                              <div
+                                className="my-[20px] flex gap-8 justify-center"
+                                id="checkboxes"
+                              >
+                                <input
+                                  form="mainForm"
+                                  type="radio"
+                                  name="type"
+                                  id="assistant"
+                                  className="absolute opacity-0 w-0 h-0"
+                                  defaultChecked="true"
+                                />
                                 <label
-                                  htmlFor="assistantEmail"
-                                  className="text-center"
+                                  onClick={() => {
+                                    setCondition("alzheimer");
+                                  }}
+                                  htmlFor="assistant"
+                                  className="selected text-sm"
                                 >
-                                  Enter Patient&apos;s Informations
+                                  Alzheimer
                                 </label>
-                                <div
-                                  className="my-[20px] flex gap-8 justify-center"
-                                  id="checkboxes"
+                                <input
+                                  form="mainForm"
+                                  type="radio"
+                                  name="type"
+                                  id="doctor"
+                                  className="absolute opacity-0 w-0 h-0"
+                                />
+                                <label
+                                  onClick={() => {
+                                    setCondition("autism");
+                                  }}
+                                  htmlFor="doctor"
+                                  className="selected text-sm"
                                 >
-                                  <input
-                                    form="loginform"
-                                    type="radio"
-                                    name="type"
-                                    id="assistant"
-                                    className="absolute opacity-0 w-0 h-0"
-                                    defaultChecked="true"
-                                  />
-                                  <label
-                                    onClick={() => {
-                                      setCondition("alzheimer");
-                                    }}
-                                    htmlFor="assistant"
-                                    className="selected text-sm"
-                                  >
-                                    Alzheimer
-                                  </label>
-                                  <input
-                                    form="loginform"
-                                    type="radio"
-                                    name="type"
-                                    id="doctor"
-                                    className="absolute opacity-0 w-0 h-0"
-                                  />
-                                  <label
-                                    onClick={() => {
-                                      setCondition("autism");
-                                    }}
-                                    htmlFor="doctor"
-                                    className="selected text-sm"
-                                  >
-                                    Autism
-                                  </label>
-                                </div>
-                                <input
-                                  onChange={(e) => {
-                                    setPatientName(e.target.value);
-                                  }}
-                                  id="patientName"
-                                  autoComplete="off"
-                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                  placeholder="Name"
-                                />
-                                <input
-                                  onChange={(e) => {
-                                    setPatientAge(e.target.value);
-                                  }}
-                                  id="patientAge"
-                                  type="number"
-                                  autoComplete="off"
-                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                  placeholder="Age"
-                                />
+                                  Autism
+                                </label>
+                              </div>
+                              <input
+                                onChange={(e) => {
+                                  setPatientName(e.target.value);
+                                }}
+                                id="patientName"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Name"
+                              />
+                              <input
+                                onChange={(e) => {
+                                  setPatientAge(e.target.value);
+                                }}
+                                id="patientAge"
+                                type="number"
+                                min={0}
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Age"
+                              />
 
-                                <div className="flex justify-center">
-                                  <button
-                                    form="forget"
-                                    type="submit"
-                                    className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                  >
-                                    Create
-                                  </button>
-                                </div>
-                              </form>
+                              <div className="flex justify-center">
+                                <button
+                                  form="forget"
+                                  type="submit"
+                                  className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  Create
+                                </button>
+                              </div>
                             </div>
                           }
                         />
@@ -233,29 +229,27 @@ export default function Dashboard() {
                           handleClose={closeAssistant}
                           text={
                             <div>
-                              <form id="assistantForm" action="">
-                                <label htmlFor="assistantEmail">
-                                  Enter Assistant&apos;s Email
-                                </label>
-                                <input
-                                  onChange={(e) => {
-                                    setAssistantEmail(e.target.value);
-                                  }}
-                                  id="assistantEmail"
-                                  autoComplete="off"
-                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                  placeholder="example@example.eg"
-                                />
-                                <div className="flex justify-center">
-                                  <button
-                                    form="forget"
-                                    type="submit"
-                                    className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                  >
-                                    Invite
-                                  </button>
-                                </div>
-                              </form>
+                              <label htmlFor="assistantEmail">
+                                Enter Assistant&apos;s Email
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setAssistantEmail(e.target.value);
+                                }}
+                                id="assistantEmail"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="example@example.eg"
+                              />
+                              <div className="flex justify-center">
+                                <button
+                                  form="mainForm"
+                                  type="submit"
+                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  Invite
+                                </button>
+                              </div>
                             </div>
                           }
                         />
@@ -284,29 +278,27 @@ export default function Dashboard() {
                           handleClose={closeDoctor}
                           text={
                             <div>
-                              <form id="doctorForm" action="">
-                                <label htmlFor="doctorEmail">
-                                  Enter Doctor&apos;s Email
-                                </label>
-                                <input
-                                  onChange={(e) => {
-                                    setDoctorEmail(e.target.value);
-                                  }}
-                                  id="doctorEmail"
-                                  autoComplete="off"
-                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                  placeholder="example@example.eg"
-                                />
-                                <div className="flex justify-center">
-                                  <button
-                                    form="forget"
-                                    type="submit"
-                                    className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                  >
-                                    Invite
-                                  </button>
-                                </div>
-                              </form>
+                              <label htmlFor="doctorEmail">
+                                Enter Doctor&apos;s Email
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setDoctorEmail(e.target.value);
+                                }}
+                                id="doctorEmail"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="example@example.eg"
+                              />
+                              <div className="flex justify-center">
+                                <button
+                                  form="mainForm"
+                                  type="submit"
+                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  Invite
+                                </button>
+                              </div>
                             </div>
                           }
                         />
@@ -337,29 +329,27 @@ export default function Dashboard() {
                           handleClose={closeDelete}
                           text={
                             <div>
-                              <form id="DeleteForm" action="">
-                                <label htmlFor="DeleteEmail">
-                                  Type &quot;Delete Patient&quot; to confirm.
-                                </label>
-                                <input
-                                  onChange={(e) => {
-                                    setDelete(e.target.value);
-                                  }}
-                                  id="DeleteEmail"
-                                  autoComplete="off"
-                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                  placeholder="Confirm"
-                                />
-                                <div className="flex justify-center">
-                                  <button
-                                    form="forget"
-                                    type="submit"
-                                    className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                  >
-                                    I am sure!
-                                  </button>
-                                </div>
-                              </form>
+                              <label htmlFor="DeleteEmail">
+                                Type &quot;Delete Patient&quot; to confirm.
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setDelete(e.target.value);
+                                }}
+                                id="DeleteEmail"
+                                autoComplete="off"
+                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                placeholder="Confirm"
+                              />
+                              <div className="flex justify-center">
+                                <button
+                                  form="mainForm"
+                                  type="submit"
+                                  className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                >
+                                  I am sure!
+                                </button>
+                              </div>
                             </div>
                           }
                         />
@@ -374,9 +364,6 @@ export default function Dashboard() {
                   <th>SOCIAL SKILLS</th>
                   <th>TRACK PATIENT</th>
                 </tr>
-                <form action="" className="border-4 border-black">
-                  hello
-                </form>
                 <Row />
                 <Row />
                 <Row />
@@ -415,6 +402,7 @@ function Row({ patient, assistant, doctor }) {
         <input
           type="checkbox"
           className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
+          value={patient}
         />
         Patient
       </td>
