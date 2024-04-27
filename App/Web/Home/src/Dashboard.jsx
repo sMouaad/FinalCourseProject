@@ -29,6 +29,7 @@ export default function Dashboard() {
   const [patientName, setPatientName] = useState("");
   const [assistantEmail, setAssistantEmail] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
+  const [role, setRole] = useState("user");
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
@@ -45,6 +46,7 @@ export default function Dashboard() {
       if (res.data.status) {
         setName(res.data.name);
         setEmail(res.data.email);
+        setRole(res.data.type);
       }
       console.log(res);
     });
@@ -56,12 +58,13 @@ export default function Dashboard() {
         closeAssistant();
         closeDoctor();
         closeDelete();
+        closePatient();
       }
     });
   }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
-      <Sidebar />
+      <Sidebar role={role} />
       <section className="flex-[6] flex flex-col">
         <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
           <div className="items-center justify-between gap-12 flex">
@@ -98,300 +101,306 @@ export default function Dashboard() {
         </nav>
         <main className="flex-1 p-4 bg-contrast grid">
           <div className="flex flex-col bg-white rounded-xl pt-0">
-            <table className=" border-collapse">
-              <tr className="text-sm h-16 text-black tracking-widest">
-                <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
-                  <motion.button
-                    onClick={() =>
-                      modalPatientOpen ? closePatient() : openPatient()
-                    }
-                    whileTap={{ scale: 0.95 }}
-                    className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                  >
-                    Create Patient
-                  </motion.button>
+            {role === "assistant" ? (
+              <table className=" border-collapse">
+                <tr className="text-sm h-16 text-black tracking-widest">
+                  <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
+                    <motion.button
+                      onClick={() =>
+                        modalPatientOpen ? closePatient() : openPatient()
+                      }
+                      whileTap={{ scale: 0.95 }}
+                      className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                    >
+                      Create Patient
+                    </motion.button>
 
-                  <AnimatePresence
-                    initial={false}
-                    mode="wait"
-                    onExitComplete={() => null}
-                  >
-                    {modalPatientOpen && (
-                      <Modal
-                        modalPatientOpen={modalPatientOpen}
-                        handleClose={closePatient}
-                        text={
-                          <div>
-                            <form
-                              id="patientForm"
-                              className="flex flex-col"
-                              action=""
-                            >
-                              <label
-                                htmlFor="assistantEmail"
-                                className="text-center"
+                    <AnimatePresence
+                      initial={false}
+                      mode="wait"
+                      onExitComplete={() => null}
+                    >
+                      {modalPatientOpen && (
+                        <Modal
+                          modalPatientOpen={modalPatientOpen}
+                          handleClose={closePatient}
+                          text={
+                            <div>
+                              <form
+                                id="patientForm"
+                                className="flex flex-col"
+                                action=""
                               >
-                                Enter Patient&apos;s Informations
-                              </label>
-                              <div
-                                className="my-[20px] flex gap-8 justify-center"
-                                id="checkboxes"
-                              >
-                                <input
-                                  form="loginform"
-                                  type="radio"
-                                  name="type"
-                                  id="assistant"
-                                  className="absolute opacity-0 w-0 h-0"
-                                  defaultChecked="true"
-                                />
                                 <label
-                                  onClick={() => {
-                                    setCondition("alzheimer");
-                                  }}
-                                  htmlFor="assistant"
-                                  className="selected text-sm"
+                                  htmlFor="assistantEmail"
+                                  className="text-center"
                                 >
-                                  Alzheimer
+                                  Enter Patient&apos;s Informations
+                                </label>
+                                <div
+                                  className="my-[20px] flex gap-8 justify-center"
+                                  id="checkboxes"
+                                >
+                                  <input
+                                    form="loginform"
+                                    type="radio"
+                                    name="type"
+                                    id="assistant"
+                                    className="absolute opacity-0 w-0 h-0"
+                                    defaultChecked="true"
+                                  />
+                                  <label
+                                    onClick={() => {
+                                      setCondition("alzheimer");
+                                    }}
+                                    htmlFor="assistant"
+                                    className="selected text-sm"
+                                  >
+                                    Alzheimer
+                                  </label>
+                                  <input
+                                    form="loginform"
+                                    type="radio"
+                                    name="type"
+                                    id="doctor"
+                                    className="absolute opacity-0 w-0 h-0"
+                                  />
+                                  <label
+                                    onClick={() => {
+                                      setCondition("autism");
+                                    }}
+                                    htmlFor="doctor"
+                                    className="selected text-sm"
+                                  >
+                                    Autism
+                                  </label>
+                                </div>
+                                <input
+                                  onChange={(e) => {
+                                    setPatientName(e.target.value);
+                                  }}
+                                  id="patientName"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="Name"
+                                />
+                                <input
+                                  onChange={(e) => {
+                                    setPatientAge(e.target.value);
+                                  }}
+                                  id="patientAge"
+                                  type="number"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="Age"
+                                />
+
+                                <div className="flex justify-center">
+                                  <button
+                                    form="forget"
+                                    type="submit"
+                                    className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    Create
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          }
+                        />
+                      )}
+                    </AnimatePresence>
+                  </th>
+                  <th className="w-1/6 border-none ">
+                    <motion.button
+                      onClick={() =>
+                        modalAssistantOpen ? closeAssistant() : openAssistant()
+                      }
+                      whileTap={{ scale: 0.95 }}
+                      className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                    >
+                      Invite Assistants
+                    </motion.button>
+
+                    <AnimatePresence
+                      initial={false}
+                      mode="wait"
+                      onExitComplete={() => null}
+                    >
+                      {modalAssistantOpen && (
+                        <Modal
+                          modalAssistantOpen={modalAssistantOpen}
+                          handleClose={closeAssistant}
+                          text={
+                            <div>
+                              <form id="assistantForm" action="">
+                                <label htmlFor="assistantEmail">
+                                  Enter Assistant&apos;s Email
                                 </label>
                                 <input
-                                  form="loginform"
-                                  type="radio"
-                                  name="type"
-                                  id="doctor"
-                                  className="absolute opacity-0 w-0 h-0"
-                                />
-                                <label
-                                  onClick={() => {
-                                    setCondition("autism");
+                                  onChange={(e) => {
+                                    setAssistantEmail(e.target.value);
                                   }}
-                                  htmlFor="doctor"
-                                  className="selected text-sm"
-                                >
-                                  Autism
+                                  id="assistantEmail"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="example@example.eg"
+                                />
+                                <div className="flex justify-center">
+                                  <button
+                                    form="forget"
+                                    type="submit"
+                                    className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    Invite
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          }
+                        />
+                      )}
+                    </AnimatePresence>
+                  </th>
+                  <th className="w-1/6 border-none ">
+                    <motion.button
+                      onClick={() =>
+                        modalDoctorOpen ? closeDoctor() : openDoctor()
+                      }
+                      whileTap={{ scale: 0.95 }}
+                      className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                    >
+                      Add Doctors
+                    </motion.button>
+
+                    <AnimatePresence
+                      initial={false}
+                      mode="wait"
+                      onExitComplete={() => null}
+                    >
+                      {modalDoctorOpen && (
+                        <Modal
+                          modalDoctorOpen={modalDoctorOpen}
+                          handleClose={closeDoctor}
+                          text={
+                            <div>
+                              <form id="doctorForm" action="">
+                                <label htmlFor="doctorEmail">
+                                  Enter Doctor&apos;s Email
                                 </label>
-                              </div>
-                              <input
-                                onChange={(e) => {
-                                  setPatientName(e.target.value);
-                                }}
-                                id="patientName"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Name"
-                              />
-                              <input
-                                onChange={(e) => {
-                                  setPatientAge(e.target.value);
-                                }}
-                                id="patientAge"
-                                type="number"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Age"
-                              />
+                                <input
+                                  onChange={(e) => {
+                                    setDoctorEmail(e.target.value);
+                                  }}
+                                  id="doctorEmail"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="example@example.eg"
+                                />
+                                <div className="flex justify-center">
+                                  <button
+                                    form="forget"
+                                    type="submit"
+                                    className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    Invite
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          }
+                        />
+                      )}
+                    </AnimatePresence>
+                  </th>
+                  <th className=" border-none ">&nbsp;</th>
 
-                              <div className="flex justify-center">
-                                <button
-                                  form="forget"
-                                  type="submit"
-                                  className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  Create
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        }
-                      />
-                    )}
-                  </AnimatePresence>
-                </th>
-                <th className="w-1/6 border-none ">
-                  <motion.button
-                    onClick={() =>
-                      modalAssistantOpen ? closeAssistant() : openAssistant()
-                    }
-                    whileTap={{ scale: 0.95 }}
-                    className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                  >
-                    Invite Assistants
-                  </motion.button>
+                  <th className=" border-none ">
+                    <motion.button
+                      onClick={() =>
+                        modalDeleteOpen ? closeDelete() : openDelete()
+                      }
+                      whileTap={{ scale: 0.95 }}
+                      className="hover:cursor-pointer w-[100px] rounded-full py-[8px]  px-2 bg-red-700 text-background font-bold text-sm hover:bg-red-800 transition-all ease-linear duration-100"
+                    >
+                      Delete
+                    </motion.button>
 
-                  <AnimatePresence
-                    initial={false}
-                    mode="wait"
-                    onExitComplete={() => null}
-                  >
-                    {modalAssistantOpen && (
-                      <Modal
-                        modalAssistantOpen={modalAssistantOpen}
-                        handleClose={closeAssistant}
-                        text={
-                          <div>
-                            <form id="assistantForm" action="">
-                              <label htmlFor="assistantEmail">
-                                Enter Assistant&apos;s Email
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  setAssistantEmail(e.target.value);
-                                }}
-                                id="assistantEmail"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="example@example.eg"
-                              />
-                              <div className="flex justify-center">
-                                <button
-                                  form="forget"
-                                  type="submit"
-                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  Invite
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        }
-                      />
-                    )}
-                  </AnimatePresence>
-                </th>
-                <th className="w-1/6 border-none ">
-                  <motion.button
-                    onClick={() =>
-                      modalDoctorOpen ? closeDoctor() : openDoctor()
-                    }
-                    whileTap={{ scale: 0.95 }}
-                    className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                  >
-                    Add Doctors
-                  </motion.button>
-
-                  <AnimatePresence
-                    initial={false}
-                    mode="wait"
-                    onExitComplete={() => null}
-                  >
-                    {modalDoctorOpen && (
-                      <Modal
-                        modalDoctorOpen={modalDoctorOpen}
-                        handleClose={closeDoctor}
-                        text={
-                          <div>
-                            <form id="doctorForm" action="">
-                              <label htmlFor="doctorEmail">
-                                Enter Doctor&apos;s Email
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  setDoctorEmail(e.target.value);
-                                }}
-                                id="doctorEmail"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="example@example.eg"
-                              />
-                              <div className="flex justify-center">
-                                <button
-                                  form="forget"
-                                  type="submit"
-                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  Invite
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        }
-                      />
-                    )}
-                  </AnimatePresence>
-                </th>
-                <th className=" border-none ">&nbsp;</th>
-
-                <th className=" border-none ">
-                  <motion.button
-                    onClick={() =>
-                      modalDeleteOpen ? closeDelete() : openDelete()
-                    }
-                    whileTap={{ scale: 0.95 }}
-                    className="hover:cursor-pointer w-[100px] rounded-full py-[8px]  px-2 bg-red-700 text-background font-bold text-sm hover:bg-red-800 transition-all ease-linear duration-100"
-                  >
-                    Delete
-                  </motion.button>
-
-                  <AnimatePresence
-                    initial={false}
-                    mode="wait"
-                    onExitComplete={() => null}
-                  >
-                    {modalDeleteOpen && (
-                      <Modal
-                        modalDeleteOpen={modalDeleteOpen}
-                        handleClose={closeDelete}
-                        text={
-                          <div>
-                            <form id="DeleteForm" action="">
-                              <label htmlFor="DeleteEmail">
-                                Type &quot;Delete Patient&quot; to confirm.
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  setDelete(e.target.value);
-                                }}
-                                id="DeleteEmail"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Confirm"
-                              />
-                              <div className="flex justify-center">
-                                <button
-                                  form="forget"
-                                  type="submit"
-                                  className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  I am sure!
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        }
-                      />
-                    )}
-                  </AnimatePresence>
-                </th>
-              </tr>
-              <tr className="text-xs text-slate-500 tracking-widest">
-                <th className="text-left">PATIENT</th>
-                <th>ASSISTANT</th>
-                <th>DOCTOR</th>
-                <th>SOCIAL SKILLS</th>
-                <th>TRACK PATIENT</th>
-              </tr>
-              <form action="" className="border-4 border-black">
-                hello
-              </form>
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-              <Row />
-            </table>
+                    <AnimatePresence
+                      initial={false}
+                      mode="wait"
+                      onExitComplete={() => null}
+                    >
+                      {modalDeleteOpen && (
+                        <Modal
+                          modalDeleteOpen={modalDeleteOpen}
+                          handleClose={closeDelete}
+                          text={
+                            <div>
+                              <form id="DeleteForm" action="">
+                                <label htmlFor="DeleteEmail">
+                                  Type &quot;Delete Patient&quot; to confirm.
+                                </label>
+                                <input
+                                  onChange={(e) => {
+                                    setDelete(e.target.value);
+                                  }}
+                                  id="DeleteEmail"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="Confirm"
+                                />
+                                <div className="flex justify-center">
+                                  <button
+                                    form="forget"
+                                    type="submit"
+                                    className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    I am sure!
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          }
+                        />
+                      )}
+                    </AnimatePresence>
+                  </th>
+                </tr>
+                <tr className="text-xs text-slate-500 tracking-widest">
+                  <th className="text-left">PATIENT</th>
+                  <th>ASSISTANT</th>
+                  <th>DOCTOR</th>
+                  <th>SOCIAL SKILLS</th>
+                  <th>TRACK PATIENT</th>
+                </tr>
+                <form action="" className="border-4 border-black">
+                  hello
+                </form>
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+                <Row />
+              </table>
+            ) : (
+              <div className="text-center my-auto text-3xl">
+                Doctor Page in Progress
+              </div>
+            )}
           </div>
         </main>
       </section>
@@ -472,7 +481,7 @@ function User({ img, name, job }) {
   );
 }
 
-function Sidebar() {
+function Sidebar({ role }) {
   return (
     <section className=" pt-4 bg-sidebar text-white flex-col shrink-0 min-w-[200px] px-4 flex">
       <div className=" mx-auto md:mx-0 items-center md:fixed flex">
@@ -483,7 +492,11 @@ function Sidebar() {
         <ul className="md:block flex flex-wrap gap-4 justify-around md:pt-12 md:ml-2 pt-2">
           <SidebarButton name="Home" img={Home} />
           <SidebarButton name="Profile" img={Profile} />
-          <SidebarButton name="Assistance Hub" img={Assistance} />
+          {role === "doctor" ? (
+            <SidebarButton name="Doctor Hub" img={Assistance} />
+          ) : (
+            <SidebarButton name="Assistance Hub" img={Assistance} />
+          )}
           <SidebarButton name="Messages" img={Message} />
           <SidebarButton name="History" img={History} />
           <SidebarButton name="Communities" img={Community} />
