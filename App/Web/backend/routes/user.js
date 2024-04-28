@@ -1,6 +1,7 @@
 import express from "express";
 import bcryt from "bcrypt";
 import { User } from "../models/User.js";
+import { Patient } from "../models/Patient.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 const router = express.Router();
@@ -19,15 +20,91 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/operation", async (req, res) => {
-  const { patient, operation, type, password } = req.body;
+  const {
+    operation,
+    patientAge,
+    patientName,
+    assistantEmail,
+    doctorEmail,
+    tableData,
+    condition,
+    email,
+  } = req.body;
   const user = await User.findOne({ email });
-  if (user) {
-    return res.json({ message: "user already exists" });
+  if (!user) {
+    return res.status(400).json({
+      message: "Fatal Error! user is non-existent? logout and login again.",
+    });
   }
-
-  const hashPassword = await bcryt.hash(password, 10);
-  const newUser = new User({ name, email, password: hashPassword, type });
-  await newUser.save();
+  switch (operation) {
+    case "patient": {
+      //Creation d'un nouveau patient
+      const newPatient = new Patient({
+        name: patientName,
+        primaryAssistant: user._id,
+        age: patientAge,
+        condition: condition,
+      });
+      await newPatient.save();
+      break;
+    }
+    case "assistant": {
+      //Ajouter un assistant
+      //Passer par chaque patient et lui ajouter le nouvel assistant secondaire
+      for (element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        let secondaryAssistant = await User.findOne({
+          email: assistantEmail,
+        });
+        patientX.assistants.push(secondaryAssistant._id);
+        await patientX.save();
+        return res.json({
+          status: true,
+          message: "Assistant invitation sent successfully!",
+        });
+      }
+      break;
+    }
+    case "doctor": {
+      //Ajouter un médecin
+      //Passer par chaque patient et lui associer le nouveau médecin
+      for (element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        let doctor = await User.findOne({
+          email: doctorEmail,
+        });
+        patientX.doctors.push(doctor._id);
+        await patientX.save();
+        return res.json({
+          status: true,
+          message: "Doctor invitation sent successfully!",
+        });
+      }
+      break;
+    }
+    case "delete": {
+      //check first if checked patients are all created by that assistant
+      for (element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        if (patientX.primaryAssistant !== user._id) {
+          return res.status(401).json({
+            status: false,
+            message:
+              "Permission Denied! Interrupting Operation... Are you really the primary assistant?",
+          });
+        }
+      }
+      //deleting
+      for (element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        await patientX.deleteOne();
+      }
+      break;
+    }
+    default: {
+      console.log("Error, missing operation...");
+    }
+  }
   return res.json({ status: true, message: "record registered" });
 });
 

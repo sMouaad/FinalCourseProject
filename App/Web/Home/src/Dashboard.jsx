@@ -43,21 +43,26 @@ export default function Dashboard() {
   Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
 
+  //for handling checkbox logic
   const handleCheck = (data) => {
-    console.log(`1) data ${data} and tableData ${tableData}`);
     if (tableData.includes(data)) {
       setTableData(tableData.filter((a) => a !== data));
     } else {
       setTableData([...tableData, data]);
     }
-    console.log(`2) data ${data} and tableData ${tableData}`);
   };
   const handleForm = (e) => {
     e.preventDefault();
     alert(operation);
     Axios.post("http://localhost:3000/auth/operation", {
-      operation,
       email,
+      condition,
+      operation,
+      patientAge,
+      patientName,
+      assistantEmail,
+      doctorEmail,
+      tableData,
     })
       .then((res) => {
         alert("ok!");
@@ -441,7 +446,6 @@ function Row({ patient = "patient", assistant, doctor, handleCheck }) {
   return (
     <tr className="h-16">
       <td>
-        Row
         <input
           onChange={() => {
             handleCheck(patient);
