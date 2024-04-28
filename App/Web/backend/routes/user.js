@@ -18,6 +18,19 @@ router.post("/signup", async (req, res) => {
   return res.json({ status: true, message: "record registered" });
 });
 
+router.post("/operation", async (req, res) => {
+  const { patient, operation, type, password } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
+    return res.json({ message: "user already exists" });
+  }
+
+  const hashPassword = await bcryt.hash(password, 10);
+  const newUser = new User({ name, email, password: hashPassword, type });
+  await newUser.save();
+  return res.json({ status: true, message: "record registered" });
+});
+
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
