@@ -39,9 +39,26 @@ export default function Dashboard() {
   const openDelete = () => setDeleteModalOpen(true);
   const closePatient = () => setPatientModalOpen(false);
   const openPatient = () => setPatientModalOpen(true);
-  // Axios.defaults.withCredentials = true;
+  Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
-  //we use UseEffect to fetch json data of patients of a the current user then display it on the dashboard, postponed to decided on which db to use.
+
+  const handleForm = (e) => {
+    e.preventDefault();
+    alert(operation);
+    Axios.post("http://localhost:3000/auth/operation", {
+      name,
+      email,
+    })
+      .then((res) => {
+        alert("ok!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //we use UseEffect to fetch json data of patients of a the current user then display it on the dashboard, postponed to decide on which db to use.
+
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/verify").then((res) => {
       if (res.data.status) {
@@ -53,6 +70,8 @@ export default function Dashboard() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  //Add escape as button to quit the modal
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -65,7 +84,7 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
-      <form action="mainForm"></form>
+      <form id="mainForm" onSubmit={handleForm}></form>
       <Sidebar role={role} />
       <section className="flex-[6] flex flex-col">
         <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
