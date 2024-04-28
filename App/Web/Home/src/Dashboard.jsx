@@ -31,6 +31,7 @@ export default function Dashboard() {
   const [doctorEmail, setDoctorEmail] = useState("");
   const [role, setRole] = useState("user");
   const [operation, setOperation] = useState("");
+  const [tableData, setTableData] = useState([]);
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
@@ -42,11 +43,20 @@ export default function Dashboard() {
   Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
 
+  const handleCheck = (data) => {
+    console.log(`1) data ${data} and tableData ${tableData}`);
+    if (tableData.includes(data)) {
+      setTableData(tableData.filter((a) => a !== data));
+    } else {
+      setTableData([...tableData, data]);
+    }
+    console.log(`2) data ${data} and tableData ${tableData}`);
+  };
   const handleForm = (e) => {
     e.preventDefault();
     alert(operation);
     Axios.post("http://localhost:3000/auth/operation", {
-      name,
+      operation,
       email,
     })
       .then((res) => {
@@ -396,24 +406,24 @@ export default function Dashboard() {
                   <th>SOCIAL SKILLS</th>
                   <th>TRACK PATIENT</th>
                 </tr>
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
-                <Row />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
+                <Row handleCheck={handleCheck} />
               </table>
             ) : (
               <div className="text-center my-auto text-3xl">
@@ -427,11 +437,15 @@ export default function Dashboard() {
   );
 }
 
-function Row({ patient, assistant, doctor }) {
+function Row({ patient = "patient", assistant, doctor, handleCheck }) {
   return (
     <tr className="h-16">
       <td>
+        Row
         <input
+          onChange={() => {
+            handleCheck(patient);
+          }}
           type="checkbox"
           className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
           value={patient}
@@ -487,18 +501,6 @@ function SidebarButton({ name, img }) {
       <img className="h-[20px] w-auto pr-4" src={img} alt="" />
       {name}
     </li>
-  );
-}
-
-function User({ img, name, job }) {
-  return (
-    <div className="flex items-center gap-2">
-      <img className="h-[50px] rounded-full" src={img} alt="" />
-      <div>
-        <p className="text-green-600">{name}</p>
-        <p className="text-[#36454f]">{job}</p>
-      </div>
-    </div>
   );
 }
 
