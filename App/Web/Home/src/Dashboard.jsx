@@ -32,6 +32,7 @@ export default function Dashboard() {
   const [role, setRole] = useState("user");
   const [operation, setOperation] = useState("");
   const [tableData, setTableData] = useState([]);
+  const [tableRows, setTableRows] = useState([]);
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
@@ -53,7 +54,6 @@ export default function Dashboard() {
   };
   const handleForm = (e) => {
     e.preventDefault();
-    alert(operation);
     Axios.post("http://localhost:3000/auth/operation", {
       email,
       condition,
@@ -75,11 +75,12 @@ export default function Dashboard() {
   //we use UseEffect to fetch json data of patients of a the current user then display it on the dashboard, postponed to decide on which db to use.
 
   useEffect(() => {
-    Axios.get("http://localhost:3000/auth/verify").then((res) => {
+    Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
         setName(res.data.name);
         setEmail(res.data.email);
         setRole(res.data.type);
+        setTableRows(res.data.patientsCreated);
       }
       console.log(res);
     });
@@ -411,24 +412,15 @@ export default function Dashboard() {
                   <th>SOCIAL SKILLS</th>
                   <th>TRACK PATIENT</th>
                 </tr>
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
-                <Row handleCheck={handleCheck} />
+                {tableRows.map((element) => {
+                  return (
+                    <Row
+                      key={element._id}
+                      handleCheck={handleCheck}
+                      patient={element.name}
+                    />
+                  );
+                })}
               </table>
             ) : (
               <div className="text-center my-auto text-3xl">
@@ -455,7 +447,7 @@ function Row({ patient = "patient", assistant, doctor, handleCheck }) {
           value={patient}
           name="patient"
         />
-        Patient
+        {patient}
       </td>
       <td>
         <div className="flex select-none w-max">

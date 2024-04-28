@@ -38,6 +38,9 @@ router.post("/operation", async (req, res) => {
   }
   switch (operation) {
     case "patient": {
+      console.log(
+        `WORKING, patientName ${patientName} primaryAssID ${user._id} age ${patientAge} condition ${condition}`
+      );
       //Creation d'un nouveau patient
       const newPatient = new Patient({
         name: patientName,
@@ -107,7 +110,6 @@ router.post("/operation", async (req, res) => {
   }
   return res.json({ status: true, message: "record registered" });
 });
-
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
@@ -123,11 +125,11 @@ router.post("/login", async (req, res) => {
     { nameLogin: user.nameLogin, id: user._id },
     process.env.KEY,
     {
-      expiresIn: "1h",
+      expiresIn: "10h",
     }
   );
   //expires in 1 hour
-  res.cookie("token", token, { httpOnly: true, maxAge: 360000 });
+  res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
   return res.json({
     status: true,
     message: "login successful",
@@ -191,7 +193,7 @@ router.post("/reset-password/:token", async (req, res) => {
     return res.json("invalid token");
   }
 });
-router.get("/verify", async (req, res) => {
+router.get("/userdata", async (req, res) => {
   try {
     const token = req.cookies.token;
 
@@ -201,11 +203,18 @@ router.get("/verify", async (req, res) => {
     const decoded = await jwt.verify(token, process.env.KEY);
     const id = decoded.id;
     const info = await User.findById(id);
+    const patientsCreated = await Patient.find({ primaryAssistant: info._id });
+    // const patientsSecondary = await Patient.find({})
+    //   .where(info._id)
+    //   .in("assistants");
+    // console.log("secondary");
+    // console.log(patientsSecondary);
     return res.json({
       status: true,
       name: info.name,
       email: info.email,
       type: info.type,
+      patientsCreated: [...patientsCreated],
     });
   } catch (err) {
     return res.json(err);
