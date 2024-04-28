@@ -30,6 +30,7 @@ export default function Dashboard() {
   const [assistantEmail, setAssistantEmail] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
   const [role, setRole] = useState("user");
+  const [operation, setOperation] = useState("");
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
@@ -194,7 +195,7 @@ export default function Dashboard() {
 
                               <div className="flex justify-center">
                                 <button
-                                  form="forget"
+                                  form="mainForm"
                                   type="submit"
                                   className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
                                 >
@@ -403,6 +404,7 @@ function Row({ patient, assistant, doctor }) {
           type="checkbox"
           className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
           value={patient}
+          name="patient"
         />
         Patient
       </td>
