@@ -195,6 +195,9 @@ export default function Dashboard() {
 
                               <div className="flex justify-center">
                                 <button
+                                  onClick={() => {
+                                    setOperation("patient");
+                                  }}
                                   form="mainForm"
                                   type="submit"
                                   className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
@@ -244,6 +247,9 @@ export default function Dashboard() {
                               />
                               <div className="flex justify-center">
                                 <button
+                                  onClick={() => {
+                                    setOperation("assistant");
+                                  }}
                                   form="mainForm"
                                   type="submit"
                                   className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
@@ -293,6 +299,9 @@ export default function Dashboard() {
                               />
                               <div className="flex justify-center">
                                 <button
+                                  onClick={() => {
+                                    setOperation("doctor");
+                                  }}
                                   form="mainForm"
                                   type="submit"
                                   className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
@@ -344,6 +353,9 @@ export default function Dashboard() {
                               />
                               <div className="flex justify-center">
                                 <button
+                                  onClick={() => {
+                                    setOperation("delete");
+                                  }}
                                   form="mainForm"
                                   type="submit"
                                   className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
