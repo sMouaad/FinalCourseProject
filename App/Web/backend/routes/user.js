@@ -38,9 +38,6 @@ router.post("/operation", async (req, res) => {
   }
   switch (operation) {
     case "patient": {
-      console.log(
-        `WORKING, patientName ${patientName} primaryAssID ${user._id} age ${patientAge} condition ${condition}`
-      );
       //Creation d'un nouveau patient
       const newPatient = new Patient({
         name: patientName,
@@ -87,9 +84,9 @@ router.post("/operation", async (req, res) => {
     }
     case "delete": {
       //check first if checked patients are all created by that assistant
-      for (element of tableData) {
+      for (let element of tableData) {
         let patientX = await Patient.findOne({ _id: element });
-        if (patientX.primaryAssistant !== user._id) {
+        if (!patientX.primaryAssistant.equals(user._id)) {
           return res.status(401).json({
             status: false,
             message:
@@ -98,7 +95,7 @@ router.post("/operation", async (req, res) => {
         }
       }
       //deleting
-      for (element of tableData) {
+      for (let element of tableData) {
         let patientX = await Patient.findOne({ _id: element });
         await patientX.deleteOne();
       }
