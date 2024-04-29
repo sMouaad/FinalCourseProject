@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import Lottie from "lottie-react";
+import animation from "./assets/search.json";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Axios from "axios";
@@ -156,313 +158,329 @@ export default function Dashboard() {
         <main className="flex-1 p-4 bg-contrast grid">
           <div className="flex flex-col bg-white rounded-xl pt-0">
             {role === "assistant" ? (
-              <table className=" border-collapse">
-                <tr className="text-sm h-16 text-black tracking-widest">
-                  <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
-                    <motion.button
-                      onClick={() =>
-                        modalPatientOpen ? closePatient() : openPatient()
-                      }
-                      whileTap={{ scale: 0.95 }}
-                      className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                    >
-                      Create Patient
-                    </motion.button>
+              <>
+                <table className=" border-collapse">
+                  <tr className="text-sm h-16 text-black tracking-widest">
+                    <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
+                      <motion.button
+                        onClick={() =>
+                          modalPatientOpen ? closePatient() : openPatient()
+                        }
+                        whileTap={{ scale: 0.95 }}
+                        className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                      >
+                        Create Patient
+                      </motion.button>
 
-                    <AnimatePresence
-                      initial={false}
-                      mode="wait"
-                      onExitComplete={() => null}
-                    >
-                      {modalPatientOpen && (
-                        <Modal
-                          modalPatientOpen={modalPatientOpen}
-                          handleClose={closePatient}
-                          text={
-                            <div>
-                              <label
-                                htmlFor="assistantEmail"
-                                className="text-center"
-                              >
-                                Enter Patient&apos;s Informations
-                              </label>
-                              <div
-                                className="my-[20px] flex gap-8 justify-center"
-                                id="checkboxes"
-                              >
-                                <input
-                                  form="mainForm"
-                                  type="radio"
-                                  name="type"
-                                  id="assistant"
-                                  className="absolute opacity-0 w-0 h-0"
-                                  defaultChecked="true"
-                                />
+                      <AnimatePresence
+                        initial={false}
+                        mode="wait"
+                        onExitComplete={() => null}
+                      >
+                        {modalPatientOpen && (
+                          <Modal
+                            modalPatientOpen={modalPatientOpen}
+                            handleClose={closePatient}
+                            text={
+                              <div>
                                 <label
-                                  onClick={() => {
-                                    setCondition("alzheimer");
-                                  }}
-                                  htmlFor="assistant"
-                                  className="selected text-sm"
+                                  htmlFor="assistantEmail"
+                                  className="text-center"
                                 >
-                                  Alzheimer
+                                  Enter Patient&apos;s Informations
+                                </label>
+                                <div
+                                  className="my-[20px] flex gap-8 justify-center"
+                                  id="checkboxes"
+                                >
+                                  <input
+                                    form="mainForm"
+                                    type="radio"
+                                    name="type"
+                                    id="assistant"
+                                    className="absolute opacity-0 w-0 h-0"
+                                    defaultChecked="true"
+                                  />
+                                  <label
+                                    onClick={() => {
+                                      setCondition("alzheimer");
+                                    }}
+                                    htmlFor="assistant"
+                                    className="selected text-sm"
+                                  >
+                                    Alzheimer
+                                  </label>
+                                  <input
+                                    form="mainForm"
+                                    type="radio"
+                                    name="type"
+                                    id="doctor"
+                                    className="absolute opacity-0 w-0 h-0"
+                                  />
+                                  <label
+                                    onClick={() => {
+                                      setCondition("autism");
+                                    }}
+                                    htmlFor="doctor"
+                                    className="selected text-sm"
+                                  >
+                                    Autism
+                                  </label>
+                                </div>
+                                <input
+                                  onChange={(e) => {
+                                    setPatientName(e.target.value);
+                                  }}
+                                  id="patientName"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="Name"
+                                />
+                                <input
+                                  onChange={(e) => {
+                                    setPatientAge(e.target.value);
+                                  }}
+                                  id="patientAge"
+                                  type="number"
+                                  min={0}
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="Age"
+                                />
+
+                                <div className="flex justify-center">
+                                  <button
+                                    onClick={() => {
+                                      setOperation("patient");
+                                    }}
+                                    form="mainForm"
+                                    type="submit"
+                                    className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    Create
+                                  </button>
+                                </div>
+                              </div>
+                            }
+                          />
+                        )}
+                      </AnimatePresence>
+                    </th>
+                    <th className="w-1/6 border-none ">
+                      <motion.button
+                        onClick={() =>
+                          modalAssistantOpen
+                            ? closeAssistant()
+                            : openAssistant()
+                        }
+                        whileTap={{ scale: 0.95 }}
+                        className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                      >
+                        Invite Assistants
+                      </motion.button>
+
+                      <AnimatePresence
+                        initial={false}
+                        mode="wait"
+                        onExitComplete={() => null}
+                      >
+                        {modalAssistantOpen && (
+                          <Modal
+                            modalAssistantOpen={modalAssistantOpen}
+                            handleClose={closeAssistant}
+                            text={
+                              <div>
+                                <label htmlFor="assistantEmail">
+                                  Enter Assistant&apos;s Email
                                 </label>
                                 <input
-                                  form="mainForm"
-                                  type="radio"
-                                  name="type"
-                                  id="doctor"
-                                  className="absolute opacity-0 w-0 h-0"
+                                  onChange={(e) => {
+                                    setAssistantEmail(e.target.value);
+                                  }}
+                                  id="assistantEmail"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="example@example.eg"
                                 />
-                                <label
-                                  onClick={() => {
-                                    setCondition("autism");
-                                  }}
-                                  htmlFor="doctor"
-                                  className="selected text-sm"
-                                >
-                                  Autism
+                                <div className="flex justify-center">
+                                  <button
+                                    onClick={() => {
+                                      setOperation("assistant");
+                                    }}
+                                    form="mainForm"
+                                    type="submit"
+                                    className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    Invite
+                                  </button>
+                                </div>
+                              </div>
+                            }
+                          />
+                        )}
+                      </AnimatePresence>
+                    </th>
+                    <th className="w-1/6 border-none ">
+                      <motion.button
+                        onClick={() =>
+                          modalDoctorOpen ? closeDoctor() : openDoctor()
+                        }
+                        whileTap={{ scale: 0.95 }}
+                        className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                      >
+                        Add Doctors
+                      </motion.button>
+
+                      <AnimatePresence
+                        initial={false}
+                        mode="wait"
+                        onExitComplete={() => null}
+                      >
+                        {modalDoctorOpen && (
+                          <Modal
+                            modalDoctorOpen={modalDoctorOpen}
+                            handleClose={closeDoctor}
+                            text={
+                              <div>
+                                <label htmlFor="doctorEmail">
+                                  Enter Doctor&apos;s Email
                                 </label>
-                              </div>
-                              <input
-                                onChange={(e) => {
-                                  setPatientName(e.target.value);
-                                }}
-                                id="patientName"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Name"
-                              />
-                              <input
-                                onChange={(e) => {
-                                  setPatientAge(e.target.value);
-                                }}
-                                id="patientAge"
-                                type="number"
-                                min={0}
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Age"
-                              />
-
-                              <div className="flex justify-center">
-                                <button
-                                  onClick={() => {
-                                    setOperation("patient");
+                                <input
+                                  onChange={(e) => {
+                                    setDoctorEmail(e.target.value);
                                   }}
-                                  form="mainForm"
-                                  type="submit"
-                                  className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  Create
-                                </button>
+                                  id="doctorEmail"
+                                  autoComplete="off"
+                                  className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="example@example.eg"
+                                />
+                                <div className="flex justify-center">
+                                  <button
+                                    onClick={() => {
+                                      setOperation("doctor");
+                                    }}
+                                    form="mainForm"
+                                    type="submit"
+                                    className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    Invite
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          }
-                        />
-                      )}
-                    </AnimatePresence>
-                  </th>
-                  <th className="w-1/6 border-none ">
-                    <motion.button
-                      onClick={() =>
-                        modalAssistantOpen ? closeAssistant() : openAssistant()
-                      }
-                      whileTap={{ scale: 0.95 }}
-                      className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                    >
-                      Invite Assistants
-                    </motion.button>
+                            }
+                          />
+                        )}
+                      </AnimatePresence>
+                    </th>
+                    <th className=" border-none ">&nbsp;</th>
 
-                    <AnimatePresence
-                      initial={false}
-                      mode="wait"
-                      onExitComplete={() => null}
-                    >
-                      {modalAssistantOpen && (
-                        <Modal
-                          modalAssistantOpen={modalAssistantOpen}
-                          handleClose={closeAssistant}
-                          text={
-                            <div>
-                              <label htmlFor="assistantEmail">
-                                Enter Assistant&apos;s Email
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  setAssistantEmail(e.target.value);
-                                }}
-                                id="assistantEmail"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="example@example.eg"
-                              />
-                              <div className="flex justify-center">
-                                <button
-                                  onClick={() => {
-                                    setOperation("assistant");
+                    <th className=" border-none ">
+                      <motion.button
+                        onClick={() =>
+                          modalDeleteOpen ? closeDelete() : openDelete()
+                        }
+                        whileTap={{ scale: 0.95 }}
+                        className="hover:cursor-pointer w-[100px] rounded-full py-[8px]  px-2 bg-red-700 text-background font-bold text-sm hover:bg-red-800 transition-all ease-linear duration-100"
+                      >
+                        Delete
+                      </motion.button>
+
+                      <AnimatePresence
+                        initial={false}
+                        mode="wait"
+                        onExitComplete={() => null}
+                      >
+                        {modalDeleteOpen && (
+                          <Modal
+                            modalDeleteOpen={modalDeleteOpen}
+                            handleClose={closeDelete}
+                            text={
+                              <div>
+                                <label htmlFor="DeleteEmail">
+                                  Type &quot;Delete Patient&quot; to confirm.
+                                </label>
+                                <input
+                                  onChange={(e) => {
+                                    setDeleteError("");
+                                    setDelete(e.target.value);
                                   }}
-                                  form="mainForm"
-                                  type="submit"
-                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  Invite
-                                </button>
+                                  id="DeleteEmail"
+                                  autoComplete="off"
+                                  className="bg-[#eee] text-slate-700 border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                  placeholder="Confirm"
+                                />
+                                <div className="h-8 min-h-0">
+                                  {deleteError ? (
+                                    <span className="text-red-700 text-xs tracking-normal">
+                                      {deleteError}
+                                    </span>
+                                  ) : null}
+                                </div>
+                                <div className="flex justify-center">
+                                  <button
+                                    onClick={(e) => {
+                                      if (tableData.length === 0) {
+                                        e.preventDefault();
+                                        setDeleteError(
+                                          "Check at least one patient."
+                                        );
+                                      } else if (
+                                        deleteConfirmation === "Delete Patient"
+                                      ) {
+                                        setOperation("delete");
+                                        closeDelete();
+                                      } else {
+                                        e.preventDefault();
+                                        setDeleteError(
+                                          "Mismatch, verify your spelling."
+                                        );
+                                      }
+                                    }}
+                                    form="mainForm"
+                                    type="submit"
+                                    className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                                  >
+                                    I am sure!
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          }
-                        />
-                      )}
-                    </AnimatePresence>
-                  </th>
-                  <th className="w-1/6 border-none ">
-                    <motion.button
-                      onClick={() =>
-                        modalDoctorOpen ? closeDoctor() : openDoctor()
-                      }
-                      whileTap={{ scale: 0.95 }}
-                      className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                            }
+                          />
+                        )}
+                      </AnimatePresence>
+                    </th>
+                  </tr>
+                  <tr className="text-xs text-slate-500 tracking-widest">
+                    <th className="text-left">PATIENT</th>
+                    <th>ASSISTANT</th>
+                    <th>DOCTOR</th>
+                    <th>SOCIAL SKILLS</th>
+                    <th>TRACK PATIENT</th>
+                  </tr>
+                  {tableRows.map((element) => {
+                    return (
+                      <Row
+                        key={element._id}
+                        patientId={element._id}
+                        handleCheck={handleCheck}
+                        patient={element.name}
+                      />
+                    );
+                  })}
+                </table>
+                {tableRows.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
+                    <div>No patients found yet.</div>
+                    <div
+                      onClick={() => openPatient(true)}
+                      className=" transition-all text-slate-400 text-sm hover:cursor-pointer hover:text-slate-500"
                     >
-                      Add Doctors
-                    </motion.button>
-
-                    <AnimatePresence
-                      initial={false}
-                      mode="wait"
-                      onExitComplete={() => null}
-                    >
-                      {modalDoctorOpen && (
-                        <Modal
-                          modalDoctorOpen={modalDoctorOpen}
-                          handleClose={closeDoctor}
-                          text={
-                            <div>
-                              <label htmlFor="doctorEmail">
-                                Enter Doctor&apos;s Email
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  setDoctorEmail(e.target.value);
-                                }}
-                                id="doctorEmail"
-                                autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="example@example.eg"
-                              />
-                              <div className="flex justify-center">
-                                <button
-                                  onClick={() => {
-                                    setOperation("doctor");
-                                  }}
-                                  form="mainForm"
-                                  type="submit"
-                                  className=" bg-[#00e5bd] text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  Invite
-                                </button>
-                              </div>
-                            </div>
-                          }
-                        />
-                      )}
-                    </AnimatePresence>
-                  </th>
-                  <th className=" border-none ">&nbsp;</th>
-
-                  <th className=" border-none ">
-                    <motion.button
-                      onClick={() =>
-                        modalDeleteOpen ? closeDelete() : openDelete()
-                      }
-                      whileTap={{ scale: 0.95 }}
-                      className="hover:cursor-pointer w-[100px] rounded-full py-[8px]  px-2 bg-red-700 text-background font-bold text-sm hover:bg-red-800 transition-all ease-linear duration-100"
-                    >
-                      Delete
-                    </motion.button>
-
-                    <AnimatePresence
-                      initial={false}
-                      mode="wait"
-                      onExitComplete={() => null}
-                    >
-                      {modalDeleteOpen && (
-                        <Modal
-                          modalDeleteOpen={modalDeleteOpen}
-                          handleClose={closeDelete}
-                          text={
-                            <div>
-                              <label htmlFor="DeleteEmail">
-                                Type &quot;Delete Patient&quot; to confirm.
-                              </label>
-                              <input
-                                onChange={(e) => {
-                                  setDeleteError("");
-                                  setDelete(e.target.value);
-                                }}
-                                id="DeleteEmail"
-                                autoComplete="off"
-                                className="bg-[#eee] text-slate-700 border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                                placeholder="Confirm"
-                              />
-                              <div className="h-8 min-h-0">
-                                {deleteError ? (
-                                  <span className="text-red-700 text-xs tracking-normal">
-                                    {deleteError}
-                                  </span>
-                                ) : null}
-                              </div>
-                              <div className="flex justify-center">
-                                <button
-                                  onClick={(e) => {
-                                    if (tableData.length === 0) {
-                                      e.preventDefault();
-                                      setDeleteError(
-                                        "Check at least one patient."
-                                      );
-                                    } else if (
-                                      deleteConfirmation === "Delete Patient"
-                                    ) {
-                                      setOperation("delete");
-                                      closeDelete();
-                                    } else {
-                                      e.preventDefault();
-                                      setDeleteError(
-                                        "Mismatch, verify your spelling."
-                                      );
-                                    }
-                                  }}
-                                  form="mainForm"
-                                  type="submit"
-                                  className=" bg-red-800 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                                >
-                                  I am sure!
-                                </button>
-                              </div>
-                            </div>
-                          }
-                        />
-                      )}
-                    </AnimatePresence>
-                  </th>
-                </tr>
-                <tr className="text-xs text-slate-500 tracking-widest">
-                  <th className="text-left">PATIENT</th>
-                  <th>ASSISTANT</th>
-                  <th>DOCTOR</th>
-                  <th>SOCIAL SKILLS</th>
-                  <th>TRACK PATIENT</th>
-                </tr>
-                {tableRows.map((element) => {
-                  return (
-                    <Row
-                      key={element._id}
-                      patientId={element._id}
-                      handleCheck={handleCheck}
-                      patient={element.name}
-                    />
-                  );
-                })}
-              </table>
+                      try creating one?
+                    </div>
+                    <Lottie className="h-96 mb-8" animationData={animation} />
+                  </div>
+                ) : null}
+              </>
             ) : (
               <div className="text-center my-auto text-3xl">
                 Doctor Page in Progress
