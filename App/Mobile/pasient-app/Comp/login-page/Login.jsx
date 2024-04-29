@@ -96,7 +96,7 @@ const Login = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   const trimmedEmail = emailLogin.trim().toLowerCase();
-
+                  navigation.navigate("mainContainer");
                   // this is for creating test account
                   // Axios.post("http://192.168.8.101:3000/auth/signup", {
                   //   name,
@@ -104,18 +104,18 @@ const Login = ({ navigation }) => {
                   //   password: passwordLogin,
                   // });
 
-                  Axios.post("http://192.168.8.102:3000/auth/login", {
-                    emailLogin: trimmedEmail,
-                    passwordLogin,
-                  })
-                    .then((res) => {
-                      if (res.data.status) {
-                        navigation.navigate("mainContainer");
-                      }
-                    })
-                    .catch((err) => {
-                      console.warn(err);
-                    });
+                  // Axios.post("http://192.168.8.102:3000/auth/login", {
+                  //   emailLogin: trimmedEmail,
+                  //   passwordLogin,
+                  // })
+                  //   .then((res) => {
+                  //     if (res.data.status) {
+                  //       navigation.navigate("mainContainer");
+                  //     }
+                  //   })
+                  //   .catch((err) => {
+                  //     console.warn(err);
+                  //   });
                 }}
                 style={({ pressed }) => [
                   styles.button,

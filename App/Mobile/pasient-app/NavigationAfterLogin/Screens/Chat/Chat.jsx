@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   GiftedChat,
   InputToolbar,
   Composer,
   Send,
 } from "react-native-gifted-chat";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import io from "socket.io-client";
@@ -13,10 +13,11 @@ import io from "socket.io-client";
 export function Chat() {
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
+  const giftedChatRef = useRef(null);
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const socket = io("http://192.168.8.102:4000");
+    const socket = io("http://192.168.8.10:4000");
     setSocket(socket);
 
     // Emit a test message to the server
@@ -58,6 +59,10 @@ export function Chat() {
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
+
+      if (giftedChatRef.current) {
+        giftedChatRef.current.scrollToBottom();
+      }
     },
     [socket]
   );
@@ -96,23 +101,27 @@ export function Chat() {
 
   const renderSend = (props) => {
     return (
-      <Send {...props}>
-        <View style={{ marginRight: 10, marginBottom: 7 }}>
-          <Ionicons name="send" size={28} color="#00A588" />
-        </View>
-      </Send>
+      <TouchableOpacity>
+        <Send {...props}>
+          <View style={{ marginRight: 10, marginBottom: 7 }}>
+            <Ionicons name="send" size={28} color="#00A588" />
+          </View>
+        </Send>
+      </TouchableOpacity>
     );
   };
 
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
+        ref={giftedChatRef}
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{ _id: 1 }}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
         renderSend={renderSend}
+        bottomOffset={10}
       />
     </View>
   );
