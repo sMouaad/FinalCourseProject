@@ -33,6 +33,8 @@ export default function Dashboard() {
   const [operation, setOperation] = useState("");
   const [tableData, setTableData] = useState([]);
   const [tableRows, setTableRows] = useState([]);
+  const [updateDash, setUpdateDash] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
@@ -65,7 +67,7 @@ export default function Dashboard() {
       tableData,
     })
       .then((res) => {
-        alert("ok!");
+        setUpdateDash(!updateDash);
       })
       .catch((err) => {
         console.log(err);
@@ -73,6 +75,15 @@ export default function Dashboard() {
   };
 
   //we use UseEffect to fetch json data of patients of a the current user then display it on the dashboard, postponed to decide on which db to use.
+  useEffect(() => {
+    Axios.get("http://localhost:3000/auth/userdata").then((res) => {
+      if (res.data.status) {
+        setTableRows(res.data.patientsCreated);
+      }
+      console.log(res);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateDash]);
 
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
@@ -80,7 +91,6 @@ export default function Dashboard() {
         setName(res.data.name);
         setEmail(res.data.email);
         setRole(res.data.type);
-        setTableRows(res.data.patientsCreated);
       }
       console.log(res);
     });
@@ -379,17 +389,38 @@ export default function Dashboard() {
                               </label>
                               <input
                                 onChange={(e) => {
+                                  setDeleteError("");
                                   setDelete(e.target.value);
                                 }}
                                 id="DeleteEmail"
                                 autoComplete="off"
-                                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                                className="bg-[#eee] text-slate-700 border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                                 placeholder="Confirm"
                               />
+                              <div className="h-8 min-h-0">
+                                {deleteError ? (
+                                  <span className="text-red-700 text-xs tracking-normal">
+                                    {deleteError}
+                                  </span>
+                                ) : null}
+                              </div>
                               <div className="flex justify-center">
                                 <button
                                   onClick={() => {
-                                    setOperation("delete");
+                                    if (tableData.length === 0) {
+                                      setDeleteError(
+                                        "Check at least one patient."
+                                      );
+                                    } else if (
+                                      deleteConfirmation === "Delete Patient"
+                                    ) {
+                                      setOperation("delete");
+                                      closeDelete();
+                                    } else {
+                                      setDeleteError(
+                                        "Mismatch, verify your spelling."
+                                      );
+                                    }
                                   }}
                                   form="mainForm"
                                   type="submit"
@@ -416,6 +447,7 @@ export default function Dashboard() {
                   return (
                     <Row
                       key={element._id}
+                      patientId={element._id}
                       handleCheck={handleCheck}
                       patient={element.name}
                     />
@@ -434,17 +466,23 @@ export default function Dashboard() {
   );
 }
 
-function Row({ patient = "patient", assistant, doctor, handleCheck }) {
+function Row({
+  patient = "patient",
+  patientId,
+  assistant,
+  doctor,
+  handleCheck,
+}) {
   return (
     <tr className="h-16">
       <td>
         <input
           onChange={() => {
-            handleCheck(patient);
+            handleCheck(patientId);
           }}
           type="checkbox"
           className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
-          value={patient}
+          value={patientId}
           name="patient"
         />
         {patient}
