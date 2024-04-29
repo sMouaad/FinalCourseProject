@@ -39,7 +39,11 @@ export default function Dashboard() {
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
   const openDoctor = () => setDoctorModalOpen(true);
-  const closeDelete = () => setDeleteModalOpen(false);
+  const closeDelete = () => {
+    setDeleteModalOpen(false);
+    setDelete("");
+    setDeleteError("");
+  };
   const openDelete = () => setDeleteModalOpen(true);
   const closePatient = () => setPatientModalOpen(false);
   const openPatient = () => setPatientModalOpen(true);
@@ -67,6 +71,9 @@ export default function Dashboard() {
       tableData,
     })
       .then((res) => {
+        if (operation === "delete") {
+          setTableData([]);
+        }
         setUpdateDash(!updateDash);
       })
       .catch((err) => {
