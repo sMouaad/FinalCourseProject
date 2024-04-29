@@ -10,11 +10,10 @@ import Modal from "./components/Modal/index";
 import Assistance from "./assets/dashboard/assistance.svg";
 import { MdDashboard } from "react-icons/md";
 import Home from "./assets/dashboard/home.svg";
-import Community from "./assets/dashboard/community.svg";
+import Bell from "./assets/dashboard/bell.svg";
 import ProfilePic from "./assets/dashboard/pfp.svg";
-import History from "./assets/dashboard/history.svg";
+import Logout from "./assets/dashboard/logout.svg";
 import Message from "./assets/dashboard/message.svg";
-import Privacy from "./assets/dashboard/privacy.svg";
 import Profile from "./assets/dashboard/profile.svg";
 import Settings from "./assets/dashboard/settings.svg";
 import Support from "./assets/dashboard/support.svg";
@@ -153,6 +152,7 @@ export default function Dashboard() {
                 </h1>
               </div>
             </div>
+            <img className="w-8" src={Bell} alt="notifications" />
           </div>
         </nav>
         <main className="flex-1 p-4 bg-contrast grid">
@@ -183,12 +183,14 @@ export default function Dashboard() {
                             handleClose={closePatient}
                             text={
                               <div>
-                                <label
-                                  htmlFor="assistantEmail"
-                                  className="text-center"
-                                >
-                                  Enter Patient&apos;s Informations
-                                </label>
+                                <div className="flex justify-center">
+                                  <label
+                                    htmlFor="assistantEmail"
+                                    className="text-center"
+                                  >
+                                    Enter Patient&apos;s Informations
+                                  </label>
+                                </div>
                                 <div
                                   className="my-[20px] flex gap-8 justify-center"
                                   id="checkboxes"
@@ -577,20 +579,16 @@ function Sidebar({ role }) {
           <SidebarButton name="Home" img={Home} />
           <SidebarButton name="Profile" img={Profile} />
           {role === "doctor" ? (
-            <SidebarButton name="Doctor Hub" img={Assistance} />
-          ) : (
-            <SidebarButton name="Assistance Hub" img={Assistance} />
-          )}
+            <SidebarButton name="Tests" img={Assistance} />
+          ) : null}
           <SidebarButton name="Messages" img={Message} />
-          <SidebarButton name="History" img={History} />
-          <SidebarButton name="Communities" img={Community} />
-        </ul>
-      </div>
-      <div className="static md:top-[320px] md:fixed">
-        <ul className="md:block flex flex-wrap gap-4 justify-around md:pt-12 md:ml-2 pt-2">
           <SidebarButton name="Settings" img={Settings} />
           <SidebarButton name="Support" img={Support} />
-          <SidebarButton name="Privacy" img={Privacy} />
+        </ul>
+      </div>
+      <div className="static md:bottom-[25px] md:fixed">
+        <ul className="md:block flex flex-wrap gap-4 justify-around md:pt-12 md:ml-2 pt-2">
+          <SidebarButton name="Log out" img={Logout} />
         </ul>
       </div>
     </section>
