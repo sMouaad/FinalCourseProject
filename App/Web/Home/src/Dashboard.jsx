@@ -254,6 +254,7 @@ export default function Dashboard() {
                                   <button
                                     onClick={() => {
                                       setOperation("patient");
+                                      closePatient();
                                     }}
                                     form="mainForm"
                                     type="submit"
@@ -308,6 +309,7 @@ export default function Dashboard() {
                                   <button
                                     onClick={() => {
                                       setOperation("assistant");
+                                      closeAssistant();
                                     }}
                                     form="mainForm"
                                     type="submit"
@@ -360,6 +362,7 @@ export default function Dashboard() {
                                   <button
                                     onClick={() => {
                                       setOperation("doctor");
+                                      closeDoctor();
                                     }}
                                     form="mainForm"
                                     type="submit"
