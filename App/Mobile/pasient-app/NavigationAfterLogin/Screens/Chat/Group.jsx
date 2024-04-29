@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import React from "react";
-import ChatContainer from "./ChatContainer";
 import { Chat } from "./Chat";
 
 const Group = () => {
@@ -18,4 +17,3 @@ const Group = () => {
 
 export default Group;
 
-const styles = StyleSheet.create({});

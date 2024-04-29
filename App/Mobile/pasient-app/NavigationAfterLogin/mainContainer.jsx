@@ -22,11 +22,9 @@ const Tab = createBottomTabNavigator();
 export default function MainContainer() {
   return (
     <Tab.Navigator
-      initialRouteName="Messages"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Todo") {
@@ -55,8 +53,6 @@ export default function MainContainer() {
         name="Messages"
         component={MessagesPage}
         options={{
-          tabBarBadge: 3,
-          tabBarBadgeStyle: { backgroundColor: "red" },
           headerStyle: {
             backgroundColor: "#00A588",
           },
