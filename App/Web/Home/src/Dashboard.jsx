@@ -406,8 +406,9 @@ export default function Dashboard() {
                               </div>
                               <div className="flex justify-center">
                                 <button
-                                  onClick={() => {
+                                  onClick={(e) => {
                                     if (tableData.length === 0) {
+                                      e.preventDefault();
                                       setDeleteError(
                                         "Check at least one patient."
                                       );
@@ -417,6 +418,7 @@ export default function Dashboard() {
                                       setOperation("delete");
                                       closeDelete();
                                     } else {
+                                      e.preventDefault();
                                       setDeleteError(
                                         "Mismatch, verify your spelling."
                                       );
