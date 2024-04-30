@@ -20,6 +20,32 @@ router.post("/signup", async (req, res) => {
   return res.json({ status: true, message: "record registered" });
 });
 
+router.post("/notifications", async (req, res) => {
+  const { email, notificationId, accept } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({
+      message: "Fatal Error! user is non-existent? logout and login again.",
+    });
+  }
+  if (!accept) {
+    await Notification.findByIdAndDelete(notificationId);
+    return res.json({
+      status: true,
+      message: "Assistant invitation declined successfully!",
+    });
+  }
+  const notif = await Notification.findById(notificationId);
+  const patientX = await Patient.findById(notif.patient);
+  patientX.assistants.push(user._id);
+  await patientX.save();
+  await notif.deleteOne();
+  return res.json({
+    status: true,
+    message: "Assistant invitation accepted successfully!",
+  });
+});
+
 router.post("/operation", async (req, res) => {
   const {
     operation,
@@ -52,15 +78,15 @@ router.post("/operation", async (req, res) => {
     case "assistant": {
       //Ajouter un assistant
       //Passer par chaque patient et enovyer l'invitation au nouvel assistant secondaire
-      for (element of tableData) {
+      for (let element of tableData) {
         let secondaryAssistant = await User.findOne({
           email: assistantEmail,
         });
         let patientX = await Patient.findOne({ _id: element });
         let newNotif = new Notification({
-          message: `Vous avez reçu une invitation pour assister le patient ${
-            patientX.name
-          } atteint d'${
+          message: `Vous avez été invité par ${
+            user.name
+          } pour assister le patient ${patientX.name} atteint d'${
             patientX.condition === "autism" ? "Autisme" : "Alzheimer"
           }`,
           sender: user._id,
@@ -86,7 +112,7 @@ router.post("/operation", async (req, res) => {
     case "doctor": {
       //Ajouter un médecin
       //Passer par chaque patient et lui associer le nouveau médecin
-      for (element of tableData) {
+      for (let element of tableData) {
         let doctor = await User.findOne({
           email: doctorEmail,
         });
@@ -138,10 +164,14 @@ router.post("/operation", async (req, res) => {
     }
     default: {
       console.log("Error, missing operation...");
+      return res
+        .status(401)
+        .json({ status: false, message: "operation failed!" });
     }
   }
-  return res.json({ status: true, message: "record registered" });
+  return res.json({ status: true, message: "operation succeeded" });
 });
+
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
@@ -236,6 +266,7 @@ router.get("/userdata", async (req, res) => {
     const id = decoded.id;
     const info = await User.findById(id);
     const patientsCreated = await Patient.find({ primaryAssistant: info._id });
+    const notifications = await Notification.find({ receiver: info._id });
     // const patientsSecondary = await Patient.find({})
     //   .where(info._id)
     //   .in("assistants");
@@ -247,6 +278,7 @@ router.get("/userdata", async (req, res) => {
       email: info.email,
       type: info.type,
       patientsCreated: [...patientsCreated],
+      notifications: [...notifications],
     });
   } catch (err) {
     return res.json(err);

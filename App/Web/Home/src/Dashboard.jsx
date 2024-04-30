@@ -38,7 +38,9 @@ export default function Dashboard() {
   const [tableData, setTableData] = useState([]);
   const [tableRows, setTableRows] = useState([]);
   const [updateDash, setUpdateDash] = useState(false);
+  const [updateNotif, setUpdateNotif] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+  const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
@@ -90,6 +92,16 @@ export default function Dashboard() {
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
+        setNotifications(res.data.notifications);
+        console.log(`res notif ${res.data.notifications}`);
+      }
+      console.log(res);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateNotif]);
+  useEffect(() => {
+    Axios.get("http://localhost:3000/auth/userdata").then((res) => {
+      if (res.data.status) {
         setTableRows(res.data.patientsCreated);
       }
       console.log(res);
@@ -103,6 +115,7 @@ export default function Dashboard() {
         setName(res.data.name);
         setEmail(res.data.email);
         setRole(res.data.type);
+        setNotifications(res.data.notifications);
       }
       console.log(res);
     });
@@ -163,18 +176,30 @@ export default function Dashboard() {
               <img className="w-8" src={Bell} alt="notifications" />
             </div>
             {open && (
-              <div className="px-4 fixed overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg w-80 top-[9.2rem] right-4 h-96">
+              <div className="px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-[9.2rem] right-4 h-96">
                 <Dropdown>
                   <div className="text-2xl text-center font-Roboto font-bold mt-4">
                     Notifications
                   </div>
-                  <Notification />
-                  <Notification />
-                  <Notification />
-                  <Notification />
-                  <Notification />
-                  <Notification />
-                  <Notification />
+                  {notifications.length == 0 ? (
+                    <div className="text-center my-8 text-slate-400 tracking-wider">
+                      You have no notifications
+                    </div>
+                  ) : (
+                    notifications.map((element) => {
+                      return (
+                        <Notification
+                          key={element._id}
+                          message={element.message}
+                          email={email}
+                          notificationId={element._id}
+                          setNotifications={setNotifications}
+                          updateNotif={updateNotif}
+                          setUpdateNotif={setUpdateNotif}
+                        />
+                      );
+                    })
+                  )}
                 </Dropdown>
               </div>
             )}
@@ -270,6 +295,7 @@ export default function Dashboard() {
                                   id="patientAge"
                                   type="number"
                                   min={0}
+                                  max={100}
                                   autoComplete="off"
                                   className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                                   placeholder="Age"
@@ -625,23 +651,62 @@ function Sidebar({ role }) {
 function Notification({
   profilepic = Profile,
   message = "Invitation d'un utilisateur",
+  email,
+  notificationId,
+  setNotifications,
+  setUpdateNotif,
+  updateNotif,
 }) {
   return (
     <div className="gap-3 my-4 flex items-center">
       <div className="relative border-slate-300 border-2 min-w-8 min-h-8 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
         <img src={profilepic} alt="" />
       </div>
-      <div>{message}</div>
-      <img
-        className="w-6 h-6 hover:w-7 hover:h-7 transition-all hover:cursor-pointer"
-        src={Check}
-        alt=""
-      />
-      <img
-        className="w-6 h-6 hover:w-7 hover:h-7 transition-all hover:cursor-pointer"
-        src={Cross}
-        alt=""
-      />
+      <div className="text-sm font-Poppins font-light">{message}</div>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          Axios.post("http://localhost:3000/auth/notifications", {
+            email,
+            notificationId,
+            accept: true,
+          })
+            .then((res) => {
+              setUpdateNotif(!updateNotif);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}
+      >
+        <img
+          className="min-w-6 min-h-6 h-6 w-6 hover:min-w-7 hover:min-h-7 transition-all"
+          src={Check}
+          alt=""
+        />
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          Axios.post("http://localhost:3000/auth/notifications", {
+            email,
+            notificationId,
+            accept: false,
+          })
+            .then((res) => {
+              setUpdateNotif(!updateNotif);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}
+      >
+        <img
+          className="min-w-6 min-h-6 h-6 w-6 hover:min-w-7 hover:min-h-7 transition-all"
+          src={Cross}
+          alt=""
+        />
+      </button>
     </div>
   );
 }
