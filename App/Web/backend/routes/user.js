@@ -51,7 +51,7 @@ router.post("/operation", async (req, res) => {
     }
     case "assistant": {
       //Ajouter un assistant
-      //Passer par chaque patient et lui ajouter le nouvel assistant secondaire
+      //Passer par chaque patient et enovyer l'invitation au nouvel assistant secondaire
       for (element of tableData) {
         let secondaryAssistant = await User.findOne({
           email: assistantEmail,
@@ -87,17 +87,34 @@ router.post("/operation", async (req, res) => {
       //Ajouter un médecin
       //Passer par chaque patient et lui associer le nouveau médecin
       for (element of tableData) {
-        let patientX = await Patient.findOne({ _id: element });
         let doctor = await User.findOne({
           email: doctorEmail,
         });
-        patientX.doctors.push(doctor._id);
-        await patientX.save();
-        return res.json({
-          status: true,
-          message: "Doctor invitation sent successfully!",
+        let patientX = await Patient.findOne({ _id: element });
+        let newNotif = new Notification({
+          message: `Vous avez reçu une invitation pour superviser le patient ${
+            patientX.name
+          } atteint d'${
+            patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+          }`,
+          sender: user._id,
+          receiver: doctor._id,
+          patient: element,
         });
+        await newNotif.save();
       }
+      // for (element of tableData) {
+      //   let patientX = await Patient.findOne({ _id: element });
+      //   let doctor = await User.findOne({
+      //     email: doctorEmail,
+      //   });
+      //   patientX.doctors.push(doctor._id);
+      //   await patientX.save();
+      //   return res.json({
+      //     status: true,
+      //     message: "Doctor invitation sent successfully!",
+      //   });
+      // }
       break;
     }
     case "delete": {
