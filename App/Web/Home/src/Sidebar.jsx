@@ -139,7 +139,7 @@ function MobileIcons() {
     </>
   );
 }
-function Dropdown(props) {
+export function Dropdown(props) {
   // eslint-disable-next-line react/prop-types
   return <div>{props.children}</div>;
 }

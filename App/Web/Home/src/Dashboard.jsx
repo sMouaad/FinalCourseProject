@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import animation from "./assets/search.json";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Dropdown } from "./Sidebar";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Modal from "./components/Modal/index";
@@ -17,6 +18,8 @@ import Message from "./assets/dashboard/message.svg";
 import Profile from "./assets/dashboard/profile.svg";
 import Settings from "./assets/dashboard/settings.svg";
 import Support from "./assets/dashboard/support.svg";
+import Check from "./assets/dashboard/check.svg";
+import Cross from "./assets/dashboard/cross.svg";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
@@ -36,6 +39,7 @@ export default function Dashboard() {
   const [tableRows, setTableRows] = useState([]);
   const [updateDash, setUpdateDash] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+  const [open, setOpen] = useState(false);
   const closeAssistant = () => setAssistantModalOpen(false);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => setDoctorModalOpen(false);
@@ -152,7 +156,28 @@ export default function Dashboard() {
                 </h1>
               </div>
             </div>
-            <img className="w-8" src={Bell} alt="notifications" />
+            <div
+              onClick={() => setOpen(!open)}
+              className="flex justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
+            >
+              <img className="w-8" src={Bell} alt="notifications" />
+            </div>
+            {open && (
+              <div className="px-4 fixed overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg w-80 top-[9.2rem] right-4 h-96">
+                <Dropdown>
+                  <div className="text-2xl text-center font-Roboto font-bold mt-4">
+                    Notifications
+                  </div>
+                  <Notification />
+                  <Notification />
+                  <Notification />
+                  <Notification />
+                  <Notification />
+                  <Notification />
+                  <Notification />
+                </Dropdown>
+              </div>
+            )}
           </div>
         </nav>
         <main className="flex-1 p-4 bg-contrast grid">
@@ -595,5 +620,28 @@ function Sidebar({ role }) {
         </ul>
       </div>
     </section>
+  );
+}
+function Notification({
+  profilepic = Profile,
+  message = "Invitation d'un utilisateur",
+}) {
+  return (
+    <div className="gap-3 my-4 flex items-center">
+      <div className="relative border-slate-300 border-2 min-w-8 min-h-8 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+        <img src={profilepic} alt="" />
+      </div>
+      <div>{message}</div>
+      <img
+        className="w-6 h-6 hover:w-7 hover:h-7 transition-all hover:cursor-pointer"
+        src={Check}
+        alt=""
+      />
+      <img
+        className="w-6 h-6 hover:w-7 hover:h-7 transition-all hover:cursor-pointer"
+        src={Cross}
+        alt=""
+      />
+    </div>
   );
 }
