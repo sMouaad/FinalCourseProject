@@ -53,17 +53,34 @@ router.post("/operation", async (req, res) => {
       //Ajouter un assistant
       //Passer par chaque patient et lui ajouter le nouvel assistant secondaire
       for (element of tableData) {
-        let patientX = await Patient.findOne({ _id: element });
         let secondaryAssistant = await User.findOne({
           email: assistantEmail,
         });
-        patientX.assistants.push(secondaryAssistant._id);
-        await patientX.save();
-        return res.json({
-          status: true,
-          message: "Assistant invitation sent successfully!",
+        let patientX = await Patient.findOne({ _id: element });
+        let newNotif = new Notification({
+          message: `Vous avez reçu une invitation pour assister le patient ${
+            patientX.name
+          } atteint d'${
+            patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+          }`,
+          sender: user._id,
+          receiver: secondaryAssistant._id,
+          patient: element,
         });
+        await newNotif.save();
       }
+      // for (element of tableData) {
+      //   let patientX = await Patient.findOne({ _id: element });
+      //   let secondaryAssistant = await User.findOne({
+      //     email: assistantEmail,
+      //   });
+      //   patientX.assistants.push(secondaryAssistant._id);
+      //   await patientX.save();
+      //   return res.json({
+      //     status: true,
+      //     message: "Assistant invitation sent successfully!",
+      //   });
+      // }
       break;
     }
     case "doctor": {
