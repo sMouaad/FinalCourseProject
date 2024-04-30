@@ -193,7 +193,6 @@ export default function Dashboard() {
                           message={element.message}
                           email={email}
                           notificationId={element._id}
-                          setNotifications={setNotifications}
                           updateNotif={updateNotif}
                           setUpdateNotif={setUpdateNotif}
                         />
@@ -653,7 +652,6 @@ function Notification({
   message = "Invitation d'un utilisateur",
   email,
   notificationId,
-  setNotifications,
   setUpdateNotif,
   updateNotif,
 }) {
