@@ -2,6 +2,7 @@ import express from "express";
 import bcryt from "bcrypt";
 import { User } from "../models/User.js";
 import { Patient } from "../models/Patient.js";
+import { Notification } from "../models/Notifications.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 const router = express.Router();
