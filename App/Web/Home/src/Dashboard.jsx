@@ -37,6 +37,7 @@ export default function Dashboard() {
   const [operation, setOperation] = useState("");
   const [tableData, setTableData] = useState([]);
   const [tableRows, setTableRows] = useState([]);
+  const [secondaryRows, setSecondaryRows] = useState([]);
   const [updateDash, setUpdateDash] = useState(false);
   const [updateNotif, setUpdateNotif] = useState(false);
   const [deleteError, setDeleteError] = useState("");
@@ -118,6 +119,7 @@ export default function Dashboard() {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
+        setSecondaryRows(res.data.secondaryPatients);
       }
       console.log(res);
     });
@@ -544,7 +546,37 @@ export default function Dashboard() {
                     );
                   })}
                 </table>
-                {tableRows.length === 0 ? (
+                {secondaryRows.length !== 0 ? (
+                  <>
+                    <div className="flex justify-center text-slate-700 tracking-wider font-Poppins text-lg mt-8">
+                      <div className="border-b-slate-200 flex-1 border-b-2"></div>
+                      <div>Secondary Patients</div>
+                      <div className="border-b-slate-200 flex-1 border-b-2"></div>
+                    </div>
+                    <table className=" border-collapse">
+                      <tr className="text-sm h-16 text-black tracking-widest">
+                        <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
+                          &nbsp;
+                        </th>
+                        <th className="w-1/6 border-none ">&nbsp;</th>
+                        <th className="w-1/6 border-none ">&nbsp;</th>
+                        <th className=" border-none ">&nbsp;</th>
+                        <th className=" border-none ">&nbsp;</th>
+                      </tr>
+                      {secondaryRows.map((element) => {
+                        return (
+                          <Row
+                            key={element._id}
+                            patientId={element._id}
+                            handleCheck={handleCheck}
+                            patient={element.name}
+                          />
+                        );
+                      })}
+                    </table>
+                  </>
+                ) : null}
+                {tableRows.length === 0 && secondaryRows.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
                     <div>No patients found yet.</div>
                     <div
