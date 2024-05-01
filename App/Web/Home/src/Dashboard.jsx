@@ -653,14 +653,8 @@ function Row({
       </td>
       <td>
         <div className="flex select-none">
-          <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+          <div className=" border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
             <img src={Profile} alt="" />
-          </div>
-          <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
-          </div>
-          <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
-            ...
           </div>
         </div>
       </td>
