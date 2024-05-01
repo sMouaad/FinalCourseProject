@@ -113,9 +113,7 @@ export default function Dashboard() {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
         setNotifications(res.data.notifications);
-        console.log(`res notif ${res.data.notifications}`);
       }
-      console.log(res);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateNotif]);
@@ -125,10 +123,9 @@ export default function Dashboard() {
         setTableRows(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
       }
-      console.log(res);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateDash]);
+  }, [updateDash, updateNotif]);
 
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
