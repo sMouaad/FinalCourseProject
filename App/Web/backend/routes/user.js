@@ -147,18 +147,20 @@ router.post("/operation", async (req, res) => {
       }
       for (let element of tableData) {
         let patientX = await Patient.findOne({ _id: element });
-        if (patientX.doctors.length === 0) {
-          let newNotif = new Notification({
-            message: `Vous avez reçu une invitation pour superviser le patient ${
-              patientX.name
-            } atteint d'${
-              patientX.condition === "autism" ? "Autisme" : "Alzheimer"
-            }`,
-            sender: user._id,
-            receiver: doctor._id,
-            patient: element,
-          });
-          await newNotif.save();
+        if (patientX) {
+          if (!patientX.doctors) {
+            let newNotif = new Notification({
+              message: `Vous avez reçu une invitation pour superviser le patient ${
+                patientX.name
+              } atteint d'${
+                patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+              }`,
+              sender: user._id,
+              receiver: doctor._id,
+              patient: element,
+            });
+            await newNotif.save();
+          }
         }
       }
       break;
