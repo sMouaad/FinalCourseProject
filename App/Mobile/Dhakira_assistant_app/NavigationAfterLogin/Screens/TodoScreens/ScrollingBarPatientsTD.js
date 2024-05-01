@@ -13,12 +13,11 @@ function Todo({navigation}){
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>      
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>   
+        <TouchableOpacity style={styles.patient} onPress={() => navigation.navigate('ToDoA')}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Abderraouf MAHDJOUB</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Mouaad SADI</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Aissam BOUKHELKHAL</Text></View></TouchableOpacity>
+        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Ahmed TEHAR</Text></View></TouchableOpacity>
       </ScrollView>
       </SafeAreaView>
   );

@@ -7,23 +7,32 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomePage } from './Screens/HomeScreens/ScrollingBarPatientsP';
 import { Todo } from './Screens/TodoScreens/ScrollingBarPatientsTD';
 import { Home_PatientX } from './Screens/HomeScreens/Home_PatientX';
-import { ToDoPage } from './Screens/TodoScreens/ToDoPage';
-import Record from './Screens/HomeScreens/Record';
 import Track from './Screens/HomeScreens/Track';
-import Settings from './Screens/HomeScreens/Settings';
+import Settings from './Screens/Settings/Settings';
 import UserSettings from './Screens/UserSettings';
-import RDV from './Screens/TodoScreens/RDV';
+import ToDoPageAssistantDoctor from './Screens/TodoScreens/ToDoPage';
+import EditPatient from './Screens/Settings/EditPatient';
+import FamilyFace from './Screens/Settings/FamilyFace';
 
+const SettingsStack = createNativeStackNavigator();
+function  SettingsStackGroup() {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen name="SettingsA" component={Settings} options={{headerShown:false }} />
+      <SettingsStack.Screen name="SettingsEdit" component={EditPatient} options={{headerShown:false, title:"Edit Patient"}} />
+      <SettingsStack.Screen name="SettingsFamily" component={FamilyFace} options={{headerShown:false, title:"Recognize Faces"}} />
+    </SettingsStack.Navigator>
+  );
+}
 
 const RTC = createNativeStackNavigator();
 
 function  RecordTrackSettingsGroup() {
   return (
     <RTC.Navigator>
-      <RTC.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: false }}></RTC.Screen>
-      <RTC.Screen name="Record" component={Record} options={{headerShown:true}}></RTC.Screen>
+      <RTC.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: true }}></RTC.Screen>
       <RTC.Screen name="Track" component={Track} options={{headerShown:true}}></RTC.Screen>
-      <RTC.Screen name="Settings" component={Settings} options={{headerShown:true}}></RTC.Screen>
+      <RTC.Screen name="Settings" component={SettingsStackGroup} options={{headerShown:true}}></RTC.Screen>
     </RTC.Navigator>
   );
 }
@@ -36,9 +45,8 @@ const TodoStack = createNativeStackNavigator();
 function TodoStackGroup() {
   return(
   <TodoStack.Navigator>
-    <TodoStack.Screen name="TodoPage" component={ToDoPage} options={{ headerShown: false }}></TodoStack.Screen>
-    <TodoStack.Screen name="TodoPatient" component={Todo} options={{ headerShown: true}}></TodoStack.Screen>
-    <TodoStack.Screen name="Rdv" component={RDV} options={{ headerShown: true}}></TodoStack.Screen>
+    <TodoStack.Screen name="TodoPage" component={Todo} options={{ headerShown: false }}></TodoStack.Screen>
+    <TodoStack.Screen name="ToDoA" component={ToDoPageAssistantDoctor} options={{ headerShown: true, title:"To-Do Patient"}}></TodoStack.Screen>
   </TodoStack.Navigator>
   );
 }
@@ -70,8 +78,8 @@ export default function MainContainer() {
               iconName = focused
                 ? 'home'
                 : 'home-outline';
-            } else if (route.name === 'Schedule & ToDo') {
-              iconName = focused ? 'calendar': 'calendar-outline';
+            } else if (route.name === 'ToDo') {
+              iconName = focused ? 'checkmark': 'checkmark-outline';
             } else if (route.name == 'Messages')
             {
                 iconName = focused ? 'chatbubbles': 'chatbubbles-outline';
@@ -90,7 +98,7 @@ export default function MainContainer() {
         })}
       >
         <Tab.Screen name="Home" component={HomeStackGroup} options={{ headerShown: false }}/>
-        <Tab.Screen name="Schedule & ToDo" component={TodoStackGroup} options={{ headerShown: false}}/>
+        <Tab.Screen name="ToDo" component={TodoStackGroup} options={{ headerShown: false}}/>
         <Tab.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }}/>
         <Tab.Screen name="Settings" component={UserSettings} options={{ headerShown: false }}/>
       </Tab.Navigator>
