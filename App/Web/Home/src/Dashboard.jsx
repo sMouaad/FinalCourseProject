@@ -326,6 +326,7 @@ export default function Dashboard() {
                                   <button
                                     onClick={() => {
                                       setOperation("patient");
+                                      closePatient();
                                     }}
                                     form="mainForm"
                                     type="submit"
