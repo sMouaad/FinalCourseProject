@@ -4,7 +4,7 @@ import React from 'react'
 export default function Track() {
   return (
     <View>
-      <Text>Track</Text>
+      <Text>WINRAKKKKKK!</Text>
     </View>
   )
 }

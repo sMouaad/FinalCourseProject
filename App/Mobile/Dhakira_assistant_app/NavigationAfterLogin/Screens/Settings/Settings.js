@@ -1,29 +1,17 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-export default function Settings() {
+export default function Settings({navigation, PatientName}) {
   return (
     <View style={{flex:1, justifyContent:'center', alignItems: 'center'}}>
-        <View style={styles.PatientName}><View><Text style={{fontSize:20, fontWeight:'bold', color:'white'}}>Younes BENSAFIA</Text></View></View>
+        <View style={styles.PatientName}><View><Text style={{fontSize:20, fontWeight:'bold', color:'white'}}>{PatientName}</Text></View></View>        
 
-
-
-
-        <TouchableOpacity style={{flexDirection:'row'}}>
-
-            <TouchableOpacity style={styles.buttons}>
-                <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/photoFamille.png')}/>
-                <Text style={styles.buttonText}>Family Camera</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttons}>
-                <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/doute.png')}/>
-                <Text style={styles.buttonText}>Family Test</Text>
-            </TouchableOpacity>
-
+        <TouchableOpacity onPress={() => navigation.navigate("SettingsFamily")} style={styles.buttons}>
+            <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/doute.png')}/>
+            <Text style={styles.buttonText}>Family Test</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttons}>
+        <TouchableOpacity onPress={() => navigation.navigate("SettingsEdit")} style={styles.buttons}>
             <Image style={{justifyContent:'center', alignItems: 'center', width:100, height:100}} source={require('../../../Images/crayon.png')}/>
             <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
