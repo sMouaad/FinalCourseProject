@@ -93,13 +93,13 @@ router.post("/operation", async (req, res) => {
           message: "Not found",
         });
       }
+      if (secondaryAssistant.type !== "assistant") {
+        return res.json({
+          status: false,
+          message: "This is not an assistant.",
+        });
+      }
       for (let element of tableData) {
-        if (secondaryAssistant.type !== "assistant") {
-          return res.json({
-            status: false,
-            message: "This is not an assistant.",
-          });
-        }
         let patientX = await Patient.findOne({ _id: element });
         //check if assistant is already associated with that patient
         if (!patientX.assistants.includes(secondaryAssistant._id)) {
@@ -135,13 +135,13 @@ router.post("/operation", async (req, res) => {
           message: "Not found",
         });
       }
+      if (doctor.type !== "doctor") {
+        return res.json({
+          status: false,
+          message: "This is not a doctor.",
+        });
+      }
       for (let element of tableData) {
-        if (secondaryAssistant.type !== "doctor") {
-          return res.json({
-            status: false,
-            message: "This is not a doctor.",
-          });
-        }
         let patientX = await Patient.findOne({ _id: element });
         let newNotif = new Notification({
           message: `Vous avez reçu une invitation pour superviser le patient ${
