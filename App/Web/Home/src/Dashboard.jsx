@@ -91,16 +91,20 @@ export default function Dashboard() {
       tableData,
     })
       .then((res) => {
-        if (operation === "delete") {
-          setTableData([]);
+        if (res.data.status) {
+          if (operation === "delete") {
+            setTableData([]);
+          }
+          closeAssistant();
+          closeDelete();
+          closeDoctor();
+          setUpdateDash(!updateDash);
+        } else {
+          setDeleteError("The email you provided is invalid.");
         }
-        closeAssistant();
-        closeDelete();
-        closeDoctor();
-        setUpdateDash(!updateDash);
       })
       .catch((err) => {
-        setDeleteError("You cannot invite yourself.");
+        setDeleteError("The email you provided is invalid.");
       });
   };
 
@@ -373,6 +377,13 @@ export default function Dashboard() {
                                   className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                                   placeholder="example@example.eg"
                                 />
+                                <div className="h-8 min-h-0">
+                                  {deleteError ? (
+                                    <span className="text-red-700 text-xs tracking-normal">
+                                      {deleteError}
+                                    </span>
+                                  ) : null}
+                                </div>
                                 <div className="flex justify-center">
                                   <button
                                     onClick={() => {
