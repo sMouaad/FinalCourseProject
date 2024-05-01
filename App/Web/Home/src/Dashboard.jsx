@@ -557,6 +557,11 @@ export default function Dashboard() {
                     );
                   })}
                 </table>
+                {tableRows.length === 0 && secondaryRows.length !== 0 ? (
+                  <div className="h-full flex items-center text-slate-500 justify-center text-md mt-8">
+                    <div>No patients created yet.</div>
+                  </div>
+                ) : null}
                 {secondaryRows.length !== 0 ? (
                   <>
                     <div className="flex justify-center text-slate-700 tracking-wider font-Poppins text-lg mt-8">
