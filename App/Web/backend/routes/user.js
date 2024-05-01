@@ -89,17 +89,20 @@ router.post("/operation", async (req, res) => {
           email: assistantEmail,
         });
         let patientX = await Patient.findOne({ _id: element });
-        let newNotif = new Notification({
-          message: `Vous avez été invité par ${
-            user.name
-          } pour assister le patient ${patientX.name} atteint d'${
-            patientX.condition === "autism" ? "Autisme" : "Alzheimer"
-          }`,
-          sender: user._id,
-          receiver: secondaryAssistant._id,
-          patient: element,
-        });
-        await newNotif.save();
+        //check if assistant is already associated with that patient
+        if (!patientX.assistants.includes(secondaryAssistant._id)) {
+          let newNotif = new Notification({
+            message: `Vous avez été invité par ${
+              user.name
+            } pour assister le patient ${patientX.name} atteint d'${
+              patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+            }`,
+            sender: user._id,
+            receiver: secondaryAssistant._id,
+            patient: element,
+          });
+          await newNotif.save();
+        }
       }
       break;
     }
