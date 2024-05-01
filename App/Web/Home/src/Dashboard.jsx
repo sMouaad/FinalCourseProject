@@ -42,9 +42,17 @@ export default function Dashboard() {
   const [deleteError, setDeleteError] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
-  const closeAssistant = () => setAssistantModalOpen(false);
+  const closeAssistant = () => {
+    setAssistantModalOpen(false);
+    setDelete("");
+    setDeleteError("");
+  };
   const openAssistant = () => setAssistantModalOpen(true);
-  const closeDoctor = () => setDoctorModalOpen(false);
+  const closeDoctor = () => {
+    setDoctorModalOpen(false);
+    setDelete("");
+    setDeleteError("");
+  };
   const openDoctor = () => setDoctorModalOpen(true);
   const closeDelete = () => {
     setDeleteModalOpen(false);
@@ -52,7 +60,11 @@ export default function Dashboard() {
     setDeleteError("");
   };
   const openDelete = () => setDeleteModalOpen(true);
-  const closePatient = () => setPatientModalOpen(false);
+  const closePatient = () => {
+    setPatientModalOpen(false);
+    setDelete("");
+    setDeleteError("");
+  };
   const openPatient = () => setPatientModalOpen(true);
   Axios.defaults.withCredentials = true;
   // const navigate = useNavigate();
@@ -81,10 +93,13 @@ export default function Dashboard() {
         if (operation === "delete") {
           setTableData([]);
         }
+        closeAssistant();
+        closeDelete();
+        closeDoctor();
         setUpdateDash(!updateDash);
       })
       .catch((err) => {
-        console.log(err);
+        setDeleteError("You cannot invite yourself.");
       });
   };
 
@@ -290,6 +305,7 @@ export default function Dashboard() {
                                 <input
                                   onChange={(e) => {
                                     setPatientAge(e.target.value);
+                                    setDeleteError("");
                                   }}
                                   id="patientAge"
                                   type="number"
@@ -304,7 +320,6 @@ export default function Dashboard() {
                                   <button
                                     onClick={() => {
                                       setOperation("patient");
-                                      closePatient();
                                     }}
                                     form="mainForm"
                                     type="submit"
@@ -349,6 +364,7 @@ export default function Dashboard() {
                                 <input
                                   onChange={(e) => {
                                     setAssistantEmail(e.target.value);
+                                    setDeleteError("");
                                   }}
                                   id="assistantEmail"
                                   autoComplete="off"
@@ -359,7 +375,6 @@ export default function Dashboard() {
                                   <button
                                     onClick={() => {
                                       setOperation("assistant");
-                                      closeAssistant();
                                     }}
                                     form="mainForm"
                                     type="submit"
@@ -402,17 +417,24 @@ export default function Dashboard() {
                                 <input
                                   onChange={(e) => {
                                     setDoctorEmail(e.target.value);
+                                    setDeleteError("");
                                   }}
                                   id="doctorEmail"
                                   autoComplete="off"
                                   className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                                   placeholder="example@example.eg"
                                 />
+                                <div className="h-8 min-h-0">
+                                  {deleteError ? (
+                                    <span className="text-red-700 text-xs tracking-normal">
+                                      {deleteError}
+                                    </span>
+                                  ) : null}
+                                </div>
                                 <div className="flex justify-center">
                                   <button
                                     onClick={() => {
                                       setOperation("doctor");
-                                      closeDoctor();
                                     }}
                                     form="mainForm"
                                     type="submit"
@@ -483,7 +505,6 @@ export default function Dashboard() {
                                         deleteConfirmation === "Delete Patient"
                                       ) {
                                         setOperation("delete");
-                                        closeDelete();
                                       } else {
                                         e.preventDefault();
                                         setDeleteError(
