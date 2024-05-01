@@ -37,7 +37,11 @@ router.post("/notifications", async (req, res) => {
   }
   const notif = await Notification.findById(notificationId);
   const patientX = await Patient.findById(notif.patient);
-  patientX.assistants.push(user._id);
+  if (user.type === "assistant") {
+    patientX.assistants.push(user._id);
+  } else {
+    patientX.doctors = user._id;
+  }
   await patientX.save();
   await notif.deleteOne();
   return res.json({
