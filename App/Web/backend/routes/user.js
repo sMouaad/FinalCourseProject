@@ -106,12 +106,12 @@ router.post("/operation", async (req, res) => {
     case "doctor": {
       //Ajouter un médecin
       //Passer par chaque patient et lui associer le nouveau médecin
+      if (email === doctorEmail) {
+        return res.status(400).json({
+          message: "Fatal Error! you can't invite yourself.",
+        });
+      }
       for (let element of tableData) {
-        if (email === doctorEmail) {
-          return res.status(400).json({
-            message: "Fatal Error! you can't invite yourself.",
-          });
-        }
         let doctor = await User.findOne({
           email: doctorEmail,
         });
