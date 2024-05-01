@@ -131,21 +131,18 @@ router.post("/operation", async (req, res) => {
       break;
     }
     case "delete": {
-      //check first if checked patients are all created by that assistant
-      for (let element of tableData) {
-        let patientX = await Patient.findOne({ _id: element });
-        if (!patientX.primaryAssistant.equals(user._id)) {
-          return res.status(401).json({
-            status: false,
-            message:
-              "Permission Denied! Interrupting Operation... Are you really the primary assistant?",
-          });
-        }
-      }
+      //check first if checked patients are all created by that assistant, else, dissociate
       //deleting
       for (let element of tableData) {
         let patientX = await Patient.findOne({ _id: element });
-        await patientX.deleteOne();
+        if (patientX.primaryAssistant.equals(user._id)) {
+          await patientX.deleteOne();
+        } else {
+          patientX.assistants = patientX.assistants.filter(
+            (element) => !element.equals(user._id)
+          );
+          await patientX.save();
+        }
       }
       break;
     }
