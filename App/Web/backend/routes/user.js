@@ -254,17 +254,17 @@ router.get("/userdata", async (req, res) => {
     const info = await User.findById(id);
     const patientsCreated = await Patient.find({ primaryAssistant: info._id });
     const notifications = await Notification.find({ receiver: info._id });
-    // const patientsSecondary = await Patient.find({})
-    //   .where(info._id)
-    //   .in("assistants");
-    // console.log("secondary");
-    // console.log(patientsSecondary);
+    const patients = await Patient.find({});
+    const secondaryPatients = patients.filter((element) =>
+      element.assistants.includes(info._id)
+    );
     return res.json({
       status: true,
       name: info.name,
       email: info.email,
       type: info.type,
       patientsCreated: [...patientsCreated],
+      secondaryPatients: [...secondaryPatients],
       notifications: [...notifications],
     });
   } catch (err) {
