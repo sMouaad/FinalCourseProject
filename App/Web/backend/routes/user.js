@@ -63,6 +63,7 @@ router.post("/operation", async (req, res) => {
       message: "Fatal Error! user is non-existent? logout and login again.",
     });
   }
+
   switch (operation) {
     case "patient": {
       //Creation d'un nouveau patient
@@ -78,6 +79,11 @@ router.post("/operation", async (req, res) => {
     case "assistant": {
       //Ajouter un assistant
       //Passer par chaque patient et enovyer l'invitation au nouvel assistant secondaire
+      if (email === assistantEmail) {
+        return res.status(400).json({
+          message: "Fatal Error! you can't invite yourself.",
+        });
+      }
       for (let element of tableData) {
         let secondaryAssistant = await User.findOne({
           email: assistantEmail,
@@ -95,24 +101,17 @@ router.post("/operation", async (req, res) => {
         });
         await newNotif.save();
       }
-      // for (element of tableData) {
-      //   let patientX = await Patient.findOne({ _id: element });
-      //   let secondaryAssistant = await User.findOne({
-      //     email: assistantEmail,
-      //   });
-      //   patientX.assistants.push(secondaryAssistant._id);
-      //   await patientX.save();
-      //   return res.json({
-      //     status: true,
-      //     message: "Assistant invitation sent successfully!",
-      //   });
-      // }
       break;
     }
     case "doctor": {
       //Ajouter un médecin
       //Passer par chaque patient et lui associer le nouveau médecin
       for (let element of tableData) {
+        if (email === doctorEmail) {
+          return res.status(400).json({
+            message: "Fatal Error! you can't invite yourself.",
+          });
+        }
         let doctor = await User.findOne({
           email: doctorEmail,
         });
@@ -129,18 +128,6 @@ router.post("/operation", async (req, res) => {
         });
         await newNotif.save();
       }
-      // for (element of tableData) {
-      //   let patientX = await Patient.findOne({ _id: element });
-      //   let doctor = await User.findOne({
-      //     email: doctorEmail,
-      //   });
-      //   patientX.doctors.push(doctor._id);
-      //   await patientX.save();
-      //   return res.json({
-      //     status: true,
-      //     message: "Doctor invitation sent successfully!",
-      //   });
-      // }
       break;
     }
     case "delete": {
