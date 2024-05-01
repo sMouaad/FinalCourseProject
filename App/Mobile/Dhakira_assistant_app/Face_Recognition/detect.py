@@ -27,7 +27,7 @@ def find_faces(file):
 
 
     
-name, code, who = find_faces("./4218421-349722920.jpg")
+name, code, who = find_faces("./persons.jpg")
 
 
 def patient(img, enco):
@@ -41,7 +41,7 @@ def patient(img, enco):
             return i
 
 
-i = patient("./8198-1694609670.jpg", code)
+i = patient("./person1.jpeg", code)
 
 print("Name: ", name[i])
 
