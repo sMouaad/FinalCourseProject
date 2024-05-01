@@ -5,7 +5,7 @@ const PatientSchema = new mongoose.Schema({
   condition: { type: String, required: true },
   primaryAssistant: { type: mongoose.SchemaTypes.ObjectId, required: true },
   assistants: [{ type: mongoose.SchemaTypes.ObjectId }],
-  doctors: [{ type: mongoose.SchemaTypes.ObjectId }],
+  doctors: { type: mongoose.SchemaTypes.ObjectId },
 });
 const PatientModel = mongoose.model("Patient", PatientSchema);
 export { PatientModel as Patient };
