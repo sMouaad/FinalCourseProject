@@ -41,7 +41,7 @@ const Test = ({ navigation }) => {
       setcolorIndex((colorIndex + 2) % colors.length);
     }
     if (completed) {
-      navigation.navigate("mainContainer");
+      navigation.navigate("Tab");
     }
     setInputValue("");
   }

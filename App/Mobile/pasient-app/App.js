@@ -1,21 +1,11 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Animated,
-  KeyboardAvoidingView,
-} from "react-native";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainContainer from "./NavigationAfterLogin/mainContainer";
 import Login from "./Comp/login-page/Login.jsx";
-import Test from "./Comp/Test/Test.jsx";
+import Test from "./NavigationAfterLogin/Test/Test.jsx";
 import WaitingForTheFaceRecognition from "./Comp/WaitingForTheFaceRecognition/WaitingForTheFaceRecognition";
-import { Chat } from "./NavigationAfterLogin/Screens/Chat/Chat.jsx";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
