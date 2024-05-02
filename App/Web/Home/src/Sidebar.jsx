@@ -47,7 +47,6 @@ function DesktopIcons() {
   const handleLogout = () => {
     Axios.get("http://localhost:3000/auth/logout")
       .then((res) => {
-        console.log("here!");
         if (res.data.status) console.log("cookies cleared");
       })
       .catch((err) => {
