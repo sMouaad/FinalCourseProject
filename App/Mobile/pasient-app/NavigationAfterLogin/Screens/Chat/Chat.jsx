@@ -11,7 +11,128 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import io from "socket.io-client";
 
 export function Chat() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      _id: 1,
+      text: "azerty",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 2,
+      text: "aqwzsx",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 3,
+      text: "kjw",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 4,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 5,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 6,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 7,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 8,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 9,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 10,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 11,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 12,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+  ]);
   const [socket, setSocket] = useState(null);
   const giftedChatRef = useRef(null);
 
@@ -114,7 +235,6 @@ export function Chat() {
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
-        ref={giftedChatRef}
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{ _id: 1 }}
