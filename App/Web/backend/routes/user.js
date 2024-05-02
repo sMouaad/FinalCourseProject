@@ -1,6 +1,8 @@
 import express from "express";
 import bcryt from "bcrypt";
 import { User } from "../models/User.js";
+import { Patient } from "../models/Patient.js";
+import { Notification } from "../models/Notifications.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 const router = express.Router();
@@ -18,6 +20,177 @@ router.post("/signup", async (req, res) => {
   return res.json({ status: true, message: "record registered" });
 });
 
+router.post("/notifications", async (req, res) => {
+  const { email, notificationId, accept } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({
+      message: "Fatal Error! user is non-existent? logout and login again.",
+    });
+  }
+  if (!accept) {
+    await Notification.findByIdAndDelete(notificationId);
+    return res.json({
+      status: true,
+      message: "Assistant invitation declined successfully!",
+    });
+  }
+  const notif = await Notification.findById(notificationId);
+  const patientX = await Patient.findById(notif.patient);
+  if (user.type === "assistant") {
+    patientX.assistants.push(user._id);
+  } else {
+    patientX.doctors = user._id;
+  }
+  await patientX.save();
+  await notif.deleteOne();
+  return res.json({
+    status: true,
+    message: "Assistant invitation accepted successfully!",
+  });
+});
+
+router.post("/operation", async (req, res) => {
+  const {
+    operation,
+    patientAge,
+    patientName,
+    assistantEmail,
+    doctorEmail,
+    tableData,
+    condition,
+    email,
+  } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({
+      message: "Fatal Error! user is non-existent? logout and login again.",
+    });
+  }
+
+  switch (operation) {
+    case "patient": {
+      //Creation d'un nouveau patient
+      const newPatient = new Patient({
+        name: patientName,
+        primaryAssistant: user._id,
+        age: patientAge,
+        condition: condition,
+      });
+      await newPatient.save();
+      break;
+    }
+    case "assistant": {
+      //Ajouter un assistant
+      //Passer par chaque patient et enovyer l'invitation au nouvel assistant secondaire
+      if (email === assistantEmail) {
+        return res.status(400).json({
+          message: "Fatal Error! you can't invite yourself.",
+        });
+      }
+      const secondaryAssistant = await User.findOne({
+        email: assistantEmail,
+      });
+      if (!secondaryAssistant) {
+        return res.json({
+          status: false,
+          message: "Not found",
+        });
+      }
+      if (secondaryAssistant.type !== "assistant") {
+        return res.json({
+          status: false,
+          message: "This is not an assistant.",
+        });
+      }
+      for (let element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        //check if assistant is already associated with that patient
+        if (!patientX.assistants.includes(secondaryAssistant._id)) {
+          let newNotif = new Notification({
+            message: `Vous avez été invité par ${
+              user.name
+            } pour assister le patient ${patientX.name} atteint d'${
+              patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+            }`,
+            sender: user._id,
+            receiver: secondaryAssistant._id,
+            patient: element,
+          });
+          await newNotif.save();
+        }
+      }
+      break;
+    }
+    case "doctor": {
+      //Ajouter un médecin
+      //Passer par chaque patient et lui associer le nouveau médecin
+      if (email === doctorEmail) {
+        return res.status(400).json({
+          message: "Fatal Error! you can't invite yourself.",
+        });
+      }
+      const doctor = await User.findOne({
+        email: doctorEmail,
+      });
+      if (!doctor) {
+        return res.json({
+          status: false,
+          message: "Not found",
+        });
+      }
+      if (doctor.type !== "doctor") {
+        return res.json({
+          status: false,
+          message: "This is not a doctor.",
+        });
+      }
+      for (let element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        if (patientX) {
+          if (!patientX.doctors) {
+            let newNotif = new Notification({
+              message: `Vous avez reçu une invitation pour superviser le patient ${
+                patientX.name
+              } atteint d'${
+                patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+              }`,
+              sender: user._id,
+              receiver: doctor._id,
+              patient: element,
+            });
+            await newNotif.save();
+          }
+        }
+      }
+      break;
+    }
+    case "delete": {
+      //check first if checked patients are all created by that assistant, else, dissociate
+      //deleting
+      for (let element of tableData) {
+        let patientX = await Patient.findOne({ _id: element });
+        if (patientX.primaryAssistant.equals(user._id)) {
+          await patientX.deleteOne();
+        } else {
+          patientX.assistants = patientX.assistants.filter(
+            (element) => !element.equals(user._id)
+          );
+          await patientX.save();
+        }
+      }
+      break;
+    }
+    default: {
+      console.log("Error, missing operation...");
+      return res
+        .status(401)
+        .json({ status: false, message: "operation failed!" });
+    }
+  }
+  return res.json({ status: true, message: "operation succeeded" });
+});
+
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
@@ -33,11 +206,11 @@ router.post("/login", async (req, res) => {
     { nameLogin: user.nameLogin, id: user._id },
     process.env.KEY,
     {
-      expiresIn: "1h",
+      expiresIn: "10h",
     }
   );
   //expires in 1 hour
-  res.cookie("token", token, { httpOnly: true, maxAge: 360000 });
+  res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
   return res.json({
     status: true,
     message: "login successful",
@@ -101,7 +274,7 @@ router.post("/reset-password/:token", async (req, res) => {
     return res.json("invalid token");
   }
 });
-router.get("/verify", async (req, res) => {
+router.get("/userdata", async (req, res) => {
   try {
     const token = req.cookies.token;
 
@@ -111,7 +284,21 @@ router.get("/verify", async (req, res) => {
     const decoded = await jwt.verify(token, process.env.KEY);
     const id = decoded.id;
     const info = await User.findById(id);
-    return res.json({ status: true, name: info.name, email: info.email });
+    const patientsCreated = await Patient.find({ primaryAssistant: info._id });
+    const notifications = await Notification.find({ receiver: info._id });
+    const patients = await Patient.find({});
+    const secondaryPatients = patients.filter((element) =>
+      element.assistants.includes(info._id)
+    );
+    return res.json({
+      status: true,
+      name: info.name,
+      email: info.email,
+      type: info.type,
+      patientsCreated: [...patientsCreated],
+      secondaryPatients: [...secondaryPatients],
+      notifications: [...notifications],
+    });
   } catch (err) {
     return res.json(err);
   }
