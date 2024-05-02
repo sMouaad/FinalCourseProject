@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import brain from "./assets/cerveau_idea.png";
-import { FaFacebook } from "react-icons/fa";
-import { AiFillGoogleCircle } from "react-icons/ai";
 import Axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";

@@ -108,6 +108,10 @@
     @apply text-white bg-[#00e5bd];
   }
 
+  .modal {
+    width: clamp(50%, 700px, 90%);
+    height: min(50%, 700px);
+  }
   @keyframes move {
     0%,
     49.99% {
