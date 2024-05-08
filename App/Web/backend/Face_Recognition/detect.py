@@ -1,3 +1,4 @@
+import os
 import face_recognition
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -29,9 +30,8 @@ def one_face_to_encoding(file):
 
     encoding = face_recognition.face_encodings(image)
     plt.imshow(pil_image)
+    os.makedirs("output", exist_ok=True)
     plt.savefig("./output/face" + ".jpg")
-
-    print(encoding)
 
     return encoding[0].tolist()
 

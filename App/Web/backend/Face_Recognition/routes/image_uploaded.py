@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Body, File, Form, UploadFile, HTTPException
 from fastapi import APIRouter
 import os
+
+from pydantic import Field
 from config.database import patient_collection
 from models.patient import Patient
 
-from schema.schemas import patients_serial
+from schema.schemas import patient_serial, patients_serial, read_patient_image
 from bson import ObjectId
 from numpy import array
 
@@ -14,8 +16,9 @@ from detect import search_encoding_in_list, one_face_to_encoding
 router = APIRouter()
 
 
-@router.post("/image_uploaded_by_patient")
+@router.post("/image_uploaded_by_patient/{id}")
 async def process_image_patient(
+    id: str,
     file: UploadFile = File(...),
     # token: str = Depends(oauth2_scheme),
 ):
@@ -33,10 +36,15 @@ async def process_image_patient(
     try:
         content = await file.read()
         filename = file.filename
-        list_encodings = []
+        fetched_patient = await patient_collection.find_one({"_id": ObjectId(id)})
+        patinet = patient_serial(fetched_patient)
+
+        list_encodings = patinet["images"]
 
         os.makedirs(upload_dir, exist_ok=True)
         full_path = os.path.join(upload_dir, filename)
+        with open(full_path, "wb") as destination:
+            destination.write(content)
 
         if len(list_encodings) != 0:
             i = search_encoding_in_list(full_path, list_encodings)
@@ -48,14 +56,15 @@ async def process_image_patient(
             return {"No data found"}
 
     except Exception as e:
-        raise print(e)
+        raise {"the error is" + e}
         # raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
-@router.post("/image_uploaded_by_caregiver")
+@router.put("/image_uploaded_by_caregiver/{id}")
 async def process_image_caregiver(
-    name=Form(...),
-    who=Form(...),
+    id: str,
+    Name=Form(...),
+    Who=Form(...),
     file: UploadFile = File(...),
     # token: str = Depends(oauth2_scheme),
 ):
@@ -70,24 +79,35 @@ async def process_image_caregiver(
     # if file.content_type not in ("image/jpeg", "image/png"):
     #     raise HTTPException(status_code=400, detail="Unsupported image type")
     try:
-        list_encodings = []
+        
+        fetched_patient = await patient_collection.find_one({"_id": ObjectId(id)})
+        patinet = patient_serial(fetched_patient)
         content = await file.read()
         filename = file.filename
 
         os.makedirs(upload_dir, exist_ok=True)
         full_path = os.path.join(upload_dir, filename)
-        # with open(full_path, "wb") as destination:
-        #     destination.write(content)
+        with open(full_path, "wb") as destination:
+            destination.write(content)
 
         encoding = one_face_to_encoding(full_path)
 
         if isinstance(encoding, str):
             return {"message": encoding}
 
-        list_encodings.append({"name": name, "who": who, "encoding": encoding})
+        patinet["images"].append({"name": Name, "who": Who, "encoding": encoding})
 
-        return {"message": name + " is added!"}
+        await patient_collection.update_one({"_id": ObjectId(id)}, {"$set": patinet})
+
+        return {"message": Name + " is added!"}
 
     except Exception as e:
         raise print(e)
         # raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@router.get("/patients")
+async def get_patients():
+    patients = await patient_collection.find().to_list(1000)
+    patients = patients_serial(patients)
+    read_patient_image(patients)
