@@ -725,9 +725,11 @@ function Row({
         </Link>
       </td>
       <td className="text-center px-2">
-        <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-          Track your Patient
-        </button>
+        <Link to="/maps">
+          <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+            Track your Patient
+          </button>
+        </Link>
       </td>
     </tr>
   );
