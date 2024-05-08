@@ -26,5 +26,5 @@ def read_patient_images(patient) -> list:
     return {
         "id": str(patient["_id"]),
         "name": patient["name"],
-        
+        "images": [read_patient_image(image) for image in patient["images"]],
     }

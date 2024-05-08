@@ -79,7 +79,7 @@ async def process_image_caregiver(
     # if file.content_type not in ("image/jpeg", "image/png"):
     #     raise HTTPException(status_code=400, detail="Unsupported image type")
     try:
-        
+
         fetched_patient = await patient_collection.find_one({"_id": ObjectId(id)})
         patinet = patient_serial(fetched_patient)
         content = await file.read()
@@ -95,19 +95,21 @@ async def process_image_caregiver(
         if isinstance(encoding, str):
             return {"message": encoding}
 
-        patinet["images"].append({"name": Name, "who": Who, "encoding": encoding})
+        if isinstance(search_encoding_in_list(full_path, patinet["images"]), str):
 
-        await patient_collection.update_one({"_id": ObjectId(id)}, {"$set": patinet})
+            patinet["images"].append({"name": Name, "who": Who, "encoding": encoding})
 
-        return {"message": Name + " is added!"}
+            await patient_collection.update_one(
+                {"_id": ObjectId(id)}, {"$set": patinet}
+            )
+            return {"message": Name + " is added!"}
+        return {"message": Name + "already exist ! "}
 
     except Exception as e:
         raise print(e)
         # raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
-@router.get("/patients")
-async def get_patients():
-    patients = await patient_collection.find().to_list(1000)
-    patients = patients_serial(patients)
-    read_patient_image(patients)
+@router.put("/caregiver_update_image")
+async def update_image():
+    return
