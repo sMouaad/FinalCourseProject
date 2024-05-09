@@ -239,7 +239,13 @@ export default function Dashboard() {
               <img className="w-8" src={Logout} alt="logout" />
             </div>
             {open && (
-              <div className="px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-[9.2rem] right-4 h-96">
+              <div
+                className={
+                  role === "doctor"
+                    ? "px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-20 right-4 h-96"
+                    : "px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-[9.2rem] right-4 h-96"
+                }
+              >
                 <Dropdown>
                   <div className="text-2xl text-center font-Roboto font-bold mt-4">
                     Notifications
