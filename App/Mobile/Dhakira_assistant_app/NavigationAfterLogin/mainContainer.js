@@ -28,9 +28,10 @@ function  SettingsStackGroup() {
 const RTC = createNativeStackNavigator();
 
 function  RecordTrackSettingsGroup() {
+  
   return (
     <RTC.Navigator>
-      <RTC.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: true }}></RTC.Screen>
+      <RTC.Screen name="Home_Patient" component={Home_PatientX} options={{ headerShown: false}}></RTC.Screen>
       <RTC.Screen name="Track" component={Track} options={{headerShown:true}}></RTC.Screen>
       <RTC.Screen name="Settings" component={SettingsStackGroup} options={{headerShown:true}}></RTC.Screen>
     </RTC.Navigator>
@@ -55,10 +56,10 @@ function TodoStackGroup() {
 const HomeStack = createNativeStackNavigator();
 
 
-function HomeStackGroup() {
+function  HomeStackGroup() {
   return(
     <HomeStack.Navigator>
-      <HomeStack.Screen name="HomePage" component={HomePage} options={{ headerShown: false }}></HomeStack.Screen>
+      <HomeStack.Screen name="HomePage" component={HomePage} options={{ headerShown: false  }}></HomeStack.Screen>
       <HomeStack.Screen name="Home_RTC" component={RecordTrackSettingsGroup} options={{ headerShown: false }}></HomeStack.Screen>
     </HomeStack.Navigator>
   )
