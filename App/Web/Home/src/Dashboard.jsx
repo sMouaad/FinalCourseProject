@@ -198,6 +198,7 @@ export default function Dashboard() {
               <div className="flex flex-col justify-center gap-1">
                 <p className="font-bold text-[0.8rem]">Hi there,</p>
                 <h1 className="text-lg">
+                  {role === "doctor" ? "Dr " : null}
                   {name} &#40;{email}&#41;
                 </h1>
               </div>
