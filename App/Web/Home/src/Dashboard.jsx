@@ -26,6 +26,7 @@ export default function Dashboard() {
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
   const [modalPatientOpen, setPatientModalOpen] = useState(false);
   const [modalDeleteOpen, setDeleteModalOpen] = useState(false);
+  const [modalInstructionsOpen, setInstructionsModalOpen] = useState(false);
   const [condition, setCondition] = useState("alzheimer");
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
@@ -63,6 +64,7 @@ export default function Dashboard() {
     setDelete("");
     setDeleteError("");
   };
+  const openInstructions = () => setInstructionsModalOpen(true);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => {
     setDoctorModalOpen(false);
@@ -70,6 +72,7 @@ export default function Dashboard() {
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
+  const closeInstructions = () => setInstructionsModalOpen(false);
   const closeDelete = () => {
     setDeleteModalOpen(false);
     setDelete("");
@@ -666,11 +669,54 @@ export default function Dashboard() {
           {role === "doctor" ? (
             <div className="flex gap-8">
               <motion.button
+                onClick={() =>
+                  modalInstructionsOpen
+                    ? closeInstructions()
+                    : openInstructions()
+                }
                 whileTap={{ scale: 0.95 }}
                 className="flex-1 bg-[#1ba8ff] h-16 hover:bg-[#0184cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
               >
                 Instructions
               </motion.button>
+              <AnimatePresence
+                initial={false}
+                mode="wait"
+                onExitComplete={() => null}
+              >
+                {modalInstructionsOpen && (
+                  <Modal
+                    modalInstructionsOpen={modalInstructionsOpen}
+                    handleClose={closeInstructions}
+                    text={
+                      <div className="py-3 h-full w-4/5 flex flex-col gap-4">
+                        <div className="text-center text-3xl font-bold">
+                          Instructions
+                        </div>
+                        <input
+                          autoComplete="off"
+                          className="bg-slate-200 text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                          placeholder="Instruction..."
+                          type="text"
+                        />
+                        <textarea
+                          className="bg-slate-200 flex-1 resize-none text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                          name=""
+                          id=""
+                          cols="30"
+                          rows="10"
+                          placeholder="Details..."
+                        ></textarea>
+                        <div className="text-center">
+                          <button className=" bg-green-500 py-4 px-8 text-white text-[12px] self-center basis-1/2 border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  />
+                )}
+              </AnimatePresence>
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 className="flex-1 bg-[#00e500] h-16 hover:bg-[#2ca92c] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
