@@ -171,23 +171,31 @@ export default function Dashboard() {
       <form id="mainForm" onSubmit={handleForm}></form>
       {role === "assistant" ? <Sidebar setAuth={setAuth} role={role} /> : null}
       <section className="flex-[6] flex flex-col">
-        <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
-          <div className="items-center justify-between gap-12 flex">
-            <div className="flex shrink gap-4 basis-[75%]">
-              <div className="items-center flex">
-                <img className="h-[20px]" src="assets/search.svg" alt="" />
+        <nav
+          className={
+            role === "doctor"
+              ? "grid-rows-1 px-12 py-4 gap-4 shadow-lg z-[2] grid"
+              : "grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid"
+          }
+        >
+          {role === "assistant" ? (
+            <div className="items-center justify-between gap-12 flex">
+              <div className="flex shrink gap-4 basis-[75%]">
+                <div className="items-center flex">
+                  <div></div>
+                </div>
+              </div>
+              <div className="pr-4 items-center gap-6 flex">
+                <img className="h-[25px] button" src="assets/bell.svg" alt="" />
+                <img
+                  className="bg-yellow-300 rounded-full h-[40px]"
+                  src={ProfilePic}
+                  alt=""
+                />
+                <p className="font-bold">{name}</p>
               </div>
             </div>
-            <div className="pr-4 items-center gap-6 flex">
-              <img className="h-[25px] button" src="assets/bell.svg" alt="" />
-              <img
-                className="bg-yellow-300 rounded-full h-[40px]"
-                src={ProfilePic}
-                alt=""
-              />
-              <p className="font-bold">{name}</p>
-            </div>
-          </div>
+          ) : null}
           <div className="flex gap-12 justify-between items-center">
             <div className="gap-4 flex">
               <img
