@@ -30,6 +30,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import Axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DURATION = 1000;
 const DELAY = 500;
@@ -71,6 +72,26 @@ const Login = ({ navigation }) => {
   }, []);
   const handleSheetChanges = useCallback((index) => {
     console.log("handleSheetChanges", index);
+  }, []);
+
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    Axios.get("http://localhost:3000/auth/userdata").then((res) => {
+      if (res.data.status) {
+        setTableRows(res.data.patientsCreated);
+        setSecondaryRows(res.data.secondaryPatients);
+        
+        storeData("userData", JSON.stringify(res.data));
+      }
+    });
   }, []);
 
   return (
