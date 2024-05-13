@@ -1,5 +1,10 @@
 import React, { useRef, useState } from "react";
-import { View, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  Dimensions,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import AllChats from "./AllChats";
@@ -58,14 +63,12 @@ const Home = () => {
           scrollview.current.scrollTo({ x: 0 });
         }}
         onPress2={() => {
-          scrollview.current.scrollTo({ x: Dimensions.get("window").width });
-        }}
-        onPress3={() => {
           scrollview.current.scrollToEnd();
         }}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
+
       <ScrollView
         className
         ref={scrollview}
@@ -74,8 +77,8 @@ const Home = () => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
+        keyboardShouldPersistTaps="handled"
       >
-        <AllChats />
         <Group />
         <Assistants />
       </ScrollView>
