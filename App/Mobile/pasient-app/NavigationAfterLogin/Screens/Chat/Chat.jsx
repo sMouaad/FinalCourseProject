@@ -1,22 +1,144 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   GiftedChat,
   InputToolbar,
   Composer,
   Send,
 } from "react-native-gifted-chat";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import io from "socket.io-client";
 
 export function Chat() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      _id: 1,
+      text: "azerty",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 2,
+      text: "aqwzsx",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 3,
+      text: "kjw",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 4,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 5,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 6,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 7,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 8,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 9,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 10,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 11,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+    {
+      _id: 12,
+      text: "lsqd",
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+      },
+    },
+  ]);
   const [socket, setSocket] = useState(null);
+  const giftedChatRef = useRef(null);
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const socket = io("http://192.168.8.102:4000");
+    const socket = io("http://192.168.8.10:4000");
     setSocket(socket);
 
     // Emit a test message to the server
@@ -58,6 +180,10 @@ export function Chat() {
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
+
+      if (giftedChatRef.current) {
+        giftedChatRef.current.scrollToBottom();
+      }
     },
     [socket]
   );
@@ -96,11 +222,13 @@ export function Chat() {
 
   const renderSend = (props) => {
     return (
-      <Send {...props}>
-        <View style={{ marginRight: 10, marginBottom: 7 }}>
-          <Ionicons name="send" size={28} color="#00A588" />
-        </View>
-      </Send>
+      <TouchableOpacity>
+        <Send {...props}>
+          <View style={{ marginRight: 10, marginBottom: 7 }}>
+            <Ionicons name="send" size={28} color="#00A588" />
+          </View>
+        </Send>
+      </TouchableOpacity>
     );
   };
 
@@ -113,6 +241,7 @@ export function Chat() {
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
         renderSend={renderSend}
+        bottomOffset={10}
       />
     </View>
   );

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import TabButton from "./TabButton";
 import React, { useState } from "react";
 
-const TabBar = ({ activeTab, setActiveTab, onPress1, onPress2, onPress3 }) => {
+const TabBar = ({ activeTab, setActiveTab, onPress1, onPress2 }) => {
   // const [activeTab, setActiveTab] = useState("all");
 
   const handleTabClick = (tab) => {
@@ -17,22 +17,13 @@ const TabBar = ({ activeTab, setActiveTab, onPress1, onPress2, onPress3 }) => {
           onPress1();
         }}
       >
-        All Chats
+        Group
       </TabButton>
       <TabButton
         active={activeTab === "group"}
         onPress={() => {
           handleTabClick("group");
           onPress2();
-        }}
-      >
-        Group
-      </TabButton>
-      <TabButton
-        active={activeTab === "assistants"}
-        onPress={() => {
-          handleTabClick("assistants");
-          onPress3();
         }}
       >
         Assistants
