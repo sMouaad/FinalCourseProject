@@ -42,6 +42,7 @@ const Login = ({ navigation }) => {
   const [emailLogin, setEmail] = useState("");
   const [emailReset, setEmailReset] = useState("");
   const [passwordLogin, setPassword] = useState("");
+  const [cookie, setCookie] = useState("");
   const isFocused = useIsFocused();
 
   const opacity1 = useSharedValue(0);
@@ -88,8 +89,6 @@ const Login = ({ navigation }) => {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
-        
-        storeData("userData", JSON.stringify(res.data));
       }
     });
   }, []);
@@ -156,7 +155,6 @@ const Login = ({ navigation }) => {
                       //   email: trimmedEmail,
                       //   password: passwordLogin,
                       // });
-
                       Axios.post("http://192.168.8.100:3000/auth/login", {
                         emailLogin: trimmedEmail,
                         passwordLogin,
@@ -164,6 +162,7 @@ const Login = ({ navigation }) => {
                         .then((res) => {
                           if (res.data.status) {
                             navigation.navigate("Profiles");
+                            storeData("cookie", res.data.accessToken);
                           }
                         })
                         .catch((err) => {
