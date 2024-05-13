@@ -6,6 +6,7 @@ import MainContainer from "./NavigationAfterLogin/mainContainer";
 import Login from "./Comp/login-page/Login.jsx";
 import Test from "./NavigationAfterLogin/Test/Test.jsx";
 import WaitingForTheFaceRecognition from "./Comp/WaitingForTheFaceRecognition/WaitingForTheFaceRecognition";
+import { Profiles } from "./Comp/profiles.jsx";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         }}
       >
         <Stack.Screen name="Home" component={Login} />
+        <Stack.Screen name="Profiles" component={Profiles} />
         <Stack.Screen name="Test" component={Test} />
         <Stack.Screen
           name="WaitingPage"

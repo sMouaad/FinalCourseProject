@@ -5,6 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { ToDoPage } from "./ToDoPage";
 import MessagesPage from "./Chat/MessagesPage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HomePageNav } from "./HomePageNav";
 
 const TabBarNav = () => {
   const Tab = createBottomTabNavigator();
@@ -34,25 +35,8 @@ const TabBarNav = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomePage}
-        options={{
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#00A588",
-          },
-          headerTitleAlign: "center",
-          headerTitle: () => (
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              Home
-            </Text>
-          ),
-        }}
+        component={HomePageNav}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Todo"
