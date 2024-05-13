@@ -96,7 +96,7 @@ const Login = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   const trimmedEmail = emailLogin.trim().toLowerCase();
-                  navigation.navigate("mainContainer");
+                  navigation.navigate("Profiles");
                   // this is for creating test account
                   // Axios.post("http://192.168.8.101:3000/auth/signup", {
                   //   name,

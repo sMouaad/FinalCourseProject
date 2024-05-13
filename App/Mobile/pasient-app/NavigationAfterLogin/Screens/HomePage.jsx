@@ -14,7 +14,7 @@ const HomePage = ({ navigation }) => {
       style={{ gap: 20 }}
     >
       <PressableButton
-        onPress={() => console.log("Talk to Dhakira")}
+        onPress={() => navigation.navigate("TalkDhakira")}
         imageSource={talkDhakira}
         buttonText="Talk to Dhakira"
         backgroundColor="#00A7FF"
