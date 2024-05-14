@@ -1,21 +1,19 @@
-import * as React from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { HomePage } from "./HomePage";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { HomePage } from "./Screens/HomePage";
-import { ToDoPage } from "./Screens/ToDoPage";
-import { MessagesPage } from "./Screens/MessagesPage";
+import { ToDoPage } from "./ToDoPage";
+import MessagesPage from "./Chat/MessagesPage";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HomePageNav } from "./HomePageNav";
 
-const Tab = createBottomTabNavigator();
-
-export default function MainContainer() {
+const TabBarNav = () => {
+  const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Todo") {
@@ -25,17 +23,19 @@ export default function MainContainer() {
           } else if (route.name == "Messages") {
             iconName = focused ? "chatbubbles" : "chatbubbles-outline";
           }
+
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: "#00E5BD",
         tabBarInactiveTintColor: "white",
         tabBarStyle: { backgroundColor: "#00A588" },
         contentStyle: { backgroundColor: "transparent" },
+        tabBarHideOnKeyboard: true,
       })}
     >
       <Tab.Screen
         name="Home"
-        component={HomePage}
+        component={HomePageNav}
         options={{ headerShown: false }}
       />
       <Tab.Screen
@@ -46,8 +46,28 @@ export default function MainContainer() {
       <Tab.Screen
         name="Messages"
         component={MessagesPage}
-        options={{ headerShown: false }}
+        options={{
+          headerStyle: {
+            backgroundColor: "#00A588",
+          },
+          headerTitleAlign: "center",
+          headerTitle: () => (
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Messages
+            </Text>
+          ),
+        }}
       />
     </Tab.Navigator>
   );
-}
+};
+
+export { TabBarNav };
+
+const styles = StyleSheet.create({});
