@@ -3,6 +3,7 @@ import Progress_Bar from "./Progres_Bar.jsx";
 import QuestionComponent from "./QuestionComponent.jsx";
 import { Image } from "expo-image";
 import dhakira from "../../assets/images/happyDahkira.png";
+import { Questions } from "./Question.js";
 import {
   Text,
   View,
@@ -13,8 +14,9 @@ import {
   Keyboard,
 } from "react-native";
 
-const Test = ({ route, navigation }) => {
-  const { questions } = route.params;
+const questions = Questions;
+
+const Test = ({ navigation }) => {
   const colors = [
     "#00E5BD",
     "#65FCE2",
@@ -39,9 +41,8 @@ const Test = ({ route, navigation }) => {
       setcolorIndex((colorIndex + 2) % colors.length);
     }
     if (completed) {
-      navigation.navigate("mainContainer");
+      navigation.navigate("Tab");
     }
-    // Clear input value when the "Submit" button is clicked
     setInputValue("");
   }
 
