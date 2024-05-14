@@ -31,7 +31,7 @@ import BottomSheet, {
 import Axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { set } from "mongoose";
+import { get, set } from "mongoose";
 
 const DURATION = 1000;
 const DELAY = 500;
@@ -81,11 +81,23 @@ const Login = ({ navigation }) => {
   const storeData = async (key, value) => {
     try {
       await AsyncStorage.setItem(key, value);
+      navigation.navigate("Profiles");
+      console.log("Data saved");
     } catch (e) {
       // saving error
       console.log(e);
     }
   };
+
+  // const getData = async (key) => {
+  //   try {
+  //     const userData = await AsyncStorage.getItem(key);
+  //     return userData;
+  //   } catch (e) {
+  //     // saving error
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
@@ -154,9 +166,8 @@ const Login = ({ navigation }) => {
                       })
                         .then((res) => {
                           if (res.data.status) {
-                            navigation.navigate("Profiles");
-                            // console.log(res.data.accessToken);
                             storeData("cookie", res.data.accessToken);
+                            // console.log(getData("cookie"));
                           }
                         })
                         .catch((err) => {
