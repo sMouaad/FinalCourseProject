@@ -53,30 +53,31 @@ const Profiles = ({ navigation }) => {
     const getData = async (key) => {
       try {
         const userData = await AsyncStorage.getItem(key);
-        console.log("userData");
-        console.log(userData);
-        Axios.post("http://192.168.8.100:3000/auth/profiles", {
-          accessToken: userData,
-        })
-          .then((res) => {
-            if (res.data.status) {
-              setTableRows(res.data.patientsCreated);
-              setSecondaryRows(res.data.secondaryPatients);
-              console.log(tableRows);
-              console.log(secondaryRows);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-
+        return userData;
       } catch (e) {
         // saving error
         console.log(e);
         return "error";
       }
     };
-    getData("cookie");
+    getData("cookie").then((userData) => {
+      console.log("userData");
+      console.log(userData);
+      Axios.post("http://192.168.8.100:3000/auth/profiles", {
+        accessToken: userData,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            setTableRows(res.data.patientsCreated);
+            setSecondaryRows(res.data.secondaryPatients);
+            console.log(tableRows);
+            console.log(secondaryRows);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   }, []);
 
   const renderItem = ({ item }) => {
