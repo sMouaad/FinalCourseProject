@@ -5,8 +5,11 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native-animatable";
+import Axios from "axios";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DATA = [
   {
@@ -42,6 +45,34 @@ const Item = ({ item, onPress }) => (
 );
 
 const Profiles = ({ navigation }) => {
+  const getData = async (key) => {
+    try {
+      const userData = await AsyncStorage.getItem(key);
+      return userData;
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    console.log(getData("cookie"));
+    Axios.post("http://192.168.8.100:3000/auth/profiles", {
+      accessToken: getData("cookie"),
+    })
+      .then((res) => {
+        if (res.data.status) {
+          setTableRows(res.data.patientsCreated);
+          setSecondaryRows(res.data.secondaryPatients);
+          console.log(tableRows);
+          console.log(secondaryRows);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const renderItem = ({ item }) => {
     return (
       <Item item={item} onPress={() => navigation.replace("mainContainer")} />

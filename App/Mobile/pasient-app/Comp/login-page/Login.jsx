@@ -31,6 +31,7 @@ import BottomSheet, {
 import Axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { set } from "mongoose";
 
 const DURATION = 1000;
 const DELAY = 500;
@@ -42,7 +43,9 @@ const Login = ({ navigation }) => {
   const [emailLogin, setEmail] = useState("");
   const [emailReset, setEmailReset] = useState("");
   const [passwordLogin, setPassword] = useState("");
-  const [cookie, setCookie] = useState("");
+  const [tableRows, setTableRows] = useState([]);
+  const [secondaryRows, setSecondaryRows] = useState([]);
+
   const isFocused = useIsFocused();
 
   const opacity1 = useSharedValue(0);
@@ -83,28 +86,6 @@ const Login = ({ navigation }) => {
       console.log(e);
     }
   };
-
-  const getData = async (key) => {
-    try {
-      await AsyncStorage.getItem(key);
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    Axios.get("http://localhost:3000/auth/userdata/", {
-      accessToken: getData("cookie"),
-    }).then((res) => {
-      if (res.data.status) {
-        setTableRows(res.data.patientsCreated);
-        setSecondaryRows(res.data.secondaryPatients);
-        setUserData(res.data.userData);
-        setCookie(res.data.cookie);
-      }
-    });
-  }, []);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
@@ -160,7 +141,6 @@ const Login = ({ navigation }) => {
                   <Pressable
                     onPress={() => {
                       const trimmedEmail = emailLogin.trim().toLowerCase();
-                      console.log(typeof emailLogin);
                       // navigation.navigate("Profiles");
                       // this is for creating test account
                       // Axios.post("http://192.168.8.101:3000/auth/signup", {
@@ -175,6 +155,7 @@ const Login = ({ navigation }) => {
                         .then((res) => {
                           if (res.data.status) {
                             navigation.navigate("Profiles");
+                            // console.log(res.data.accessToken);
                             storeData("cookie", res.data.accessToken);
                           }
                         })

@@ -37,7 +37,8 @@
     "react-native-screens": "^3.31.1",
     "socket.io-client": "^4.7.5",
     "typescript": "~5.3.3",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "react-native-reanimated": "~3.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
