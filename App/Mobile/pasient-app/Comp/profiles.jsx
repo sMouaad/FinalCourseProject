@@ -10,6 +10,7 @@ import { View } from "react-native-animatable";
 import Axios from "axios";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { get } from "mongoose";
 
 const DATA = [
   {
@@ -45,32 +46,38 @@ const Item = ({ item, onPress }) => (
 );
 
 const Profiles = ({ navigation }) => {
-  const getData = async (key) => {
-    try {
-      const userData = await AsyncStorage.getItem(key);
-      return userData;
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
+  const [tableRows, setTableRows] = React.useState([]);
+  const [secondaryRows, setSecondaryRows] = React.useState([]);
 
   useEffect(() => {
-    console.log(getData("cookie"));
-    Axios.post("http://192.168.8.100:3000/auth/profiles", {
-      accessToken: getData("cookie"),
-    })
-      .then((res) => {
-        if (res.data.status) {
-          setTableRows(res.data.patientsCreated);
-          setSecondaryRows(res.data.secondaryPatients);
-          console.log(tableRows);
-          console.log(secondaryRows);
-        }
+    const getData = async (key) => {
+      try {
+        const userData = await AsyncStorage.getItem(key);
+        return userData;
+      } catch (e) {
+        // saving error
+        console.log(e);
+        return "error";
+      }
+    };
+    getData("cookie").then((userData) => {
+      console.log("userData");
+      console.log(userData);
+      Axios.post("http://192.168.8.100:3000/auth/profiles", {
+        accessToken: userData,
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          if (res.data.status) {
+            setTableRows(res.data.patientsCreated);
+            setSecondaryRows(res.data.secondaryPatients);
+            console.log(tableRows);
+            console.log(secondaryRows);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   }, []);
 
   const renderItem = ({ item }) => {
@@ -83,7 +90,7 @@ const Profiles = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View className="justify-center items-center ">
         <Text className="text-lg font-semibold">
-          Chose the patinet that will use this phone:
+          Choose the patient that will use this phone:
         </Text>
       </View>
       <View>
