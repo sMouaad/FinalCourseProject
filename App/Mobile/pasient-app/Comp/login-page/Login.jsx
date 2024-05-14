@@ -84,11 +84,24 @@ const Login = ({ navigation }) => {
     }
   };
 
+  const getData = async (key) => {
+    try {
+      await AsyncStorage.getItem(key);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    Axios.get("http://localhost:3000/auth/userdata").then((res) => {
+    Axios.get("http://localhost:3000/auth/userdata/", {
+      accessToken: getData("cookie"),
+    }).then((res) => {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
+        setUserData(res.data.userData);
+        setCookie(res.data.cookie);
       }
     });
   }, []);
