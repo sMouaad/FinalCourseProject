@@ -102,8 +102,8 @@ async def process_image_caregiver(
             await patient_collection.update_one(
                 {"_id": ObjectId(id)}, {"$set": patinet}
             )
-            return {"message": Name + " is added!"}
-        return {"message": Name + "already exist ! "}
+            return {"message": Name + " is added!", "image": full_path}
+        return {"message": Name + " already exist ! ", "image": full_path}
 
     except Exception as e:
         raise print(e)
@@ -113,3 +113,9 @@ async def process_image_caregiver(
 @router.put("/caregiver_update_image")
 async def update_image():
     return
+
+
+@router.get("/get_all_patients")
+async def get_all_patients():
+    patients = await patient_collection.find().to_list(length=1000)
+    return patients_serial(patients)
