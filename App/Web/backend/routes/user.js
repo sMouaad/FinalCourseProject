@@ -302,7 +302,6 @@ router.post("/profiles", async (req, res) => {
 
 router.get("/userdata", async (req, res) => {
   try {
-    console.log(accessToken);
     const token = req.cookies.token;
     if (!token) {
       return res.json({ status: false, message: "no token" });
