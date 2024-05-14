@@ -274,10 +274,35 @@ router.post("/reset-password/:token", async (req, res) => {
     return res.json("invalid token");
   }
 });
+
+router.post("/profiles", async (req, res) => {
+  const { accessToken } = req.body;
+  if (!accessToken) {
+    return res.json({ status: false, message: "no token" });
+  }
+  try {
+    const decoded = await jwt.verify(accessToken, process.env.KEY);
+    const id = decoded.id;
+    const info = await User.findById(id);
+    const patientsCreated = await Patient.find({ primaryAssistant: info._id });
+    const secondaryPatients = patients.filter((element) =>
+      element.assistants.includes(info._id)
+    );
+    return res.json({
+      status: true,
+      patientsCreated: [...patientsCreated],
+      secondaryPatients: [...secondaryPatients],
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({ status: false, message: "invalid token" });
+  }
+});
+
 router.get("/userdata", async (req, res) => {
   try {
+    console.log(accessToken);
     const token = req.cookies.token;
-
     if (!token) {
       return res.json({ status: false, message: "no token" });
     }
