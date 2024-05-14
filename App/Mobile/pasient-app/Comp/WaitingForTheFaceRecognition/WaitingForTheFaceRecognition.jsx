@@ -3,13 +3,12 @@ import { Text, View } from "react-native";
 import { Image } from "expo-image";
 import waitingDhakira from "../../assets/images/image.png";
 import { useNavigation } from "@react-navigation/native";
-import { questions } from "../Test/Question.js";
 
 // Adjust import based on the actual library name
 
 export default function WaitingForTheFaceRecognition({ navigation }) {
   setTimeout(() => {
-    navigation.replace("Test", { questions: questions });
+    navigation.replace("Test");
   }, 2000);
   return (
     <View className="flex-1 flex justify-center box-border h-screen px-[10px]">
