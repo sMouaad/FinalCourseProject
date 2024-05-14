@@ -40,9 +40,9 @@ const Navbar = () => {
 
   const navItems = [
     { link: "AUTISM", path: "autism" },
-    { link: "ALZHIEMER", path: "alzhiemer" },
-    { link: "ABOUT", path: "about" },
-    { link: "APP", path: "app" },
+    { link: "ALZHEIMER", path: "alzheimer" },
+    { link: "ABOUT", path: "#about" },
+    { link: "APP", path: "#app" },
   ];
 
   return (
@@ -69,7 +69,7 @@ const Navbar = () => {
             {navItems.map(({ link, path }) => (
               <li key={path}>
                 <a
-                  href={`#${path}`}
+                  href={`${path}`}
                   className="block cursor-pointer lg:flex items-center text-base text-white hover:text-white first:font-medium"
                 >
                   {link}
