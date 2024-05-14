@@ -285,6 +285,7 @@ router.post("/profiles", async (req, res) => {
     const id = decoded.id;
     const info = await User.findById(id);
     const patientsCreated = await Patient.find({ primaryAssistant: info._id });
+    const patients = await Patient.find({});
     const secondaryPatients = patients.filter((element) =>
       element.assistants.includes(info._id)
     );
