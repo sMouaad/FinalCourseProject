@@ -1,3 +1,4 @@
+
 from functools import partial
 
 import mne_lsl.lsl
