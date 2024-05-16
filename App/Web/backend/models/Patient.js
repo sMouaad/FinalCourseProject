@@ -3,6 +3,7 @@ const Image = new mongoose.Schema({
   person: { type: String },
   relation: { type: String },
   encoding: [{ type: Number }],
+  imagePath: { type: String },
 });
 const PatientSchema = new mongoose.Schema({
   name: { type: String, required: true },
