@@ -7,9 +7,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Button from "./ButtonCamera";
 
 export function RecongnizeCamera() {
+  
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
+
   const [image, setImage] = useState(null);
+
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+
   const cameraRef = useRef(null);
 
   useEffect(() => {
