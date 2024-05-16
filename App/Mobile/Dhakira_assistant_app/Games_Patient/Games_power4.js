@@ -12,7 +12,6 @@ const App = () => {
 
   useEffect(() => {
     if (player === 'yellow' && isComputerTurn) {
-      // Computer's turn
       const col = findBestMove();
       dropToken(col);
     }
