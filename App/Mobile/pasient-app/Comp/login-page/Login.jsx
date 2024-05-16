@@ -31,20 +31,19 @@ import BottomSheet, {
 import Axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { get, set } from "mongoose";
+import "react-native-get-random-values";
 
 const DURATION = 1000;
 const DELAY = 500;
 const text = ["Welcome ", "to ", "Dhakira..."];
-const name = "test";
 
 const Login = ({ navigation }) => {
   Axios.defaults.withCredentials = true;
+
   const [emailLogin, setEmail] = useState("");
   const [emailReset, setEmailReset] = useState("");
   const [passwordLogin, setPassword] = useState("");
-  const [tableRows, setTableRows] = useState([]);
-  const [secondaryRows, setSecondaryRows] = useState([]);
+  const [iscorrect, setIscorrect] = useState(false);
 
   const isFocused = useIsFocused();
 
@@ -81,23 +80,33 @@ const Login = ({ navigation }) => {
   const storeData = async (key, value) => {
     try {
       await AsyncStorage.setItem(key, value);
-      navigation.navigate("Profiles");
-      console.log("Data saved");
     } catch (e) {
       // saving error
       console.log(e);
     }
   };
 
-  // const getData = async (key) => {
-  //   try {
-  //     const userData = await AsyncStorage.getItem(key);
-  //     return userData;
-  //   } catch (e) {
-  //     // saving error
-  //     console.log(e);
-  //   }
-  // };
+  const getData = async (key) => {
+    try {
+      const userData = await AsyncStorage.getItem(key);
+      return userData;
+    } catch (e) {
+      // saving error
+      console.log(e);
+      return "error";
+    }
+  };
+
+  // useEffect(() => {
+  //   getData("patientId").then((patientId) => {
+  //     if (typeof patientId === "string" && patientId !== "") {
+  //       console.log("patientId");
+  //       navigation.navigate("Profiles");
+  //     } else {
+  //       setInitialRouteName("Login");
+  //     }
+  //   });
+  // }, []);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
@@ -132,7 +141,10 @@ const Login = ({ navigation }) => {
                     placeholder="Email: example@mail.com"
                     className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
                     value={emailLogin}
-                    onChangeText={setEmail}
+                    onChangeText={(input) => {
+                      setEmail(input);
+                      setIscorrect(false);
+                    }}
                   />
                   <Text className=" items-center mx-[20] font-bold rounded-[20px]">
                     Password:
@@ -142,8 +154,17 @@ const Login = ({ navigation }) => {
                     placeholder="Password"
                     className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
                     value={passwordLogin}
-                    onChangeText={setPassword}
+                    onChangeText={(input) => {
+                      setPassword(input);
+                      setIscorrect(false);
+                    }}
                   />
+                  {iscorrect && (
+                    <Text className="text-red-500 items-center mx-[20] font-semibold rounded-[20px]">
+                      Username or password does not correct
+                    </Text>
+                  )}
+
                   <Pressable
                     className="items-center p-5"
                     onPress={handlePresentModalPress}
@@ -166,12 +187,17 @@ const Login = ({ navigation }) => {
                       })
                         .then((res) => {
                           if (res.data.status) {
-                            storeData("cookie", res.data.accessToken);
-                            // console.log(getData("cookie"));
+                            storeData("cookie", res.data.accessToken).then(
+                              navigation.navigate("Profiles")
+                            );
                           }
                         })
                         .catch((err) => {
-                          console.warn(err);
+                          if (err.response.status === 401) {
+                            setIscorrect(true);
+                          } else {
+                            console.log(err);
+                          }
                         });
                     }}
                     style={({ pressed }) => [
