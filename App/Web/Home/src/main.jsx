@@ -11,6 +11,7 @@ import Assistant from "./Assistant";
 import HomePage from "./HomePage";
 import Login from "./Login";
 import ToDo from "./ToDo";
+import Maps from "./Maps";
 import ForgotPassword from "./ForgotPass";
 import ResetPassword from "./ResetPassword";
 import Dashboard from "./Dashboard";
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/maps" element={<Maps />} />
           <Route
             path="/to-do-list"
             element={

@@ -47,7 +47,6 @@ function DesktopIcons() {
   const handleLogout = () => {
     Axios.get("http://localhost:3000/auth/logout")
       .then((res) => {
-        console.log("here!");
         if (res.data.status) console.log("cookies cleared");
       })
       .catch((err) => {
@@ -139,7 +138,7 @@ function MobileIcons() {
     </>
   );
 }
-function Dropdown(props) {
+export function Dropdown(props) {
   // eslint-disable-next-line react/prop-types
   return <div>{props.children}</div>;
 }
