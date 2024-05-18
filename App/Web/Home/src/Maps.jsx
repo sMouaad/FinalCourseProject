@@ -1,25 +1,18 @@
 import { useState, useEffect } from "react";
-import {
-  APIProvider,
-  Map,
-  Marker,
-  AdvancedMarker,
-  Pin,
-  InfoWindow,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+
 import io from "socket.io-client";
-import socketIOClient from "socket.io-client";
 import Brain from "./assets/pointer.svg";
 export default function Maps() {
-  const [markerPos, setMarkerPos] = useState({});
+  // const [markerPos, setMarkerPos] = useState({});
+  const [socketIO, setSocketIO] = useState(null);
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:4000");
-
-    socket.on("gps", (data) => {
-      setMarkerPos({
-        longitude: data[0],
-        latitude: data[1],
-      });
+    const socket = io("http://localhost:4000");
+    setSocketIO(socket);
+    console.log(socketIO);
+    // Event listener for receiving messages from the server
+    socket.on("gps", (msg) => {
+      console.log("message: " + msg);
     });
 
     return () => {
