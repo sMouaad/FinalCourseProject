@@ -5,11 +5,14 @@ import io from "socket.io-client";
 import Brain from "./assets/pointer.svg";
 export default function Maps() {
   // const [markerPos, setMarkerPos] = useState({});
-  const [socketIO, setSocketIO] = useState(null);
+  // const [socketIO, setSocketIO] = useState(null);
+
   useEffect(() => {
-    const socket = io("http://localhost:4000");
-    setSocketIO(socket);
-    console.log(socketIO);
+    const socket = io("http://localhost:3000");
+
+    // Send Message to the Server
+    socket.emit("msg", "Hello from the client!");
+
     // Event listener for receiving messages from the server
     socket.on("gps", (msg) => {
       console.log("message: " + msg);
