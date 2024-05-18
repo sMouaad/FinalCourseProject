@@ -68,7 +68,7 @@ const Login = ({ navigation }) => {
     
   };
 
-  const snapPoints = useMemo(() => ["10%", "95%"], []);
+  const snapPoints = useMemo(() => ["10%", "82%"], []);
   const [sendbtn, setSendbtn] = useState(false);
 
   const handlePresentModalPress = useCallback(() => {
@@ -138,7 +138,7 @@ const Login = ({ navigation }) => {
   // }, []);
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" $>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <View className="flex-1 flex justify-center box-border h-screen px-[10px] pt-7">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <GestureHandlerRootView>
@@ -211,6 +211,7 @@ const Login = ({ navigation }) => {
                       //   password: passwordLogin,
                       // });
                       const url = `http://${process.env.SERVER_IP}/auth/login`;
+
                       Axios.post(url, {
                         emailLogin: trimmedEmail,
                         passwordLogin,

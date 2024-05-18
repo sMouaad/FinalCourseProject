@@ -27,6 +27,7 @@ const Item = ({ item, onPress }) => (
 const Profiles = ({ navigation }) => {
   const [fetchedData, setFetchedData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(true);
+  const [fetched, setFetsched] = useState(false);
 
   const colors = ["#58BEAC", "#43A6A3", "#388D95", "#347584"];
 
@@ -76,6 +77,7 @@ const Profiles = ({ navigation }) => {
               })
             );
           }
+          setFetsched(true);
         })
         .catch((err) => {
           console.warn(err);
@@ -103,7 +105,7 @@ const Profiles = ({ navigation }) => {
     );
   };
 
-  if (!fetchedData.length) {
+  if (!fetched) {
     return (
       <ScrollView
         contentContainerStyle={styles.scrollView}
@@ -119,43 +121,39 @@ const Profiles = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex justify-center mt-0 h-full p-4">
       <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View className="justify-center items-center ">
+        <View className="justify-center items-center mb-3">
           <Text className="text-lg font-semibold">
             Choose the patient that will use this phone:
           </Text>
         </View>
-        <FlatList
-          contentContainerStyle={{ justifyContent: "center" }}
-          data={fetchedData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          scrollEnabled={false}
-        />
+        <View>
+          <FlatList
+            contentContainerStyle={{
+              justifyContent: "center",
+            }}
+            data={fetchedData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={false}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    gap: 40,
-    justifyContent: "center",
-    height: "100%",
-    marginTop: 0,
-  },
   scrollView: {
-    display: "flex",
     justifyContent: "center",
-    flex: 1,
-    alignItems: "center",
+    flexGrow: 1, // Ensures the scroll view takes up the full height
+    display: "flex",
   },
   item: {
     borderRadius: 20,
