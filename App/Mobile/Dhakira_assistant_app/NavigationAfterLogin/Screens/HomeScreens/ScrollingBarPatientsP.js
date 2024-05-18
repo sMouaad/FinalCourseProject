@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -10,53 +10,37 @@ import {
   View,
   Modal,
   TextInput,
+  RefreshControl,
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Axios from "axios";
+import { SERVER_IP } from "@env";
+import { Picker } from "@react-native-picker/picker";
 
-const Item = ({ name, navigation }) => (
+const Item = ({ navigation, item }) => (
   <TouchableOpacity
-    onPress={() => navigation.navigate("Home_RTC", { patientName: name })}
+    onPress={async () => {
+      await storeData("patient", item);
+      navigation.navigate("Home_RTC", { patientName: name });
+    }}
     style={styles.patient}
   >
     <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
-      {name}
+      {item["name"]}
     </Text>
   </TouchableOpacity>
 );
 
 function HomePage({ navigation }) {
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [patients, setPatients] = useState([
-    {
-      id: "1",
-      name: "Ahmed",
-    },
-    {
-      id: "2",
-      name: "Mouaad",
-    },
-    {
-      id: "3",
-      name: "Ali",
-    },
-    {
-      id: "4",
-      name: "Mohamed",
-    },
-    {
-      id: "5",
-      name: "Jojo",
-    },
-    {
-      id: "6",
-      name: "Iiad",
-    },
-    {
-      id: "7",
-      name: "Khalil",
-    },
-  ]);
-  const patientName = useRef(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [patients, setPatients] = useState([]);
+  const [patientName, setPatientName] = useState("");
+  const [patientAge, setPatientAge] = useState("");
+  const [fetched, setFetsched] = useState(false);
+  const [selectedConditon, setSelectedConditon] = useState("");
 
   const openModal = () => {
     setModalVisible(true);
@@ -66,31 +50,130 @@ function HomePage({ navigation }) {
     setModalVisible(false);
   };
 
-  const alertAdd = () => {
-    if (patientName.current) {
-      setPatients([
-        ...patients,
-        { id: patients.length + 1, name: patientName.current?.value },
-      ]);
-      alert("ADDED");
-      closeModal();
+  const alertAdd = async () => {
+    setFetsched(false);
+
+    if (patientName && patientAge) {
+      user_token = await getData("cookie");
+      Axios.post(`http://${SERVER_IP}/auth/operation`, {
+        token: user_token,
+        operation: "patient",
+        patientAge: patientAge,
+        patientName: patientName,
+        condition: selectedConditon,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            onRefresh();
+            console.log(patients);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .then(() => {
+          setFetsched(true);
+          setPatientName("");
+          setPatientAge("");
+          closeModal();
+        });
     } else {
-      console.error("TextInput ref is not available.");
+      alert("Fill all fields!");
     }
   };
 
+  const [refreshing, setRefreshing] = React.useState(true);
+
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+
+  const getData = async (key) => {
+    try {
+      const userData = await AsyncStorage.getItem(key);
+      return userData;
+    } catch (e) {
+      // saving error
+      console.log(e);
+      return "error";
+    }
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await getData("cookie");
+      Axios.post(`http://${process.env.SERVER_IP}/auth/profiles`, {
+        accessToken: userData,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            const result = [
+              ...res.data.patientsCreated,
+              ...res.data.secondaryPatients,
+            ];
+            setPatients(
+              result.map((patient) => {
+                return {
+                  id: patient._id,
+                  name: patient.name,
+                };
+              })
+            );
+          }
+          setFetsched(true);
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
+    };
+    if (refreshing) {
+      fetchData();
+      setRefreshing(false);
+    }
+  }, [refreshing]);
+
+  if (!fetched) {
+    return (
+      <ScrollView
+        contentContainerStyle={styles.scrollViewActivityIndicator}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className="flex-1 justify-center">
+          <ActivityIndicator size={"large"} />
+        </View>
+      </ScrollView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <GestureHandlerRootView>
           <FlatList
             style={styles.scrollView}
             contentContainerStyle={styles.scrollViewContent}
             data={patients}
-            renderItem={({ item }) => (
-              <Item name={item.name} navigation={navigation} />
+            renderItem={({ patient }) => (
+              <Item item={patient} navigation={navigation} />
             )} // Pass navigation prop
             keyExtractor={(item) => item.id}
+            scrollEnabled={false}
           />
         </GestureHandlerRootView>
         {/* <TouchableOpacity onPress={()=>navigation.navigate("Home_RTC", { patientName: "Younes BENSAFIA" })} style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></TouchableOpacity>
@@ -123,101 +206,134 @@ function HomePage({ navigation }) {
           visible={modalVisible}
           onRequestClose={closeModal}
         >
-          <View
-            style={{
-              width: "100%",
-              height: "80%",
-              backgroundColor: "rgba(94, 94 , 206 , 0.9)",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 50,
-              borderWidth: 5,
-              borderColor: "#76A523",
-            }}
-          >
-            <TextInput
-              ref={patientName}
-              placeholder="Name"
-              style={{
-                borderWidth: 3,
-                width: "80%",
-                marginBottom: 20,
-                height: 60,
-                borderRadius: 30,
-                textAlign: "center",
-                fontSize: 20,
-                fontWeight: "bold",
-                borderColor: "black",
-                backgroundColor: "white",
-              }}
-              secureTextEntry={false}
-            />
-            <TouchableOpacity
-              placeholder="Date of Birth"
-              style={{
-                borderWidth: 3,
-                width: "80%",
-                marginBottom: 5,
-                height: 60,
-                borderRadius: 30,
-                borderColor: "black",
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                YYYY/MM/DD
-              </Text>
-            </TouchableOpacity>
+          {!fetched && (
+            <View className="flex-1 justify-center">
+              <ActivityIndicator size={"large"} />
+            </View>
+          )}
+
+          {fetched && (
             <View
               style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 4,
-                width: "90%",
-                marginTop: 10,
-                borderRadius: 30,
-              }}
-            />
-
-            <TextInput
-              placeholder="ID Doctor"
-              style={{
-                borderWidth: 3,
-                height: 60,
-                borderRadius: 30,
-                borderWidth: 3,
-                marginTop: 15,
-                width: "80%",
-                textAlign: "center",
-                fontSize: 20,
-                fontWeight: "bold",
-                borderColor: "black",
-                backgroundColor: "white",
-              }}
-            />
-
-            <TouchableOpacity
-              onPress={alertAdd}
-              style={{
-                height: 50,
-                width: "80%",
-                marginTop: 10,
-                borderWidth: 3,
-                borderColor: "black",
-                borderRadius: 25,
+                width: "100%",
+                height: "80%",
+                backgroundColor: "rgba(94, 94 , 206 , 0.9)",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#76A523",
+                borderRadius: 50,
+                borderWidth: 5,
+                borderColor: "#76A523",
               }}
             >
-              <Text
-                style={{ fontWeight: "bold", fontSize: 18, color: "white" }}
+              <TextInput
+                placeholder="Name"
+                style={{
+                  borderWidth: 3,
+                  width: "80%",
+                  marginBottom: 20,
+                  height: 60,
+                  borderRadius: 30,
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  borderColor: "black",
+                  backgroundColor: "white",
+                }}
+                value={patientName}
+                onChangeText={setPatientName}
+              />
+              <TextInput
+                placeholder="Patient Age"
+                style={{
+                  borderWidth: 3,
+                  width: "80%",
+                  marginBottom: 20,
+                  height: 60,
+                  borderRadius: 30,
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  borderColor: "black",
+                  backgroundColor: "white",
+                }}
+                value={patientAge}
+                onChangeText={setPatientAge}
+              ></TextInput>
+              <View
+                style={{
+                  borderBottomColor: "black",
+                  borderBottomWidth: 4,
+                  width: "90%",
+                  marginTop: 10,
+                  borderRadius: 30,
+                }}
+              />
+
+              <TextInput
+                placeholder="ID Doctor"
+                style={{
+                  borderWidth: 3,
+                  height: 60,
+                  borderRadius: 30,
+                  borderWidth: 3,
+                  marginTop: 15,
+                  width: "80%",
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  borderColor: "black",
+                  backgroundColor: "white",
+                }}
+              />
+              <View
+                style={{
+                  borderWidth: 3,
+                  borderRadius: 30,
+                  marginTop: 15,
+                  width: "80%",
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  borderColor: "black",
+                  backgroundColor: "white",
+                  alignItems: "center",
+                }}
               >
-                ADD
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Picker
+                  style={{
+                    width: "70%",
+                  }}
+                  selectedValue={selectedConditon}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setSelectedConditon(itemValue)
+                  }
+                >
+                  <Picker.Item label="Autism" value="autism" />
+                  <Picker.Item label="Alzheimer" value="alzheimer" />
+                </Picker>
+              </View>
+              <TouchableOpacity
+                onPress={alertAdd}
+                style={{
+                  height: 50,
+                  width: "80%",
+                  marginTop: 10,
+                  borderWidth: 3,
+                  borderColor: "black",
+                  borderRadius: 25,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#76A523",
+                }}
+              >
+                <Text
+                  style={{ fontWeight: "bold", fontSize: 18, color: "white" }}
+                >
+                  ADD
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </Modal>
       </ScrollView>
     </SafeAreaView>
@@ -225,6 +341,12 @@ function HomePage({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  scrollViewActivityIndicator: {
+    display: "flex",
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,

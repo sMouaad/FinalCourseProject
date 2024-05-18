@@ -12,6 +12,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Axios from "axios";
+import { SERVER_IP } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 function SignUpPageInter() {
   Axios.defaults.withCredentials = true;
   const navigation = useNavigation();
@@ -19,6 +22,43 @@ function SignUpPageInter() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirm] = useState("");
+
+  const handlesignup = () => {
+    if (
+      name === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      alert("fill all the fields");
+      return;
+    }
+    if (confirmPassword === password) {
+      const trimmedEmail = email.trim().toLowerCase();
+      Axios.post(`http://${process.env.SERVER_IP}/auth/signup`, {
+        name,
+        email: trimmedEmail,
+        type: "assistant",
+        password,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            alert("Account created successfully");
+            navigation.navigate("LoginPage");
+          } else if (res.data.message === "user already exists") {
+            alert("Email already exists");
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message === "user already exists") {
+            alert("Email already exists");
+          }
+          console.log(err);
+        });
+    } else {
+      alert("password not same");
+    }
+  };
   return (
     <View>
       <View style={styles.Firstcontainer}>
@@ -42,10 +82,12 @@ function SignUpPageInter() {
             ></View>
           </View>
         </View>
+
         <TextInput
           onChangeText={(text) => {
             setName(text);
           }}
+          value={name}
           style={styles.FirstInputSignUp}
           placeholder="Enter your Name"
           inputMode="text"
@@ -54,6 +96,7 @@ function SignUpPageInter() {
           onChangeText={(text) => {
             setEmail(text);
           }}
+          value={email}
           style={styles.InputSignUpS}
           placeholder=" Enter your E-mail"
           inputMode="email"
@@ -64,16 +107,19 @@ function SignUpPageInter() {
           }}
           style={styles.InputSignUpS}
           placeholder="Password"
+          value={password}
           secureTextEntry={true}
         ></TextInput>
         <TextInput
           onChangeText={(text) => {
             setConfirm(text);
           }}
+          value={confirmPassword}
           style={styles.LastInputSignUp}
           placeholder="Confirm your password"
           secureTextEntry={true}
         ></TextInput>
+
         <Text style={styles.TextLogin}>
           Already have account?,{" "}
           <Text
@@ -83,30 +129,11 @@ function SignUpPageInter() {
             Login
           </Text>
         </Text>
+
         <TouchableOpacity
           style={styles.NextButton}
           title
-          onPress={() => {
-            if (confirmPassword === password) {
-              Axios.post("http://localhost:3000/auth/signup", {
-                name,
-                email,
-                password,
-              })
-                .then((res) => {
-                  if (res.data.status) {
-                    // const accessToken = res?.data?.accessToken;
-                    // setAuth({ accessToken });
-                    navigation.navigate("Main");
-                  }
-                })
-                .catch((err) => {
-                  alert(err);
-                });
-            } else {
-              alert("password not same");
-            }
-          }}
+          onPress={handlesignup}
         >
           <Text style={styles.TextInNButton}>Next</Text>
         </TouchableOpacity>
@@ -184,6 +211,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   TextLogin: {
+    marginTop: 20,
     width: "90%",
     height: 60,
     color: "#6930C3",
