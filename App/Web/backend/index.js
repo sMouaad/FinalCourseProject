@@ -23,4 +23,5 @@ mongoose.connect(`${process.env.DATABASE_URI}/pfe`);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at http://localhost:${process.env.PORT}`);
+  console.log(`Database connected at ${process.env.DATABASE_URI}`);
 });
