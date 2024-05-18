@@ -151,6 +151,7 @@ function LoginPageInterface() {
               style={styles.loginButton}
               onPress={() => {
                 const trimmedEmail = emailLogin.trim().toLowerCase();
+                console.log("hej")
                 Axios.post(`http://${process.env.SERVER_IP}/auth/login`, {
                   emailLogin: trimmedEmail,
                   passwordLogin,
