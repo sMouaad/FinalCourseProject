@@ -13,10 +13,10 @@ router.post("/signup", async (req, res) => {
   if (user) {
     return res.json({ message: "user already exists" });
   }
-
   const hashPassword = await bcryt.hash(password, 10);
   const newUser = new User({ name, email, password: hashPassword, type });
   await newUser.save();
+
   return res.json({ status: true, message: "record registered" });
 });
 
@@ -52,6 +52,7 @@ router.post("/notifications", async (req, res) => {
 
 router.post("/operation", async (req, res) => {
   const {
+    token,
     operation,
     patientAge,
     patientName,
@@ -61,13 +62,21 @@ router.post("/operation", async (req, res) => {
     condition,
     email,
   } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({
-      message: "Fatal Error! user is non-existent? logout and login again.",
-    });
+
+  if (token) {
+    const decoded = await jwt.verify(token, process.env.KEY);
+    const id = decoded.id;
+    var user = await User.findById(id);
   }
 
+  if (email) {
+    var user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "Fatal Error! user is non-existent? logout and login again.",
+      });
+    }
+  }
   switch (operation) {
     case "patient": {
       //Creation d'un nouveau patient
@@ -78,6 +87,8 @@ router.post("/operation", async (req, res) => {
         condition: condition,
       });
       await newPatient.save();
+
+      return res.json({ status: true, message: "patient created" });
       break;
     }
     case "assistant": {
@@ -194,10 +205,10 @@ router.post("/operation", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
+
   if (!user) {
     return res.status(401).json({ message: "user is not registered" });
   }
-
   const validPassword = await bcryt.compare(passwordLogin, user.password);
   if (!validPassword) {
     return res.status(401).json({ message: "password is incorrect" });
@@ -210,7 +221,10 @@ router.post("/login", async (req, res) => {
     }
   );
   //expires in 1 hour
-  res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+  res.cookie("token", token, {
+    httpOnly: true,
+    /* maxAge: 3600000*/
+  });
   return res.json({
     status: true,
     message: "login successful",
@@ -274,10 +288,35 @@ router.post("/reset-password/:token", async (req, res) => {
     return res.json("invalid token");
   }
 });
+
+router.post("/profiles", async (req, res) => {
+  const { accessToken } = req.body;
+  if (!accessToken) {
+    return res.json({ status: false, message: "no token" });
+  }
+  try {
+    const decoded = await jwt.verify(accessToken, process.env.KEY);
+    const id = decoded.id;
+    const info = await User.findById(id);
+    const patientsCreated = await Patient.find({ primaryAssistant: info._id });
+    const patients = await Patient.find({});
+    const secondaryPatients = patients.filter((element) =>
+      element.assistants.includes(info._id)
+    );
+    return res.json({
+      status: true,
+      patientsCreated: [...patientsCreated],
+      secondaryPatients: [...secondaryPatients],
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({ status: false, message: "invalid token" });
+  }
+});
+
 router.get("/userdata", async (req, res) => {
   try {
     const token = req.cookies.token;
-
     if (!token) {
       return res.json({ status: false, message: "no token" });
     }
