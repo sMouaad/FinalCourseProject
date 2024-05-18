@@ -120,6 +120,7 @@ function HomePage({ navigation }) {
               ...res.data.patientsCreated,
               ...res.data.secondaryPatients,
             ];
+            console.log("Younes");
             setPatients(
               result.map((patient) => {
                 return {

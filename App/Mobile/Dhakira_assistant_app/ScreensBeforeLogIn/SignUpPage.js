@@ -35,6 +35,7 @@ function SignUpPageInter() {
     }
     if (confirmPassword === password) {
       const trimmedEmail = email.trim().toLowerCase();
+      console.log("jf")
       Axios.post(`http://${process.env.SERVER_IP}/auth/signup`, {
         name,
         email: trimmedEmail,
