@@ -26,6 +26,7 @@ export default function Dashboard() {
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
   const [modalPatientOpen, setPatientModalOpen] = useState(false);
   const [modalDeleteOpen, setDeleteModalOpen] = useState(false);
+  const [modalInstructionsOpen, setInstructionsModalOpen] = useState(false);
   const [condition, setCondition] = useState("alzheimer");
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
@@ -63,6 +64,7 @@ export default function Dashboard() {
     setDelete("");
     setDeleteError("");
   };
+  const openInstructions = () => setInstructionsModalOpen(true);
   const openAssistant = () => setAssistantModalOpen(true);
   const closeDoctor = () => {
     setDoctorModalOpen(false);
@@ -70,6 +72,7 @@ export default function Dashboard() {
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
+  const closeInstructions = () => setInstructionsModalOpen(false);
   const closeDelete = () => {
     setDeleteModalOpen(false);
     setDelete("");
@@ -171,23 +174,31 @@ export default function Dashboard() {
       <form id="mainForm" onSubmit={handleForm}></form>
       {role === "assistant" ? <Sidebar setAuth={setAuth} role={role} /> : null}
       <section className="flex-[6] flex flex-col">
-        <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
-          <div className="items-center justify-between gap-12 flex">
-            <div className="flex shrink gap-4 basis-[75%]">
-              <div className="items-center flex">
-                <img className="h-[20px]" src="assets/search.svg" alt="" />
+        <nav
+          className={
+            role === "doctor"
+              ? "grid-rows-1 px-12 py-4 gap-4 shadow-lg z-[2] grid"
+              : "grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid"
+          }
+        >
+          {role === "assistant" ? (
+            <div className="items-center justify-between gap-12 flex">
+              <div className="flex shrink gap-4 basis-[75%]">
+                <div className="items-center flex">
+                  <div></div>
+                </div>
+              </div>
+              <div className="pr-4 items-center gap-6 flex">
+                <img className="h-[25px] button" src="assets/bell.svg" alt="" />
+                <img
+                  className="bg-yellow-300 rounded-full h-[40px]"
+                  src={ProfilePic}
+                  alt=""
+                />
+                <p className="font-bold">{name}</p>
               </div>
             </div>
-            <div className="pr-4 items-center gap-6 flex">
-              <img className="h-[25px] button" src="assets/bell.svg" alt="" />
-              <img
-                className="bg-yellow-300 rounded-full h-[40px]"
-                src={ProfilePic}
-                alt=""
-              />
-              <p className="font-bold">{name}</p>
-            </div>
-          </div>
+          ) : null}
           <div className="flex gap-12 justify-between items-center">
             <div className="gap-4 flex">
               <img
@@ -198,6 +209,7 @@ export default function Dashboard() {
               <div className="flex flex-col justify-center gap-1">
                 <p className="font-bold text-[0.8rem]">Hi there,</p>
                 <h1 className="text-lg">
+                  {role === "doctor" ? "Dr " : null}
                   {name} &#40;{email}&#41;
                 </h1>
               </div>
@@ -227,7 +239,13 @@ export default function Dashboard() {
               <img className="w-8" src={Logout} alt="logout" />
             </div>
             {open && (
-              <div className="px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-[9.2rem] right-4 h-96">
+              <div
+                className={
+                  role === "doctor"
+                    ? "px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-20 right-4 h-96"
+                    : "px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-[9.2rem] right-4 h-96"
+                }
+              >
                 <Dropdown>
                   <div className="text-2xl text-center font-Roboto font-bold mt-4">
                     Notifications
@@ -657,11 +675,54 @@ export default function Dashboard() {
           {role === "doctor" ? (
             <div className="flex gap-8">
               <motion.button
+                onClick={() =>
+                  modalInstructionsOpen
+                    ? closeInstructions()
+                    : openInstructions()
+                }
                 whileTap={{ scale: 0.95 }}
                 className="flex-1 bg-[#1ba8ff] h-16 hover:bg-[#0184cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
               >
                 Instructions
               </motion.button>
+              <AnimatePresence
+                initial={false}
+                mode="wait"
+                onExitComplete={() => null}
+              >
+                {modalInstructionsOpen && (
+                  <Modal
+                    modalInstructionsOpen={modalInstructionsOpen}
+                    handleClose={closeInstructions}
+                    text={
+                      <div className="py-3 h-full w-4/5 flex flex-col gap-4">
+                        <div className="text-center text-3xl font-bold">
+                          Instructions
+                        </div>
+                        <input
+                          autoComplete="off"
+                          className="bg-slate-200 text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                          placeholder="Instruction..."
+                          type="text"
+                        />
+                        <textarea
+                          className="bg-slate-200 flex-1 resize-none text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                          name=""
+                          id=""
+                          cols="30"
+                          rows="10"
+                          placeholder="Details..."
+                        ></textarea>
+                        <div className="text-center">
+                          <button className=" bg-green-500 py-4 px-8 text-white text-[12px] self-center basis-1/2 border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  />
+                )}
+              </AnimatePresence>
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 className="flex-1 bg-[#00e500] h-16 hover:bg-[#2ca92c] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"

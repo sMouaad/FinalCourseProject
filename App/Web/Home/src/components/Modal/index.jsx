@@ -38,7 +38,7 @@ const Modal = ({ handleClose, text }) => {
         <button className="absolute top-0 left-0 p-4" onClick={handleClose}>
           <ImCross color="#8B0000" />
         </button>
-        <div>{text}</div>
+        {text}
       </motion.div>
     </Backdrop>
   );
