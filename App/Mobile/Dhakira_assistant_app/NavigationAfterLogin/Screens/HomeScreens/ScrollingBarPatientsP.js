@@ -20,19 +20,31 @@ import Axios from "axios";
 import { SERVER_IP } from "@env";
 import { Picker } from "@react-native-picker/picker";
 
-const Item = ({ navigation, patient }) => (
-  <TouchableOpacity
-    onPress={async () => {
-      await storeData("patient", patient);
-      navigation.navigate("Home_RTC", { patientName: patient.name });
-    }}
-    style={styles.patient}
-  >
-    <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
-      {patient.name}
-    </Text>
-  </TouchableOpacity>
-);
+const Item = ({ navigation, patient }) => {
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+  return (
+    <TouchableOpacity
+      onPress={async () => {
+        await storeData("patientName", patient.name);
+        await storeData("patientId", patient.id);
+        const name = patient.name;
+        navigation.navigate("Home_RTC", { patientName: name });
+      }}
+      style={styles.patient}
+    >
+      <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
+        {patient.name}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 function HomePage({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -82,15 +94,6 @@ function HomePage({ navigation }) {
         alert("Select a condition!");
       } else alert("Fill all fields!");
       setFetsched(true);
-    }
-  };
-
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      // saving error
-      console.log(e);
     }
   };
 
