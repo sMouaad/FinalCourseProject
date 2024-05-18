@@ -23,6 +23,16 @@ function SignUpPageInter() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirm] = useState("");
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handlesignup = () => {
     if (
       name === "" ||
@@ -33,9 +43,21 @@ function SignUpPageInter() {
       alert("fill all the fields");
       return;
     }
+    if (!validateEmail(email)) {
+      alert("Invalid Email");
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert(
+        "Password must contain at least 8 characters, one letter and one number"
+      );
+      return;
+    }
+
+    
     if (confirmPassword === password) {
       const trimmedEmail = email.trim().toLowerCase();
-      console.log("jf")
+
       Axios.post(`http://${process.env.SERVER_IP}/auth/signup`, {
         name,
         email: trimmedEmail,

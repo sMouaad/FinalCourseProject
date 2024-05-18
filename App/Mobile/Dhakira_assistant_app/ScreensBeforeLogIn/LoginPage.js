@@ -55,7 +55,9 @@ function LoginPageInterface() {
           setSendbtn(false);
         })
         .catch((err) => {
-          console.log(err);
+          if (err.response.status === 404) {
+            alert("This email does not exist");
+          }
           setSendbtn(false);
         })
         .then(() => {
@@ -164,7 +166,9 @@ function LoginPageInterface() {
                     }
                   })
                   .catch((err) => {
-                    console.log(err);
+                    if (err.response.status === 401) {
+                      alert("Email or password is incorrect");
+                    }
                   });
               }}
             >
