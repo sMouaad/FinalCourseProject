@@ -20,16 +20,16 @@ import Axios from "axios";
 import { SERVER_IP } from "@env";
 import { Picker } from "@react-native-picker/picker";
 
-const Item = ({ navigation, item }) => (
+const Item = ({ navigation, patient }) => (
   <TouchableOpacity
     onPress={async () => {
-      await storeData("patient", item);
-      navigation.navigate("Home_RTC", { patientName: name });
+      await storeData("patient", patient);
+      navigation.navigate("Home_RTC", { patientName: patient.name });
     }}
     style={styles.patient}
   >
     <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
-      {item["name"]}
+      {patient.name}
     </Text>
   </TouchableOpacity>
 );
@@ -41,6 +41,7 @@ function HomePage({ navigation }) {
   const [patientAge, setPatientAge] = useState("");
   const [fetched, setFetsched] = useState(false);
   const [selectedConditon, setSelectedConditon] = useState("");
+  const [refreshing, setRefreshing] = useState(true);
 
   const openModal = () => {
     setModalVisible(true);
@@ -53,7 +54,7 @@ function HomePage({ navigation }) {
   const alertAdd = async () => {
     setFetsched(false);
 
-    if (patientName && patientAge) {
+    if (patientName && patientAge && selectedConditon !== "vide") {
       user_token = await getData("cookie");
       Axios.post(`http://${SERVER_IP}/auth/operation`, {
         token: user_token,
@@ -65,7 +66,6 @@ function HomePage({ navigation }) {
         .then((res) => {
           if (res.data.status) {
             onRefresh();
-            console.log(patients);
           }
         })
         .catch((err) => {
@@ -78,11 +78,12 @@ function HomePage({ navigation }) {
           closeModal();
         });
     } else {
-      alert("Fill all fields!");
+      if (selectedConditon === "vide") {
+        alert("Select a condition!");
+      } else alert("Fill all fields!");
+      setFetsched(true);
     }
   };
-
-  const [refreshing, setRefreshing] = React.useState(true);
 
   const storeData = async (key, value) => {
     try {
@@ -120,7 +121,7 @@ function HomePage({ navigation }) {
               ...res.data.patientsCreated,
               ...res.data.secondaryPatients,
             ];
-            console.log("Younes");
+
             setPatients(
               result.map((patient) => {
                 return {
@@ -170,8 +171,8 @@ function HomePage({ navigation }) {
             style={styles.scrollView}
             contentContainerStyle={styles.scrollViewContent}
             data={patients}
-            renderItem={({ patient }) => (
-              <Item item={patient} navigation={navigation} />
+            renderItem={({ item }) => (
+              <Item patient={item} navigation={navigation} />
             )} // Pass navigation prop
             keyExtractor={(item) => item.id}
             scrollEnabled={false}
@@ -302,13 +303,14 @@ function HomePage({ navigation }) {
               >
                 <Picker
                   style={{
-                    width: "70%",
+                    width: "74%",
                   }}
                   selectedValue={selectedConditon}
                   onValueChange={(itemValue, itemIndex) =>
                     setSelectedConditon(itemValue)
                   }
                 >
+                  <Picker.Item label="Select Condition" value="vide" />
                   <Picker.Item label="Autism" value="autism" />
                   <Picker.Item label="Alzheimer" value="alzheimer" />
                 </Picker>

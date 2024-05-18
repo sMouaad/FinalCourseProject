@@ -151,16 +151,16 @@ function LoginPageInterface() {
               style={styles.loginButton}
               onPress={() => {
                 const trimmedEmail = emailLogin.trim().toLowerCase();
-                console.log("hej")
+
                 Axios.post(`http://${process.env.SERVER_IP}/auth/login`, {
                   emailLogin: trimmedEmail,
                   passwordLogin,
                 })
                   .then((res) => {
                     if (res.data.status) {
-                      storeData("cookie", res.data.accessToken).then(
-                        navigation.navigate("Main")
-                      );
+                      storeData("cookie", res.data.accessToken).then(() => {
+                        navigation.navigate("Main");
+                      });
                     }
                   })
                   .catch((err) => {

@@ -205,10 +205,10 @@ router.post("/operation", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { emailLogin, passwordLogin } = req.body;
   const user = await User.findOne({ email: emailLogin });
+
   if (!user) {
     return res.status(401).json({ message: "user is not registered" });
   }
-
   const validPassword = await bcryt.compare(passwordLogin, user.password);
   if (!validPassword) {
     return res.status(401).json({ message: "password is incorrect" });
