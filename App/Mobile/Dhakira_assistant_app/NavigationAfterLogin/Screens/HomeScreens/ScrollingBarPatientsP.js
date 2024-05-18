@@ -15,10 +15,10 @@ import {
   Pressable,
 } from "react-native";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from "axios";
 import { SERVER_IP } from "@env";
 import { Picker } from "@react-native-picker/picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Item = ({ navigation, patient }) => {
   const storeData = async (key, value) => {
@@ -44,6 +44,17 @@ const Item = ({ navigation, patient }) => {
       </Text>
     </TouchableOpacity>
   );
+};
+
+const getData = async (key) => {
+  try {
+    const userData = await AsyncStorage.getItem(key);
+    return userData;
+  } catch (e) {
+    // saving error
+    console.log(e);
+    return "error";
+  }
 };
 
 function HomePage({ navigation }) {
@@ -94,17 +105,6 @@ function HomePage({ navigation }) {
         alert("Select a condition!");
       } else alert("Fill all fields!");
       setFetsched(true);
-    }
-  };
-
-  const getData = async (key) => {
-    try {
-      const userData = await AsyncStorage.getItem(key);
-      return userData;
-    } catch (e) {
-      // saving error
-      console.log(e);
-      return "error";
     }
   };
 
