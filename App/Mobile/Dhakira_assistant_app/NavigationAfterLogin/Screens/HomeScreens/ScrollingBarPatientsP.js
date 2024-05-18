@@ -68,7 +68,7 @@ function HomePage({ navigation }) {
 
     if (patientName && patientAge && selectedConditon !== "vide") {
       user_token = await getData("cookie");
-      Axios.post(`http://${SERVER_IP}/auth/operation`, {
+      Axios.post(`http://${SERVER_IP}:3000/auth/operation`, {
         token: user_token,
         operation: "patient",
         patientAge: patientAge,

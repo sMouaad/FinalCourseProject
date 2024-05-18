@@ -43,7 +43,7 @@ function LoginPageInterface() {
   useEffect(() => {
     if (sendbtn) {
       const trimmedEmail = emailReset.trim().toLowerCase();
-      Axios.post(`http://${process.env.SERVER_IP}/auth/forgot-password`, {
+      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/forgot-password`, {
         email: trimmedEmail,
       })
         .then((res) => {
@@ -154,7 +154,7 @@ function LoginPageInterface() {
               onPress={() => {
                 const trimmedEmail = emailLogin.trim().toLowerCase();
 
-                Axios.post(`http://${process.env.SERVER_IP}/auth/login`, {
+                Axios.post(`http://${process.env.SERVER_IP}:3000/auth/login`, {
                   emailLogin: trimmedEmail,
                   passwordLogin,
                 })

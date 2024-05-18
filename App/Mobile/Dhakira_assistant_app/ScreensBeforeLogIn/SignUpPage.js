@@ -54,11 +54,10 @@ function SignUpPageInter() {
       return;
     }
 
-    
     if (confirmPassword === password) {
       const trimmedEmail = email.trim().toLowerCase();
 
-      Axios.post(`http://${process.env.SERVER_IP}/auth/signup`, {
+      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/signup`, {
         name,
         email: trimmedEmail,
         type: "assistant",
