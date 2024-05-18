@@ -12,8 +12,8 @@ import {
 import React, { useEffect } from "react";
 import { View } from "react-native-animatable";
 import Axios, { AxiosError } from "axios";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SERVER_IP } from "@env";
 
 const Item = ({ item, onPress }) => (
   <TouchableOpacity
@@ -57,7 +57,7 @@ const Profiles = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getData("cookie");
-      Axios.post("http://192.168.8.100:3000/auth/profiles", {
+      Axios.post(`http://${process.env.SERVER_IP}/auth/profiles`, {
         accessToken: userData,
       })
         .then((res) => {

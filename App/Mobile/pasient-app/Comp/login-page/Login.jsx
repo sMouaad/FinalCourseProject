@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { Image } from "expo-image";
 import Animated, {
@@ -32,6 +33,7 @@ import Axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
+import { SERVER_IP } from "@env";
 
 const DURATION = 1000;
 const DELAY = 500;
@@ -67,15 +69,42 @@ const Login = ({ navigation }) => {
   };
 
   const snapPoints = useMemo(() => ["10%", "95%"], []);
-
-  const bottomSheetModalRef = useRef(null);
+  const [sendbtn, setSendbtn] = useState(false);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+
+  const handelRestPassword = () => {
+    setSendbtn(true);
+  };
+
+  useEffect(() => {
+    if (sendbtn) {
+      const trimmedEmail = emailReset.trim().toLowerCase();
+      const url = `http://${process.env.SERVER_IP}/auth/forgot-password`;
+      Axios.post(url, {
+        email: trimmedEmail,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            alert("We sent you a mail, check your inbox.");
+          } else {
+            alert("This email does not exist");
+          }
+          setSendbtn(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setSendbtn(false);
+        })
+        .then(() => {
+          bottomSheetModalRef.current?.close();
+        });
+    }
+  }, [sendbtn]);
+
+  const bottomSheetModalRef = useRef(null);
 
   const storeData = async (key, value) => {
     try {
@@ -181,7 +210,8 @@ const Login = ({ navigation }) => {
                       //   email: trimmedEmail,
                       //   password: passwordLogin,
                       // });
-                      Axios.post("http://192.168.8.100:3000/auth/login", {
+                      const url = `http://${process.env.SERVER_IP}/auth/login`;
+                      Axios.post(url, {
                         emailLogin: trimmedEmail,
                         passwordLogin,
                       })
@@ -223,59 +253,49 @@ const Login = ({ navigation }) => {
                     index={1}
                     snapPoints={snapPoints}
                     ref={bottomSheetModalRef}
-                    onChange={handleSheetChanges}
                     backgroundStyle={{ backgroundColor: "#eefffd" }}
                   >
-                    <View
-                      className="bg-[#eefffd]"
-                      style={styles.contentContainer}
-                    >
-                      <View>
-                        <Text style={styles.containerHeadline}>
-                          Do You Want Reset Your Password?
-                        </Text>
-                        <View className="mt-8">
-                          <Text className="items-center mx-[20] font-bold rounded-[20px]">
-                            Please Enter Your Email:
+                    {sendbtn && (
+                      <View className="flex-1 justify-center">
+                        <ActivityIndicator size={"large"} />
+                      </View>
+                    )}
+                    {!sendbtn && (
+                      <View
+                        className="bg-[#eefffd]"
+                        style={styles.contentContainer}
+                      >
+                        <View>
+                          <Text
+                            className="text-[16px] font-semibold p-[10px]"
+                            style={styles.containerHeadline}
+                          >
+                            Do You Want Reset Your Password?
                           </Text>
-                          <TextInput
-                            placeholder="Email: example@mail.com"
-                            className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
-                            value={emailReset}
-                            onChangeText={setEmailReset}
-                          />
-                          <View className=" items-center">
-                            <Pressable
-                              onPress={() => {
-                                const trimmedEmail = emailReset
-                                  .trim()
-                                  .toLowerCase();
-
-                                Axios.post(
-                                  "http://192.168.8.100:3000/auth/forgot-password",
-                                  { email: trimmedEmail }
-                                )
-                                  .then((res) => {
-                                    if (res.data.status) {
-                                      alert(
-                                        "We sent you a mail, check your inbox."
-                                      );
-                                    } else {
-                                      alert("This email does not exist");
-                                    }
-                                  })
-                                  .catch((err) => {
-                                    console.log(err);
-                                  });
-                              }}
-                              className=" bg-[#00e5bd] text-[12px] py-[10px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
-                            >
-                              <Text className="text-white font-bold">Send</Text>
-                            </Pressable>
+                          <View className="mt-8">
+                            <Text className="items-center mx-[20] font-bold rounded-[20px]">
+                              Please Enter Your Email:
+                            </Text>
+                            <TextInput
+                              placeholder="Email: example@mail.com"
+                              className="border-2 items-center border-Primary px-[20] py-[15] m-[10] rounded-[20px]"
+                              value={emailReset}
+                              onChangeText={setEmailReset}
+                            />
+                            <View className=" items-center">
+                              <Pressable
+                                onPress={handelRestPassword}
+                                className=" bg-[#00e5bd] text-[12px] py-[10px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                              >
+                                <Text className="text-white font-bold">
+                                  Send
+                                </Text>
+                              </Pressable>
+                            </View>
                           </View>
                         </View>
                       </View>
-                    </View>
+                    )}
                   </BottomSheetModal>
                 </View>
               </View>
@@ -299,11 +319,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  containerHeadline: {
-    fontSize: 16,
-    fontWeight: "600",
-    padding: 10,
-  },
+
   button: {
     alignItems: "center",
     backgroundColor: "#00E5BD",
