@@ -1,15 +1,9 @@
 import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Home_PatientX({ navigation, patientName }) {
-  useEffect(() => {
-    return navigation.setOptions({
-      title: patientName,
-      headerShown: true,
-    });
-  });
-
+  
+  // console.log("component Home_PatientX");
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <TouchableOpacity
@@ -40,7 +34,9 @@ function Home_PatientX({ navigation, patientName }) {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Settings")}
+        onPress={() => {
+          navigation.navigate("Settings", { patientName: patientName });
+        }}
         style={{
           width: "80%",
           height: 69,

@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 
-export default function Settings({ navigation, PatientName }) {
+export default function Settings({ navigation, patientName }) {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View style={styles.PatientName}>
         <View>
           <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
-            {PatientName}
+            {patientName}
           </Text>
         </View>
       </View>

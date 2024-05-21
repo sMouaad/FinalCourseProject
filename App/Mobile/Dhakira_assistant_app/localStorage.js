@@ -20,4 +20,13 @@ const getData = async (key) => {
   }
 };
 
-export { storeData, getData };
+const removeData = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    // saving error
+    console.log(e);
+  }
+};
+
+export { storeData, getData, removeData };

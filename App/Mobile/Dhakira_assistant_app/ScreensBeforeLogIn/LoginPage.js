@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { removeData, storeData } from "../localStorage";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Axios from "axios";
 import BottomSheet, {
@@ -43,7 +43,7 @@ function LoginPageInterface() {
   useEffect(() => {
     if (sendbtn) {
       const trimmedEmail = emailReset.trim().toLowerCase();
-      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/forgot-password`, {
+      Axios.post(`http://${SERVER_IP}:3000/auth/forgot-password`, {
         email: trimmedEmail,
       })
         .then((res) => {
@@ -65,15 +65,8 @@ function LoginPageInterface() {
         });
     }
   }, [sendbtn]);
+  removeData("cookie");
 
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
   return (
     <>
       <GestureHandlerRootView>
@@ -153,8 +146,7 @@ function LoginPageInterface() {
               style={styles.loginButton}
               onPress={() => {
                 const trimmedEmail = emailLogin.trim().toLowerCase();
-
-                Axios.post(`http://${process.env.SERVER_IP}:3000/auth/login`, {
+                Axios.post(`http://${SERVER_IP}:3000/auth/login`, {
                   emailLogin: trimmedEmail,
                   passwordLogin,
                 })
@@ -169,6 +161,7 @@ function LoginPageInterface() {
                     if (err.response.status === 401) {
                       alert("Email or password is incorrect");
                     }
+                    console.log("loginPage", err);
                   });
               }}
             >
