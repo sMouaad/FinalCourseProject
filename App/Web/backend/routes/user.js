@@ -217,13 +217,13 @@ router.post("/login", async (req, res) => {
     { nameLogin: user.nameLogin, id: user._id },
     process.env.KEY,
     {
-      expiresIn: "10h",
+      expiresIn: "3000000d",
     }
   );
   //expires in 1 hour
   res.cookie("token", token, {
     httpOnly: true,
-    /* maxAge: 3600000*/
+    // maxAge: 3600000
   });
   return res.json({
     status: true,

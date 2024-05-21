@@ -27,7 +27,7 @@ const Item = ({ item, onPress }) => (
 const Profiles = ({ navigation }) => {
   const [fetchedData, setFetchedData] = React.useState([]);
   const [refreshing, setRefreshing] = React.useState(true);
-  const [fetched, setFetsched] = useState(false);
+  const [fetched, setFetsched] = React.useState(false);
 
   const colors = ["#58BEAC", "#43A6A3", "#388D95", "#347584"];
 

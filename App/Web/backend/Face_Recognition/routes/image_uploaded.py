@@ -67,8 +67,8 @@ async def process_image_patient(
 @router.put("/image_uploaded_by_caregiver/{id}")
 async def process_image_caregiver(
     id: str,
-    Name=Form(...),
-    Who=Form(...),
+    Name: str = Form(...),
+    Who: str = Form(...),
     file: UploadFile = File(...),
     # token: str = Depends(oauth2_scheme),
 ):
@@ -80,8 +80,8 @@ async def process_image_caregiver(
 
     # Validate file type (optional)
 
-    # if file.content_type not in ("image/jpeg", "image/png"):
-    #     raise HTTPException(status_code=400, detail="Unsupported image type")
+    if file.content_type not in ("image/jpeg", "image/png"):
+        raise HTTPException(status_code=400, detail="Unsupported image type")
     try:
 
         fetched_patient = await patient_collection.find_one({"_id": ObjectId(id)})
@@ -110,8 +110,14 @@ async def process_image_caregiver(
             await patient_collection.update_one(
                 {"_id": ObjectId(id)}, {"$set": fetched_patient}
             )
-            return {"message": Name + " is added!"}
-        return {"message": Name + " already exist ! "}
+            return {
+                "message": Name + " is added!",
+                "status": 200,
+            }
+        return {
+            "message": Name + " already exist ! ",
+            "status": 422,
+        }
 
     except Exception as e:
         raise print(e)
