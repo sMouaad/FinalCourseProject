@@ -26,6 +26,7 @@ import { Picker } from "@react-native-picker/picker";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import Icon from "../../../components/Icon";
 
@@ -217,106 +218,103 @@ function HomePage({ navigation }) {
                 <Item key={item.id} patient={item} navigation={navigation} />
               ))}
             </View>
+          </ScrollView>
 
-            <BottomSheetModal
-              index={0}
-              snapPoints={snapPoints}
-              ref={bottomSheetModalRef}
-              handleIndicatorStyle={{
-                backgroundColor: "#fff",
-              }}
-              backgroundStyle={{ backgroundColor: "#654ff3" }}
-            >
-              {!fetched && (
-                <View className="flex-1 justify-center">
-                  <ActivityIndicator size={"large"} />
-                </View>
-              )}
+          <BottomSheetModal
+            index={0}
+            snapPoints={snapPoints}
+            ref={bottomSheetModalRef}
+            handleIndicatorStyle={{
+              backgroundColor: "#fff",
+            }}
+            backgroundStyle={{ backgroundColor: "#654ff3" }}
+          >
+            {!fetched && (
+              <View className="flex-1 justify-center">
+                <ActivityIndicator size={"large"} />
+              </View>
+            )}
 
-              {fetched && (
-                <KeyboardAvoidingView style={{ flex: 1 }}>
-                  <ScrollView className="flex-1 bg-[#f2f1ff] ">
-                    <View
+            {fetched && (
+              <BottomSheetScrollView className="flex-1 bg-[#f2f1ff]  ">
+                <View
+                  style={{
+                    backgroundColor: "#f2f1ff",
+                    justifyContent: "center",
+                    paddingHorizontal: 40,
+                    borderRadius: 45,
+                    marginHorizontal: 15,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      color: "#000",
+                      marginVertical: 10,
+                      marginTop: 40,
+                    }}
+                  >
+                    Create new patient
+                  </Text>
+                  <Text className="items-center font-[450] mt-6 ">Name:</Text>
+                  <TextInput
+                    placeholder="Email: Ali"
+                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
+                    value={patientName}
+                    onChangeText={setPatientName}
+                  />
+                  <Text className="items-center font-[450] mt-6">
+                    Patient Age:
+                  </Text>
+                  <TextInput
+                    placeholder="Email: 14"
+                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
+                    value={patientAge}
+                    onChangeText={setPatientAge}
+                  />
+
+                  <Text className="items-center font-[450] mt-6">
+                    Doctor's Email (Optional) :
+                  </Text>
+                  <TextInput
+                    placeholder="Email: example@mail.com"
+                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
+                  />
+                  <Text className="items-center font-[450] mt-6">
+                    Patient Condition:
+                  </Text>
+                  <View className="border-b-2  border-[#654ff3] px-[20] my rounded-[20px] mb-[20]">
+                    <Picker
                       style={{
-                        backgroundColor: "#f2f1ff",
-                        justifyContent: "center",
-                        paddingHorizontal: 40,
-                        borderRadius: 45,
+                        width: "100%",
+                        color: "gray",
+                      }}
+                      selectedValue={selectedConditon}
+                      onValueChange={(itemValue, itemIndex) =>
+                        setSelectedConditon(itemValue)
+                      }
+                    >
+                      <Picker.Item label="Select Condition" value="vide" />
+                      <Picker.Item label="Autism" value="autism" />
+                      <Picker.Item label="Alzheimer" value="alzheimer" />
+                    </Picker>
+                  </View>
+                  <TouchableOpacity onPress={alertAdd} style={styles.Add}>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 18,
+                        color: "#f2f1ff",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          fontWeight: "bold",
-                          color: "#000",
-                          marginVertical: 10,
-                          marginTop: 40,
-                        }}
-                      >
-                        Create new patient
-                      </Text>
-                      <Text className="items-center font-[450] mt-6 ">
-                        Name:
-                      </Text>
-                      <TextInput
-                        placeholder="Email: Ali"
-                        className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
-                        value={patientName}
-                        onChangeText={setPatientName}
-                      />
-                      <Text className="items-center font-[450] mt-6">
-                        Patient Age:
-                      </Text>
-                      <TextInput
-                        placeholder="Email: 14"
-                        className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
-                        value={patientAge}
-                        onChangeText={setPatientAge}
-                      />
-
-                      <Text className="items-center font-[450] mt-6">
-                        Doctor's Email (Optional) :
-                      </Text>
-                      <TextInput
-                        placeholder="Email: example@mail.com"
-                        className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
-                      />
-                      <Text className="items-center font-[450] mt-6">
-                        Patient Condition:
-                      </Text>
-                      <View className="border-b-2  border-[#654ff3] px-[20] my rounded-[20px] mb-[20]">
-                        <Picker
-                          style={{
-                            width: "100%",
-                            color: "gray",
-                          }}
-                          selectedValue={selectedConditon}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedConditon(itemValue)
-                          }
-                        >
-                          <Picker.Item label="Select Condition" value="vide" />
-                          <Picker.Item label="Autism" value="autism" />
-                          <Picker.Item label="Alzheimer" value="alzheimer" />
-                        </Picker>
-                      </View>
-                      <TouchableOpacity onPress={alertAdd} style={styles.Add}>
-                        <Text
-                          style={{
-                            fontWeight: "bold",
-                            fontSize: 18,
-                            color: "#f2f1ff",
-                          }}
-                        >
-                          ADD
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </ScrollView>
-                </KeyboardAvoidingView>
-              )}
-            </BottomSheetModal>
-          </ScrollView>
+                      ADD
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </BottomSheetScrollView>
+            )}
+          </BottomSheetModal>
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
@@ -390,7 +388,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#654ff3",
     height: 60,
     marginHorizontal: 10,
-    marginVertical: 10,
+    marginVertical: 20,
     borderRadius: 31,
     justifyContent: "center",
     alignItems: "center",
