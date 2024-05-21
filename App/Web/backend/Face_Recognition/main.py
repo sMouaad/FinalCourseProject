@@ -10,6 +10,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing_extensions import Annotated
 from pydantic.functional_validators import BeforeValidator
 from routes.image_uploaded import router
+from fastapi.middleware.cors import CORSMiddleware
 
 
 # Replace with your authentication scheme (e.g., JWT)
@@ -22,6 +23,14 @@ app = FastAPI(
 )
 
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "*"
+    ],  # You can specify specific origins or use ["*"] to allow all origins
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Specify methods allowed
+    allow_headers=["*"],  # Specify headers allowed
+)
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
