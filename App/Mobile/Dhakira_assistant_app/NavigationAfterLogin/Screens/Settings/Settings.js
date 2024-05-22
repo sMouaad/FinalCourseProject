@@ -3,10 +3,24 @@ import React from "react";
 
 export default function Settings({ navigation, patientName }) {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f2f1ff",
+        gap: 10,
+      }}
+    >
       <View style={styles.PatientName}>
         <View>
-          <Text style={{ fontSize: 20, fontWeight: "bold", color: "white" }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
             {patientName}
           </Text>
         </View>
@@ -61,14 +75,20 @@ const styles = StyleSheet.create({
     borderRadius: 31,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 5,
+    borderWidth: 3,
     borderColor: "#5E60CE",
+    shadowColor: "#5E60CE",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    elevation: 15,
   },
   Delete: {
     backgroundColor: "#fff",
     marginTop: 80,
     width: 310,
-    height: 60,
     marginHorizontal: 10,
     marginVertical: 10,
     borderRadius: 31,
@@ -76,6 +96,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 5,
     borderColor: "red",
+    shadowColor: "red",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    elevation: 15,
   },
   PatientName: {
     backgroundColor: "#5E60CE",
@@ -85,9 +112,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 31,
     justifyContent: "center",
+
     alignItems: "center",
-    borderWidth: 5,
-    borderColor: "#000",
+    shadowColor: "#654ff3",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    elevation: 15,
   },
   buttonText: {
     textAlign: "center",

@@ -1,19 +1,9 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import ButtonCestParti from "../buttons/button_cestParti.js";
 import ButtonJaiDejaUnCompte from "../buttons/button_jaiDejaUnCompte.js";
-import { removeData } from "../localStorage.js";
 
 function First_Page({ navigation }) {
-  // removeData("cookie");
   return (
     <View style={styles.container}>
       <Image

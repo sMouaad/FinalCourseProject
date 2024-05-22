@@ -9,11 +9,53 @@ import {
   TextInput,
   RefreshControl,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { SERVER_IP } from "@env";
 import { getData } from "../../../localStorage";
 import Axios from "axios";
+
+const messages = [
+  {
+    id: 1,
+    name: "Abderraouf",
+    imageUrl:
+      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
+  },
+  {
+    id: 2,
+
+    name: "Abderraouf",
+    imageUrl:
+      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
+  },
+  {
+    id: 3,
+    name: "Abderraouf",
+    imageUrl:
+      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
+  },
+  {
+    id: 4,
+
+    name: "Abderraouf",
+    imageUrl:
+      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
+  },
+];
+
+const MessageItem = ({ message }) => {
+  return (
+    <View style={styles.messageContainer}>
+      <Image source={{ uri: message.imageUrl }} style={styles.profileImage} />
+      <View style={styles.messageContent}>
+        <Text style={styles.senderName}>{message.name}</Text>
+        <Text style={styles.messageContent}>{message.name}</Text>
+      </View>
+    </View>
+  );
+};
 
 export default function FamilyFace() {
   const [image, setImage] = useState(null);
@@ -21,6 +63,7 @@ export default function FamilyFace() {
   const [who, setWho] = useState("");
   const [fetched, setFetsched] = useState(false);
   const [refreshing, setRefreshing] = useState(true);
+  const [patientId, setPatientId] = useState(0);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -47,6 +90,7 @@ export default function FamilyFace() {
     const formData = new FormData();
 
     const image_name = `${name}_${who}_${filename}`;
+
     formData.append("file", {
       uri: image,
       name: image_name,
@@ -55,7 +99,6 @@ export default function FamilyFace() {
     formData.append("Name", name);
     formData.append("Who", who);
 
-    const patientId = await getData("patientId");
     Axios.put(
       `http://${SERVER_IP}:8000/image_uploaded_by_caregiver/${patientId}`,
       formData,
@@ -90,6 +133,33 @@ export default function FamilyFace() {
     }
   }, [refreshing]);
 
+  useEffect(() => {
+    const fetchData = async (url, params) => {
+      try {
+        const response = await Axios.get(url, { params });
+        return response.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    async function getPatientId() {
+      const sroredpatientId = await getData("patientId");
+      setPatientId(sroredpatientId);
+      console.log(patientId);
+    }
+    async function fetcImages() {
+      getPatientId();
+      const data = fetchData(`http://${SERVER_IP}:8000/patient_images`, {
+        patient_id: patientId,
+      });
+      // console.log(data);
+    }
+    fetcImages();
+  }, []);
+
+  // if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+  // if (error) return <Text style={styles.error}>Error: {error.message}</Text>;
+  // console.log(data);
   if (!fetched) {
     return (
       <ScrollView
@@ -106,20 +176,29 @@ export default function FamilyFace() {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <TouchableOpacity style={styles.upload} onPress={pickImage}>
-          <Text style={styles.textUpload}>Upload</Text>
-          <Text style={styles.textUpload}>&gt;</Text>
-        </TouchableOpacity>
-        {image && (
+    <>
+      <View style={styles.container}>
+        <ScrollView
+          // contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Text className="text-[20px] px-5 py-3 text-[#654ff3]  font-bold ">
+            Upload a new picture{" "}
+          </Text>
+          {/* {image && ( */}
           <View style={styles.imageContainer}>
-            <Image source={{ uri: image }} style={styles.image} />
+            <TouchableOpacity
+              className="flex flex-row flex-1  w-full justify-center items-center"
+              onPress={pickImage}
+            >
+              <Image
+                onPress={pickImage}
+                source={{ uri: image }}
+                style={styles.image}
+              />
+            </TouchableOpacity>
             <View style={styles.image3}>
               <TextInput
                 placeholder="Who (Name)"
@@ -139,17 +218,57 @@ export default function FamilyFace() {
               </TouchableOpacity>
             </View>
           </View>
-        )}
-      </ScrollView>
-    </View>
+
+          <View>
+            <Text className="text-[20px] px-5 py-3 text-[#654ff3]  font-bold ">
+              All pictures
+            </Text>
+            {/* )} */}
+            <View
+              className="mx-[10]  rounded-3xl bg-white box-border mb-[10] py-2  "
+              style={{
+                shadowColor: "#654ff3",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                elevation: 15,
+              }}
+            >
+              {/* data={messages}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem= */}
+              {messages.map((item) => {
+                return (
+                  <>
+                    {item.id.toString() != 1 ? (
+                      <View className="border self-center mx-1 w-[93%] border-[#f2f1ff]   " />
+                    ) : (
+                      <></>
+                    )}
+                    <MessageItem key={item.id} message={item} />
+                  </>
+                );
+              })}
+            </View>
+            {/* <View style={styles.scrollViewContent}>
+              {patients.map((item) => (
+                <Item key={item.id} patient={item} navigation={navigation} />
+              ))}
+            </View> */}
+          </View>
+        </ScrollView>
+      </View>
+    </>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
+    // padding: 5,
+    paddingTop: StatusBar.currentHeight,
     flex: 1,
-    alignItems: "center",
-    marginTop: 33,
+    backgroundColor: "#f2f1ff",
   },
   upload: {
     display: "flex",
@@ -169,21 +288,32 @@ const styles = StyleSheet.create({
     color: "white",
   },
   imageContainer: {
+    marginVertical: 10,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
+    paddingVertical: 25,
+    paddingHorizontal: 15,
+    borderRadius: 50,
+    shadowColor: "#654ff3",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    elevation: 15,
   },
   image: {
-    marginTop: 40,
-    width: "40%",
+    // marginTop: 40,
+    width: "100%",
     height: 170,
     borderRadius: 21,
     borderWidth: 3,
-    borderColor: "black",
+    borderColor: "#654ff3",
   },
   image3: {
-    marginTop: 40,
     width: "60%",
     height: 170,
     display: "flex",
@@ -191,6 +321,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputField: {
+    borderColor: "#654FF3",
     borderWidth: 2,
     width: "90%",
     height: 50,
@@ -200,18 +331,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginBottom: 5,
   },
-  PicWithHim: {
-    display: "flex",
-    borderRadius: 20,
-    height: 40,
-    width: "95%",
-    borderWidth: 3,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#5390D9",
-    flexDirection: "row",
-    marginBottom: 5,
-  },
+
   textUPicWithHim: {
     paddingLeft: 10,
     fontWeight: "bold",
@@ -220,15 +340,22 @@ const styles = StyleSheet.create({
   },
   Submit: {
     display: "flex",
+    flexDirection: "row",
     borderRadius: 20,
     height: 40,
-    width: "95%",
-    borderWidth: 3,
+    width: "90%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#0C9500",
+    backgroundColor: "#654FF3",
     flexDirection: "row",
     marginBottom: 5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 8,
+    elevation: 6,
   },
   textSubmit: {
     paddingLeft: 10,
@@ -243,9 +370,52 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollView: {
-    flexDirection: "column",
-    backgroundColor: "#fff",
-    marginHorizontal: 20,
-    borderRadius: 31,
+    display: "flex",
+    // padding: 5,
+    paddingTop: StatusBar.currentHeight,
+    flex: 1,
+    backgroundColor: "#f2f1ff",
+  },
+  // btn: {
+  // backgroundColor: "white",
+  // height: 50,
+  // width: 50,
+  // borderRadius: 25,
+  // alignItems: "center",
+  // justifyContent: "center",
+  // shadowColor: "#00E5BD",
+  // shadowOffset: {
+  //   width: 0,
+  //   height: 2,
+  // },
+  // marginLeft: 10,
+  // shadowOpacity: 0.9,
+  // shadowRadius: 8,
+  // elevation: 6,
+  // },
+  messageContainer: {
+    flexDirection: "row",
+
+    // alignItems: "center",
+    padding: 20,
+    paddingHorizontal: 28,
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 16, // half of width and height to make it circular
+    marginRight: 10,
+    borderColor: "#654ff3",
+    borderWidth: 2,
+  },
+  messageContent: {
+    flex: 1,
+    marginHorizontal: 8,
+  },
+  senderName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginHorizontal: 8,
+    marginVertical: 5,
   },
 });
