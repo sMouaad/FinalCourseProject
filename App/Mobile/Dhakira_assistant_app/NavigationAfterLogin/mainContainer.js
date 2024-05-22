@@ -46,7 +46,9 @@ function RecordTrackSettingsGroup({ route }) {
     <RTC.Navigator>
       <RTC.Screen
         name="Home_Patient"
-        options={{ headerShown: true, title: patientName }}
+        options={{
+          headerShown: false,
+        }}
       >
         {(props) => {
           return <Home_PatientX {...props} patientName={patientName} />;
@@ -57,7 +59,7 @@ function RecordTrackSettingsGroup({ route }) {
         component={Track}
         options={{ headerShown: true }}
       ></RTC.Screen>
-      <RTC.Screen name="Settings" options={{ headerShown: true }}>
+      <RTC.Screen name="Settings" options={{ headerShown: false }}>
         {(props) => {
           return <SettingsStackGroup {...props} patientName={patientName} />;
         }}

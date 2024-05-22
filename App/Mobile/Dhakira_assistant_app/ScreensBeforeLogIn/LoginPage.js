@@ -13,10 +13,9 @@ import { useState } from "react";
 import { removeData, storeData } from "../localStorage";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Axios from "axios";
-import BottomSheet, {
+import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { SERVER_IP } from "@env";
 
@@ -43,7 +42,8 @@ function LoginPageInterface() {
   useEffect(() => {
     if (sendbtn) {
       const trimmedEmail = emailReset.trim().toLowerCase();
-      Axios.post(`http://${SERVER_IP}:3000/auth/forgot-password`, {
+
+      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/forgot-password`, {
         email: trimmedEmail,
       })
         .then((res) => {
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+    
   },
   inputPassword: {
     borderColor: "#6930C3",

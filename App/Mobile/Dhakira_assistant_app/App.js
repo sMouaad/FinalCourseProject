@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
-import { storeData, getData } from "./localStorage";
+import { removeData, getData } from "./localStorage";
 import { ActivityIndicator, View } from "react-native";
 import { First_Page } from "./ScreensBeforeLogIn/FirstPage";
 import { SignUpPageInter } from "./ScreensBeforeLogIn/SignUpPage";
@@ -12,12 +12,11 @@ Stack = createNativeStackNavigator();
 
 export default function App() {
   const [initialRouteName, setInitialRouteName] = useState("");
-
+  // removeData("cookie");
   useEffect(() => {
     const fetchData = async () => {
       try {
         const cookie = await getData("cookie");
-
         if (typeof cookie === "string" && cookie !== "") {
           setInitialRouteName("Main");
         } else {

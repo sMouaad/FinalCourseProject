@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import React from "react";
 import IconFont from "react-native-vector-icons/FontAwesome";
 

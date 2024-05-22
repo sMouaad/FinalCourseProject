@@ -16,7 +16,6 @@ import {
   TextInput,
   RefreshControl,
   ActivityIndicator,
-  KeyboardAvoidingView,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storeData, getData, removeData } from "../../../localStorage";
@@ -87,7 +86,6 @@ function HomePage({ navigation }) {
         })
         .then(() => {
           setFetsched(true);
-          console.log(patients);
           setPatientName("");
           setPatientAge("");
           handleClosedModalPress;
@@ -107,7 +105,8 @@ function HomePage({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getData("cookie");
-      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/profiles`, {
+
+      Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
         accessToken: userData,
       })
         .then((res) => {
@@ -205,7 +204,7 @@ function HomePage({ navigation }) {
                   shadowOpacity: 0.25,
                   elevation: 5,
                 }}
-                className="text-2xl f rounded-full  p-1 items-center flex  bg-[#f2f1ff] flex-2 font-bold "
+                className="text-2xl rounded-full  p-1 items-center flex  bg-[#f2f1ff] flex-2 font-bold "
               >
                 <Icon
                   onPress={handlePresentModalPress}
@@ -354,10 +353,10 @@ const styles = StyleSheet.create({
   patient: {
     padding: 20,
     height: 120,
-    margin: 5,
+    margin: "2%",
     backgroundColor: "#6c5ce7",
     flexBasis: "40%",
-    maxWidth: "45%",
+    maxWidth: "48%",
     flex: 1,
     borderRadius: 25,
     alignItems: "center",
