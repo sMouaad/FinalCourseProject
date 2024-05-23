@@ -31,7 +31,7 @@ export default function Dashboard() {
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
-  const [patientAge, setPatientAge] = useState(0);
+  const [patientDate, setPatientDate] = useState();
   const [patientName, setPatientName] = useState("");
   const [assistantEmail, setAssistantEmail] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
@@ -102,7 +102,7 @@ export default function Dashboard() {
       email,
       condition,
       operation,
-      patientAge,
+      patientDate,
       patientName,
       assistantEmail,
       doctorEmail,
@@ -358,11 +358,13 @@ export default function Dashboard() {
                                   />
                                   <input
                                     onChange={(e) => {
-                                      setPatientAge(e.target.value);
+                                      setPatientDate(e.target.value);
+                                      console.log(typeof patientDate);
+                                      console.log(patientDate);
                                       setDeleteError("");
                                     }}
-                                    id="patientAge"
-                                    type="number"
+                                    id="patientDate"
+                                    type="date"
                                     min={0}
                                     max={100}
                                     autoComplete="off"
@@ -909,4 +911,8 @@ function Notification({
       </button>
     </div>
   );
+}
+
+function DatePick() {
+  return <input type="date" name="" id="" />;
 }

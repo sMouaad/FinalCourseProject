@@ -7,7 +7,7 @@ const Image = new mongoose.Schema({
 });
 const PatientSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  age: { type: Number, required: true },
+  date: { type: String, required: true },
   condition: { type: String, required: true },
   primaryAssistant: { type: mongoose.SchemaTypes.ObjectId, required: true },
   assistants: [{ type: mongoose.SchemaTypes.ObjectId }],
