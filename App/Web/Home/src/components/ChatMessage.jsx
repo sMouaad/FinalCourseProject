@@ -12,7 +12,7 @@ export default function ChatMessage({ message, role }) {
       </div>
     );
 
-  const roleName = role === "user" ? "Metwa77ad" : "Assistant";
+  const roleName = role === "user" ? "You" : "Dhakira";
 
   return (
     <div className="flex flex-row mx-2 my-4">
