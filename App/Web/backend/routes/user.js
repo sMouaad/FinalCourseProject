@@ -54,7 +54,7 @@ router.post("/operation", async (req, res) => {
   const {
     token,
     operation,
-    patientAge,
+    patientDate,
     patientName,
     assistantEmail,
     doctorEmail,
@@ -83,7 +83,7 @@ router.post("/operation", async (req, res) => {
       const newPatient = new Patient({
         name: patientName,
         primaryAssistant: user._id,
-        age: patientAge,
+        date: patientDate,
         condition: condition,
       });
       await newPatient.save();
