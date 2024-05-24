@@ -5,9 +5,7 @@ import { UserRouter } from "./routes/user.js";
 import { TodoRouter } from "./routes/todo-list.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
 dotenv.config();
-
 const app = express();
 app.use(express.json());
 app.use(
@@ -16,6 +14,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.static("Images"));
 app.use(cookieParser());
 app.use("/auth", UserRouter);
 app.use("/todo", TodoRouter);
