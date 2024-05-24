@@ -105,7 +105,6 @@ function HomePage({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getData("cookie");
-
       Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
         accessToken: userData,
       })
@@ -131,6 +130,7 @@ function HomePage({ navigation }) {
           console.warn("ScrollingBarPatients " + err);
         });
     };
+
     if (refreshing) {
       fetchData();
       setRefreshing(false);
@@ -149,7 +149,7 @@ function HomePage({ navigation }) {
           <ActivityIndicator size={"large"} />
         </View>
       </ScrollView>
-    );
+    );y
   }
 
   return (
@@ -267,7 +267,7 @@ function HomePage({ navigation }) {
                     Patient Age:
                   </Text>
                   <TextInput
-                    placeholder="Email: 14"
+                    placeholder="Age: 14"
                     className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
                     value={patientAge}
                     onChangeText={setPatientAge}
@@ -347,16 +347,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     flexDirection: "row",
     flexWrap: "wrap",
-
-    gap: 5,
+    justifyContent: "space-between",
   },
   patient: {
+    marginTop: 7,
     padding: 20,
     height: 120,
-    margin: "2%",
     backgroundColor: "#6c5ce7",
-    flexBasis: "40%",
-    maxWidth: "48%",
+    flexBasis: "49%",
+    maxWidth: "49%",
     flex: 1,
     borderRadius: 25,
     alignItems: "center",
@@ -369,19 +368,19 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  // inputField: {
-  //   padding: 7,
-  //   borderWidth: 3,
-  //   borderRadius: 30,
-  //   borderWidth: 3,
-  //   marginTop: 10,
-  //   width: "80%",
-  //   textAlign: "center",
-  //   fontSize: 20,
-  //   fontWeight: "bold",
-  //   borderColor: "black",
-  //   backgroundColor: "white",
-  // },
+  inputField: {
+    padding: 7,
+    borderWidth: 3,
+    borderRadius: 30,
+    borderWidth: 3,
+    marginTop: 10,
+    width: "80%",
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    borderColor: "black",
+    backgroundColor: "white",
+  },
   Add: {
     marginTop: 15,
     backgroundColor: "#654ff3",
