@@ -39,6 +39,27 @@ function LoginPageInterface() {
     setSendbtn(true);
   };
 
+  const handelLogin = () => {
+    const trimmedEmail = emailLogin.trim().toLowerCase();
+    Axios.post(`http://${SERVER_IP}:3000/auth/login`, {
+      emailLogin: trimmedEmail,
+      passwordLogin,
+    })
+      .then((res) => {
+        if (res.data.status) {
+          storeData("cookie", res.data.accessToken).then(() => {
+            navigation.navigate("Main");
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("loginPage", err);
+        if (err.response.status === 401) {
+          alert("Email or password is incorrect");
+        }
+      });
+  };
+
   useEffect(() => {
     if (sendbtn) {
       const trimmedEmail = emailReset.trim().toLowerCase();
@@ -65,7 +86,7 @@ function LoginPageInterface() {
         });
     }
   }, [sendbtn]);
-  removeData("cookie");
+  // removeData("cookie");
 
   return (
     <>
@@ -142,29 +163,7 @@ function LoginPageInterface() {
                 </View>
               )}
             </BottomSheetModal>
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => {
-                const trimmedEmail = emailLogin.trim().toLowerCase();
-                Axios.post(`http://${SERVER_IP}:3000/auth/login`, {
-                  emailLogin: trimmedEmail,
-                  passwordLogin,
-                })
-                  .then((res) => {
-                    if (res.data.status) {
-                      storeData("cookie", res.data.accessToken).then(() => {
-                        navigation.navigate("Main");
-                      });
-                    }
-                  })
-                  .catch((err) => {
-                    if (err.response.status === 401) {
-                      alert("Email or password is incorrect");
-                    }
-                    console.log("loginPage", err);
-                  });
-              }}
-            >
+            <TouchableOpacity style={styles.loginButton} onPress={handelLogin}>
               <Text style={styles.TextLoginButton}>Log in</Text>
             </TouchableOpacity>
             <Text
@@ -211,7 +210,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-    
   },
   inputPassword: {
     borderColor: "#6930C3",

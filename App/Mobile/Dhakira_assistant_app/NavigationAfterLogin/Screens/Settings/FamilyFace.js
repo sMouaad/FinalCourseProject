@@ -15,43 +15,15 @@ import * as ImagePicker from "expo-image-picker";
 import { SERVER_IP } from "@env";
 import { getData } from "../../../localStorage";
 import Axios from "axios";
-
-const messages = [
-  {
-    id: 1,
-    name: "Abderraouf",
-    imageUrl:
-      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
-  },
-  {
-    id: 2,
-
-    name: "Abderraouf",
-    imageUrl:
-      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
-  },
-  {
-    id: 3,
-    name: "Abderraouf",
-    imageUrl:
-      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
-  },
-  {
-    id: 4,
-
-    name: "Abderraouf",
-    imageUrl:
-      "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
-  },
-];
+// import defaultImg from "../../../Images/1.jpg";
 
 const MessageItem = ({ message }) => {
   return (
     <View style={styles.messageContainer}>
-      <Image source={{ uri: message.imageUrl }} style={styles.profileImage} />
+      <Image source={{ uri: message.url }} style={styles.profileImage} />
       <View style={styles.messageContent}>
         <Text style={styles.senderName}>{message.name}</Text>
-        <Text style={styles.messageContent}>{message.name}</Text>
+        <Text style={styles.messageContent}>{message.who}</Text>
       </View>
     </View>
   );
@@ -64,6 +36,7 @@ export default function FamilyFace() {
   const [fetched, setFetsched] = useState(false);
   const [refreshing, setRefreshing] = useState(true);
   const [patientId, setPatientId] = useState(0);
+  const [peoples, setPeoples] = useState([]);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -84,6 +57,7 @@ export default function FamilyFace() {
   }, []);
 
   const handelAddImage = async () => {
+    console.log("add to " + patientId);
     setFetsched(false);
     const parts = image.split("/");
     const filename = parts[parts.length - 1];
@@ -94,7 +68,7 @@ export default function FamilyFace() {
     formData.append("file", {
       uri: image,
       name: image_name,
-      type: "image/jpeg" || "image/png", // Set the correct MIME type based on your image format
+      type: "image/jpeg" || "image/png",
     });
     formData.append("Name", name);
     formData.append("Who", who);
@@ -111,10 +85,10 @@ export default function FamilyFace() {
       .then((res) => {
         if (res.data.status === 200) {
           alert(res.data.message);
+          setRefreshing(true);
         } else if (res.data.status === 422) {
-          onRefresh();
           alert(res.data.message);
-        }
+        } else alert(res.data.message);
       })
       .catch((err) => {
         console.log(err);
@@ -126,36 +100,39 @@ export default function FamilyFace() {
         setWho("");
       });
   };
-  useEffect(() => {
-    if (refreshing) {
-      setRefreshing(false);
-      setFetsched(true);
-    }
-  }, [refreshing]);
 
   useEffect(() => {
-    const fetchData = async (url, params) => {
-      try {
-        const response = await Axios.get(url, { params });
-        return response.data;
-      } catch (err) {
-        console.error(err);
-      }
-    };
     async function getPatientId() {
-      const sroredpatientId = await getData("patientId");
-      setPatientId(sroredpatientId);
-      console.log(patientId);
+      const storedpatientId = await getData("patientId");
+      setPatientId(storedpatientId);
     }
-    async function fetcImages() {
-      getPatientId();
-      const data = fetchData(`http://${SERVER_IP}:8000/patient_images`, {
-        patient_id: patientId,
-      });
-      // console.log(data);
-    }
-    fetcImages();
+    getPatientId();
   }, []);
+
+  useEffect(() => {
+    async function fetchImages() {
+      try {
+        const response = await Axios.get(
+          `http://${SERVER_IP}:8000/patient_images`,
+          {
+            params: { id: patientId },
+          }
+        );
+
+        setPeoples(response.data);
+      } catch (err) {
+        console.error("useeffect", err);
+      }
+    }
+    if (patientId) {
+      fetchImages();
+
+      if (refreshing) {
+        setRefreshing(false);
+        setFetsched(true);
+      }
+    }
+  }, [patientId, refreshing]);
 
   // if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   // if (error) return <Text style={styles.error}>Error: {error.message}</Text>;
@@ -179,7 +156,7 @@ export default function FamilyFace() {
     <>
       <View style={styles.container}>
         <ScrollView
-          // contentContainerStyle={styles.scrollView}
+          style={styles.scrollView}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -195,7 +172,11 @@ export default function FamilyFace() {
             >
               <Image
                 onPress={pickImage}
-                source={{ uri: image }}
+                source={{
+                  uri: image
+                    ? image
+                    : "https://cdn-icons-png.flaticon.com/512/10054/10054290.png",
+                }}
                 style={styles.image}
               />
             </TouchableOpacity>
@@ -219,44 +200,46 @@ export default function FamilyFace() {
             </View>
           </View>
 
-          <View>
-            <Text className="text-[20px] px-5 py-3 text-[#654ff3]  font-bold ">
+          <View className="flex-1 ">
+            <Text className="text-[20px] px-5 py-3 text-[#654ff3] font-bold ">
               All pictures
             </Text>
-            {/* )} */}
-            <View
-              className="mx-[10]  rounded-3xl bg-white box-border mb-[10] py-2  "
-              style={{
-                shadowColor: "#654ff3",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                elevation: 15,
-              }}
-            >
-              {/* data={messages}
+            {
+            peoples.length !== 0 ? (
+              <View
+                className="mx-[10] flex-1 rounded-3xl bg-white box-border mb-[10] py-2  "
+                style={{
+                  shadowColor: "#654ff3",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  elevation: 5,
+                }}
+              >
+                {/* data={messages}
               keyExtractor={(item) => item.id.toString()}
               renderItem= */}
-              {messages.map((item) => {
-                return (
-                  <>
-                    {item.id.toString() != 1 ? (
-                      <View className="border self-center mx-1 w-[93%] border-[#f2f1ff]   " />
-                    ) : (
-                      <></>
-                    )}
-                    <MessageItem key={item.id} message={item} />
-                  </>
-                );
-              })}
-            </View>
-            {/* <View style={styles.scrollViewContent}>
-              {patients.map((item) => (
-                <Item key={item.id} patient={item} navigation={navigation} />
-              ))}
-            </View> */}
+                {peoples.map((item, index) => {
+                  // console.log(item.id);
+                  return (
+                    <View key={index}>
+                      {index != 0 ? (
+                        <View className="border self-center mx-1 w-[93%] border-[#f2f1ff]   " />
+                      ) : (
+                        <></>
+                      )}
+                      <MessageItem message={item} />
+                    </View>
+                  );
+                })}
+              </View>
+            ) : (
+              <Text className="text-[20px] px-5 py-3 text-[#654ff3] font-bold ">
+                No pictures uploaded
+              </Text>
+            )}
           </View>
         </ScrollView>
       </View>
@@ -265,7 +248,7 @@ export default function FamilyFace() {
 }
 const styles = StyleSheet.create({
   container: {
-    // padding: 5,
+    display: "flex",
     paddingTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#f2f1ff",
@@ -303,19 +286,23 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.25,
-    elevation: 15,
+    elevation: 5,
   },
   image: {
-    // marginTop: 40,
     width: "100%",
-    height: 170,
+    height: 150,
     borderRadius: 21,
-    borderWidth: 3,
     borderColor: "#654ff3",
+    shadowColor: "#654ff3",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    elevation: 10,
   },
   image3: {
     width: "60%",
-    height: 170,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -370,40 +357,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollView: {
-    display: "flex",
-    // padding: 5,
-    paddingTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#f2f1ff",
   },
-  // btn: {
-  // backgroundColor: "white",
-  // height: 50,
-  // width: 50,
-  // borderRadius: 25,
-  // alignItems: "center",
-  // justifyContent: "center",
-  // shadowColor: "#00E5BD",
-  // shadowOffset: {
-  //   width: 0,
-  //   height: 2,
-  // },
-  // marginLeft: 10,
-  // shadowOpacity: 0.9,
-  // shadowRadius: 8,
-  // elevation: 6,
-  // },
+
   messageContainer: {
     flexDirection: "row",
-
-    // alignItems: "center",
     padding: 20,
     paddingHorizontal: 28,
   },
   profileImage: {
     width: 80,
     height: 80,
-    borderRadius: 16, // half of width and height to make it circular
+    borderRadius: 16,
     marginRight: 10,
     borderColor: "#654ff3",
     borderWidth: 2,
