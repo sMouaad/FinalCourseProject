@@ -5,7 +5,49 @@ import { Patient } from "../models/Patient.js";
 import { Notification } from "../models/Notifications.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import multer from "multer";
 const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    return cb(null, "./Images");
+  },
+  filename: function (req, file, cb) {
+    return cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+router.post("/update", upload.single("file"), async (req, res) => {
+  const { email, name, password } = req.body;
+  const dbInfo = await User.find({});
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(400).json({
+      message: "Fatal Error! user is non-existent? logout and login again.",
+    });
+  }
+  const decoded = await jwt.verify(token, process.env.KEY);
+  const id = decoded.id;
+  const user = await User.findById(id);
+  if (user.email !== email) {
+    dbInfo.forEach((element) => {
+      if (element.email === email) {
+        return res.json({ status: false, message: "Email is the same." });
+      }
+    });
+    user.email = email;
+  }
+  const hashPassword = await bcryt.hash(password, 10);
+  user.password = hashPassword;
+  console.log(req.file);
+  user.image = req.file.filename;
+  user.name = name;
+  await user.save();
+  return res.json({
+    status: true,
+    message: "Update Successfull!",
+  });
+});
 
 router.post("/signup", async (req, res) => {
   const { name, email, type, password } = req.body;
@@ -337,6 +379,7 @@ router.get("/userdata", async (req, res) => {
       patientsCreated: [...patientsCreated],
       secondaryPatients: [...secondaryPatients],
       notifications: [...notifications],
+      picture: info.image,
     });
   } catch (err) {
     return res.json(err);

@@ -1,9 +1,7 @@
 import useAuth from "./hooks/useAuth";
-import { Link } from "react-router-dom";
 import Axios from "axios";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Dropdown } from "./Sidebar";
 import ProfilePic from "./assets/dashboard/pfp.svg";
 import { Sidebar } from "./Dashboard";
 
@@ -17,14 +15,29 @@ export default function Settings() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
+  const [picture, setPicture] = useState("");
   const [error, setError] = useState("");
+  const [update, setUpdate] = useState(true);
   const updateInfo = () => {
-    Axios.post("http://localhost:3000/auth/update", {
-      updateEmail,
-      updateName,
-      image,
-      password,
-    });
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("email", updateEmail);
+    formData.append("name", updateName);
+    formData.append("password", password);
+    Axios.post("http://localhost:3000/auth/update", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((res) => {
+        if (res.data.status) {
+          setUpdate(!update);
+        }
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
@@ -34,11 +47,11 @@ export default function Settings() {
         setRole(res.data.type);
         setUpdateName(res.data.name);
         setUpdateEmail(res.data.email);
+        setPicture(res.data.picture);
       }
-      console.log(res);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [update]);
   const { setAuth } = useAuth();
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
@@ -49,7 +62,13 @@ export default function Settings() {
           <div className="text-md flex flex-col justify-center items-center">
             <p className="text-slate-600">&#40;{email}&#41;</p>
           </div>
-          <img className="bg-yellow-300 rounded-full" src={ProfilePic} alt="" />
+          <div className="rounded-full bg-yellow-300 w-[100px] h-[100px] overflow-hidden">
+            <img
+              className="w-full h-auto align-bottom"
+              src={picture ? `http://localhost:3000/${picture}` : ProfilePic}
+              alt=""
+            />
+          </div>
 
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -59,6 +78,7 @@ export default function Settings() {
               id="profilepic"
               onChange={(e) => {
                 setImage(e.target.files[0]);
+                console.log(image);
               }}
               className="size-0"
               type="file"
