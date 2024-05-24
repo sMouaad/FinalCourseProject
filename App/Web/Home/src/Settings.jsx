@@ -73,7 +73,7 @@ export default function Settings() {
           </motion.button>
         </div>
         <div className="my-auto">
-          <form autoComplete="false">
+          <form autoComplete="false" onChange={() => setError("")}>
             <div className="flex pb-12 items-center justify-center gap-32">
               <div className="flex flex-col">
                 <label className="text-sm font-bold text-slate-600" htmlFor="">
@@ -86,7 +86,7 @@ export default function Settings() {
                   onChange={(e) => {
                     setUpdateName(e.target.value);
                   }}
-                  value={name}
+                  value={updateName}
                   autoComplete="false"
                 />
               </div>
@@ -146,7 +146,7 @@ export default function Settings() {
                   onChange={(e) => {
                     setUpdateEmail(e.target.value);
                   }}
-                  value={email}
+                  value={updateEmail}
                   placeholder="example@example.eg"
                   autoComplete="false"
                 />
@@ -166,8 +166,8 @@ export default function Settings() {
                 />
               </div>
             </div>
-            <div className="flex text-red-800 font-bold justify-center min-h-8">
-              {error && error}
+            <div className="flex text-red-800 text-sm font-bold justify-center min-h-8">
+              {error}
             </div>
             <div className="flex justify-center">
               <motion.button
