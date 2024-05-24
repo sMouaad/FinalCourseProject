@@ -11,12 +11,29 @@ export default function Settings() {
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
   const [role, setRole] = useState("user");
+  const [updateName, setUpdateName] = useState("user");
+  const [updateEmail, setUpdateEmail] = useState("user@email.com");
+  const [image, setImage] = useState();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [error, setError] = useState("");
+  const updateInfo = () => {
+    Axios.post("http://localhost:3000/auth/update", {
+      updateEmail,
+      updateName,
+      image,
+      password,
+    });
+  };
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
         setName(res.data.name);
         setEmail(res.data.email);
         setRole(res.data.type);
+        setUpdateName(res.data.name);
+        setUpdateEmail(res.data.email);
       }
       console.log(res);
     });
@@ -38,7 +55,15 @@ export default function Settings() {
             whileTap={{ scale: 0.95 }}
             className=" bg-[#008de5] hover:bg-[#0184cb] py-2 text-white text-[12px] border-[1px] border-transparent rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
           >
-            <input id="profilepic" className="size-0" type="file" name="" />
+            <input
+              id="profilepic"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
+              className="size-0"
+              type="file"
+              name=""
+            />
             <label
               className="h-full w-full py-2 px-16 hover:cursor-pointer"
               htmlFor="profilepic"
@@ -58,6 +83,9 @@ export default function Settings() {
                   className="my-[8px] rounded-[8px] outline-none"
                   type="text"
                   placeholder="Name"
+                  onChange={(e) => {
+                    setUpdateName(e.target.value);
+                  }}
                   value={name}
                   autoComplete="false"
                 />
@@ -82,6 +110,9 @@ export default function Settings() {
                 <input
                   className="my-[8px] rounded-[8px] outline-none"
                   type="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   placeholder="••••••••••"
                   autoComplete="false"
                 />
@@ -96,6 +127,9 @@ export default function Settings() {
                 <input
                   className="my-[8px] rounded-[8px] outline-none"
                   type="password"
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
                   autoComplete="false"
                   placeholder="••••••••••"
                 />
@@ -109,6 +143,9 @@ export default function Settings() {
                 <input
                   className="my-[8px] rounded-[8px] outline-none"
                   type="email"
+                  onChange={(e) => {
+                    setUpdateEmail(e.target.value);
+                  }}
                   value={email}
                   placeholder="example@example.eg"
                   autoComplete="false"
@@ -119,6 +156,9 @@ export default function Settings() {
                   Confirm Email
                 </label>
                 <input
+                  onChange={(e) => {
+                    setConfirmEmail(e.target.value);
+                  }}
                   className="my-[8px] rounded-[8px] outline-none"
                   type="email"
                   placeholder="example@example.eg"
@@ -126,9 +166,23 @@ export default function Settings() {
                 />
               </div>
             </div>
+            <div className="flex text-red-800 font-bold justify-center min-h-8">
+              {error && error}
+            </div>
             <div className="flex justify-center">
               <motion.button
                 whileTap={{ scale: 0.95 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setError("");
+                  if (password === confirmPassword && email === confirmEmail) {
+                    updateInfo();
+                  } else if (password === confirmPassword) {
+                    setError("Emails are not matching");
+                  } else {
+                    setError("Passwords are not matching");
+                  }
+                }}
                 className=" bg-emerald-500 hover:bg-emerald-600 text-white text-[12px] border-[1px] px-4 border-transparent min-h-12 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
               >
                 Update Info
