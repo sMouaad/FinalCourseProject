@@ -16,6 +16,7 @@ import ForgotPassword from "./ForgotPass";
 import ResetPassword from "./ResetPassword";
 import Dashboard from "./Dashboard";
 import "./styles/index.css";
+import Settings from "./Settings";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -65,6 +66,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <>
                   <Sidebar />
                   <Assistant />
+                </>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <>
+                  <Settings />
                 </>
               }
             />
