@@ -798,7 +798,7 @@ function Row({
   );
 }
 
-function SidebarButton({ name, img, route }) {
+export function SidebarButton({ name, img, route }) {
   return (
     <Link
       to={route}
@@ -810,7 +810,7 @@ function SidebarButton({ name, img, route }) {
   );
 }
 
-function Sidebar({ role, setAuth }) {
+export function Sidebar({ role, setAuth }) {
   const handleLogout = () => {
     Axios.get("http://localhost:3000/auth/logout")
       .then((res) => {
@@ -830,13 +830,9 @@ function Sidebar({ role, setAuth }) {
       </div>
       <div className="static md:top-[56px] md:fixed">
         <ul className="md:block flex flex-wrap gap-4 justify-around md:pt-12 md:ml-2 pt-2">
-          <SidebarButton name="Home" img={Home} />
-          <SidebarButton name="Profile" img={Profile} />
-          {role === "doctor" ? (
-            <SidebarButton name="Tests" img={Assistance} />
-          ) : null}
+          <SidebarButton route="/dashboard" name="Home" img={Home} />
           <SidebarButton name="Messages" img={Message} />
-          <SidebarButton name="Settings" img={Settings} />
+          <SidebarButton route="/settings" name="Settings" img={Settings} />
           <SidebarButton name="Support" img={Support} />
         </ul>
       </div>
@@ -911,8 +907,4 @@ function Notification({
       </button>
     </div>
   );
-}
-
-function DatePick() {
-  return <input type="date" name="" id="" />;
 }
