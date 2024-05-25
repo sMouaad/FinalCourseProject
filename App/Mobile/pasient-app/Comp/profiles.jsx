@@ -4,7 +4,6 @@ import {
   FlatList,
   Text,
   StyleSheet,
-  Pressable,
   RefreshControl,
   ScrollView,
   ActivityIndicator,
@@ -80,7 +79,7 @@ const Profiles = ({ navigation }) => {
           setFetsched(true);
         })
         .catch((err) => {
-          console.warn(err);
+          console.log("Profiles " + err);
         });
     };
     if (refreshing) {

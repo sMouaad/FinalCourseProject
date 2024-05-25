@@ -24,16 +24,15 @@ import Animated, {
 } from "react-native-reanimated";
 import welcomToDhakira from "../../assets/images/welcomToDhakira.png";
 import { useIsFocused } from "@react-navigation/native";
-import BottomSheet, {
+import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import Axios from "axios";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { SERVER_IP } from "@env";
+import { storeData, getData, removeData } from "../../localStorage";
 
 const DURATION = 1000;
 const DELAY = 500;
@@ -43,8 +42,11 @@ const Login = ({ navigation }) => {
   Axios.defaults.withCredentials = true;
 
   const [emailLogin, setEmail] = useState("");
+
   const [emailReset, setEmailReset] = useState("");
+
   const [passwordLogin, setPassword] = useState("");
+
   const [iscorrect, setIscorrect] = useState(false);
 
   const isFocused = useIsFocused();
@@ -105,26 +107,6 @@ const Login = ({ navigation }) => {
   }, [sendbtn]);
 
   const bottomSheetModalRef = useRef(null);
-
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
-
-  const getData = async (key) => {
-    try {
-      const userData = await AsyncStorage.getItem(key);
-      return userData;
-    } catch (e) {
-      // saving error
-      console.log(e);
-      return "error";
-    }
-  };
 
   // useEffect(() => {
   //   getData("patientId").then((patientId) => {
@@ -221,13 +203,13 @@ const Login = ({ navigation }) => {
                             storeData("cookie", res.data.accessToken).then(
                               navigation.navigate("Profiles")
                             );
+
                           }
                         })
                         .catch((err) => {
+                          console.log(err);
                           if (err.response.status === 401) {
                             setIscorrect(true);
-                          } else {
-                            console.log(err);
                           }
                         });
                     }}
