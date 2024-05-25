@@ -3,13 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import animation from "./assets/search.json";
-import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 import { Dropdown } from "./Sidebar";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Modal from "./components/Modal/index";
-import Assistance from "./assets/dashboard/assistance.svg";
 import { MdDashboard } from "react-icons/md";
 import Home from "./assets/dashboard/home.svg";
 import Bell from "./assets/dashboard/bell.svg";
@@ -31,7 +29,7 @@ export default function Dashboard() {
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
-  const [patientDate, setPatientDate] = useState();
+  const [patientDate, setPatientDate] = useState("");
   const [patientName, setPatientName] = useState("");
   const [assistantEmail, setAssistantEmail] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
@@ -51,7 +49,6 @@ export default function Dashboard() {
   const handleLogout = () => {
     Axios.get("http://localhost:3000/auth/logout")
       .then((res) => {
-        console.log("here!");
         if (res.data.status) console.log("cookies cleared");
         setAuth({});
       })
@@ -62,6 +59,7 @@ export default function Dashboard() {
 
   const closeAssistant = () => {
     setAssistantModalOpen(false);
+    setAssistantEmail("");
     setDelete("");
     setDeleteError("");
   };
@@ -70,6 +68,7 @@ export default function Dashboard() {
   const closeDoctor = () => {
     setDoctorModalOpen(false);
     setDelete("");
+    setDoctorEmail("");
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
@@ -82,6 +81,8 @@ export default function Dashboard() {
   const openDelete = () => setDeleteModalOpen(true);
   const closePatient = () => {
     setPatientModalOpen(false);
+    setPatientDate("");
+    setPatientName("");
     setDelete("");
     setDeleteError("");
   };
