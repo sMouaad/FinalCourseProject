@@ -1,6 +1,9 @@
 import useAuth from "./hooks/useAuth";
 import Axios from "axios";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+import animation from "./assets/search.json";
+import messageanimation from "./assets/bloom-messaging.json";
 import { useEffect, useState } from "react";
 import ProfilePic from "./assets/dashboard/pfp.svg";
 import { Sidebar } from "./Dashboard";
@@ -32,15 +35,35 @@ export default function Messages() {
       <Sidebar setAuth={setAuth} role={role} />
       <section className="bg-slate-100 flex-[6] flex  flex-col">
         <div className="flex flex-1 p-4 gap-4">
-          <div className="rounded-md bg-white shadow-xl flex-[2]"></div>
+          <div className="flex flex-col rounded-md bg-white shadow-xl flex-[2]">
+            <div className="shadow-sm p-4 text-lg">Conversation</div>
+            <div className="flex items-center justify-center">
+              <Lottie className="w-1/2" animationData={messageanimation} />
+            </div>
+            <div className="p-4 mt-auto w-full self-center">
+              <input
+                placeholder="Aa"
+                className="border-none rounded-full w-full bg-slate-200"
+                type="text"
+              />
+            </div>
+          </div>
           <div className="rounded-md bg-white shadow-xl flex-1 ">
             <table className="w-full border-collapse">
               <tr>
                 <th className="text-start py-4 border-none text-2xl font-bold">
-                  Patinets
+                  Patients
                 </th>
               </tr>
-
+              {patients.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
+                  <Lottie className="h-96 mb-8" animationData={animation} />
+                  <div className="text-slate-800">No messages yet...</div>
+                  <div className="text-sm text-slate-600">
+                    Try creating patients
+                  </div>
+                </div>
+              ) : null}
               {patients.map((element) => {
                 return (
                   <tr key={element._id}>
