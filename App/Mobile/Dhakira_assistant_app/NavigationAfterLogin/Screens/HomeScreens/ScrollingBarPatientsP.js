@@ -149,7 +149,8 @@ function HomePage({ navigation }) {
           <ActivityIndicator size={"large"} />
         </View>
       </ScrollView>
-    );y
+    );
+    y;
   }
 
   return (

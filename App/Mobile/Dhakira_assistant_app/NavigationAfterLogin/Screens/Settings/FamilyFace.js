@@ -57,7 +57,7 @@ export default function FamilyFace() {
   }, []);
 
   const handelAddImage = async () => {
-    console.log("add to " + patientId);
+    // console.log("add to " + patientId);
     setFetsched(false);
     const parts = image.split("/");
     const filename = parts[parts.length - 1];
@@ -204,8 +204,7 @@ export default function FamilyFace() {
             <Text className="text-[20px] px-5 py-3 text-[#654ff3] font-bold ">
               All pictures
             </Text>
-            {
-            peoples.length !== 0 ? (
+            {peoples.length !== 0 ? (
               <View
                 className="mx-[10] flex-1 rounded-3xl bg-white box-border mb-[10] py-2  "
                 style={{
