@@ -849,7 +849,7 @@ export function Sidebar({ role, setAuth }) {
       <div className="static md:top-[56px] md:fixed">
         <ul className="md:block flex flex-wrap gap-4 justify-around md:pt-12 md:ml-2 pt-2">
           <SidebarButton route="/dashboard" name="Home" img={Home} />
-          <SidebarButton name="Messages" img={Message} />
+          <SidebarButton route="/messages" name="Messages" img={Message} />
           <SidebarButton route="/settings" name="Settings" img={Settings} />
           <SidebarButton name="Support" img={Support} />
         </ul>
