@@ -3,9 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  Pressable,
-  Button,
   TextInput,
   TouchableOpacity,
 } from "react-native";
@@ -13,7 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Axios from "axios";
 import { SERVER_IP } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function SignUpPageInter() {
   Axios.defaults.withCredentials = true;
@@ -54,11 +50,10 @@ function SignUpPageInter() {
       return;
     }
 
-    
     if (confirmPassword === password) {
       const trimmedEmail = email.trim().toLowerCase();
 
-      Axios.post(`http://${process.env.SERVER_IP}/auth/signup`, {
+      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/signup`, {
         name,
         email: trimmedEmail,
         type: "assistant",
