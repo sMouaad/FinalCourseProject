@@ -24,7 +24,8 @@ router.post("/update", upload.single("file"), async (req, res) => {
   const dbInfo = await User.find({});
   const token = req.cookies.token;
   if (!token) {
-    return res.status(400).json({
+    return res.json({
+      status: false,
       message: "Fatal Error! user is non-existent? logout and login again.",
     });
   }
@@ -32,11 +33,14 @@ router.post("/update", upload.single("file"), async (req, res) => {
   const id = decoded.id;
   const user = await User.findById(id);
   if (user.email !== email) {
-    dbInfo.forEach((element) => {
-      if (element.email === email) {
-        return res.json({ status: false, message: "Email is the same." });
-      }
-    });
+    let booleanValue = dbInfo.some((element) => element.email === email);
+    if (booleanValue) {
+      return res.json({
+        status: false,
+        message: "You cannot use this email...",
+      });
+    }
+    console.log("NOT SUPPOSED TO GO THERE");
     user.email = email;
   }
   if (password) {

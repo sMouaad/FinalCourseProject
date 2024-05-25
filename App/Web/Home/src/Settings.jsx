@@ -32,8 +32,10 @@ export default function Settings() {
       .then((res) => {
         if (res.data.status) {
           setUpdate(!update);
+        } else {
+          alert("errror!");
+          setError(res.data.message);
         }
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -195,7 +197,10 @@ export default function Settings() {
                 onClick={(e) => {
                   e.preventDefault();
                   setError("");
-                  if (password === confirmPassword && email === confirmEmail) {
+                  if (
+                    password === confirmPassword &&
+                    updateEmail === confirmEmail
+                  ) {
                     updateInfo();
                   } else if (password === confirmPassword) {
                     setError("Emails are not matching");
