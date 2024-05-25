@@ -10,13 +10,12 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { removeData, storeData } from "../localStorage";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Axios from "axios";
-import BottomSheet, {
+import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { SERVER_IP } from "@env";
 
@@ -40,10 +39,32 @@ function LoginPageInterface() {
     setSendbtn(true);
   };
 
+  const handelLogin = () => {
+    const trimmedEmail = emailLogin.trim().toLowerCase();
+    Axios.post(`http://${SERVER_IP}:3000/auth/login`, {
+      emailLogin: trimmedEmail,
+      passwordLogin,
+    })
+      .then((res) => {
+        if (res.data.status) {
+          storeData("cookie", res.data.accessToken).then(() => {
+            navigation.navigate("Main");
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("login rPage", err);
+        if (err.response.status === 401) {
+          alert("Email or password is incorrect");
+        }
+      });
+  };
+
   useEffect(() => {
     if (sendbtn) {
       const trimmedEmail = emailReset.trim().toLowerCase();
-      Axios.post(`http://${process.env.SERVER_IP}/auth/forgot-password`, {
+
+      Axios.post(`http://${process.env.SERVER_IP}:3000/auth/forgot-password`, {
         email: trimmedEmail,
       })
         .then((res) => {
@@ -65,15 +86,8 @@ function LoginPageInterface() {
         });
     }
   }, [sendbtn]);
+  // removeData("cookie");
 
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
   return (
     <>
       <GestureHandlerRootView>
@@ -149,29 +163,7 @@ function LoginPageInterface() {
                 </View>
               )}
             </BottomSheetModal>
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => {
-                const trimmedEmail = emailLogin.trim().toLowerCase();
-
-                Axios.post(`http://${process.env.SERVER_IP}/auth/login`, {
-                  emailLogin: trimmedEmail,
-                  passwordLogin,
-                })
-                  .then((res) => {
-                    if (res.data.status) {
-                      storeData("cookie", res.data.accessToken).then(() => {
-                        navigation.navigate("Main");
-                      });
-                    }
-                  })
-                  .catch((err) => {
-                    if (err.response.status === 401) {
-                      alert("Email or password is incorrect");
-                    }
-                  });
-              }}
-            >
+            <TouchableOpacity style={styles.loginButton} onPress={handelLogin}>
               <Text style={styles.TextLoginButton}>Log in</Text>
             </TouchableOpacity>
             <Text

@@ -11,9 +11,12 @@ import { Profiles } from "./Comp/profiles.jsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { View } from "react-native-animatable";
+import { storeData, getData, removeData } from "./localStorage";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
+  removeData("patientId");
+  removeData("cookie");
   const [initialRouteName, setInitialRouteName] = useState("");
 
   useEffect(() => {
@@ -22,9 +25,14 @@ const App = () => {
         const patientId = await AsyncStorage.getItem("patientId");
 
         if (typeof patientId === "string" && patientId !== "") {
-          setInitialRouteName("Login");
+          setInitialRouteName("mainContainer");
         } else {
-          setInitialRouteName("Login");
+          const cookie = await AsyncStorage.getItem("cookie");
+          if (typeof cookie === "string" && cookie !== "") {
+            setInitialRouteName("Profiles");
+          } else {
+            setInitialRouteName("Login");
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
