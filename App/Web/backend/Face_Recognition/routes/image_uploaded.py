@@ -4,12 +4,15 @@ import os
 
 from fastapi.responses import FileResponse
 from pydantic import Field
-from config.database import patient_collection, users_collection
+from config.database import patient_collection
 from models.patient import Patient
-
+from dotenv import load_dotenv
 from schema.schemas import patient_serial, patients_serial, read_patient_image
 from bson import ObjectId
 from numpy import array
+
+
+load_dotenv()
 
 
 from detect import search_encoding_in_list, one_face_to_encoding
@@ -22,14 +25,7 @@ router = APIRouter()
 async def process_image_patient(
     id: str,
     file: UploadFile = File(...),
-    # token: str = Depends(oauth2_scheme),
 ):
-
-    # Validate token (replace with your authentication logic)
-    # if not validate_token(token):
-    #     raise HTTPException(status_code=401, detail="Invalid token")
-    # Validate file type (optional)
-
     upload_dir = "uploadsPatient"
 
     if file.content_type not in ("image/jpeg", "image/png"):
@@ -50,17 +46,24 @@ async def process_image_patient(
 
         if len(list_encodings) != 0:
             i = search_encoding_in_list(full_path, list_encodings)
+
             os.remove(full_path)
-            return {
-                "name ": list_encodings[i]["name"],
-                "This is your ": list_encodings[i]["who"],
-            }
+            
+            if  isinstance(i,str) :
+                return {"No data found"}
+            else :
+                return {
+                "name": list_encodings[i]["name"],
+                "who": list_encodings[i]["who"],
+                "url": f"http://{os.getenv('SERVER_IP')}/person_image/{list_encodings[i]["url"]}", }
+            
+
         else:
             os.remove(full_path)
             return {"No data found"}
 
     except Exception as e:
-        raise {"the error is" + e}
+        raise {"the error is" + str(e)}
         # raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
@@ -70,22 +73,16 @@ async def process_image_caregiver(
     Name: str = Form(...),
     Who: str = Form(...),
     file: UploadFile = File(...),
-    # token: str = Depends(oauth2_scheme),
 ):
 
     upload_dir = "uploads"
-    # Validate token (replace with your authentication logic)
-    # if not validate_token(token):
-    #     raise HTTPException(status_code=401, detail="Invalid token")
-
-    # Validate file type (optional)
 
     if file.content_type not in ("image/jpeg", "image/png"):
         raise HTTPException(status_code=400, detail="Unsupported image type")
     try:
 
         fetched_patient = await patient_collection.find_one({"_id": ObjectId(id)})
-        # patinet = patient_serial(fetched_patient)
+
         content = await file.read()
         filename = file.filename
 
@@ -129,10 +126,8 @@ async def update_image():
     return
 
 
-@router.get("/person_image/{url}")
-async def patients_images(
-    url: str,
-):
+@router.get("/person_image/{url}")  # url the path of the image
+async def person_image(url: str):
     file_path = os.path.join("uploads", url)
     return FileResponse(
         file_path, media_type="image/jpeg", filename=os.path.basename(url)
@@ -144,13 +139,14 @@ async def patients_images(
     id: str,
 ):
     fetched_patient = await patient_collection.find_one({"_id": ObjectId(id)})
+
     images = fetched_patient["images"]
     images_url = list(
         map(
             lambda image: {
                 "name": image["name"],
                 "who": image["who"],
-                "url": image["url"],
+                "url": f"http://{os.getenv('SERVER_IP')}/person_image/{image['url']}",
             },
             images,
         )
