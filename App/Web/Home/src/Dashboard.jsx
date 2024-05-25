@@ -29,7 +29,7 @@ export default function Dashboard() {
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@email.com");
-  const [patientDate, setPatientDate] = useState("");
+  const [patientDate, setPatientDate] = useState();
   const [patientName, setPatientName] = useState("");
   const [assistantEmail, setAssistantEmail] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
@@ -49,6 +49,7 @@ export default function Dashboard() {
   const handleLogout = () => {
     Axios.get("http://localhost:3000/auth/logout")
       .then((res) => {
+        console.log("here!");
         if (res.data.status) console.log("cookies cleared");
         setAuth({});
       })
@@ -59,7 +60,6 @@ export default function Dashboard() {
 
   const closeAssistant = () => {
     setAssistantModalOpen(false);
-    setAssistantEmail("");
     setDelete("");
     setDeleteError("");
   };
@@ -68,7 +68,6 @@ export default function Dashboard() {
   const closeDoctor = () => {
     setDoctorModalOpen(false);
     setDelete("");
-    setDoctorEmail("");
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
@@ -81,8 +80,6 @@ export default function Dashboard() {
   const openDelete = () => setDeleteModalOpen(true);
   const closePatient = () => {
     setPatientModalOpen(false);
-    setPatientDate("");
-    setPatientName("");
     setDelete("");
     setDeleteError("");
   };
@@ -125,6 +122,14 @@ export default function Dashboard() {
       })
       .catch((err) => {
         setDeleteError("The email you provided is invalid.");
+      })
+      .finally(() => {
+        setAssistantEmail("");
+        setDoctorEmail("");
+        setPatientDate("");
+        setPatientName("");
+        setCondition("");
+        setDelete("");
       });
   };
 
