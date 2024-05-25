@@ -6,6 +6,8 @@ import { Notification } from "../models/Notifications.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import multer from "multer";
+import fs from "fs";
+import { access, constants } from "fs";
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -37,11 +39,19 @@ router.post("/update", upload.single("file"), async (req, res) => {
     });
     user.email = email;
   }
-  const hashPassword = await bcryt.hash(password, 10);
-  user.password = hashPassword;
-  console.log(req.file);
-  user.image = req.file.filename;
-  user.name = name;
+  if (password) {
+    const hashPassword = await bcryt.hash(password, 10);
+    user.password = hashPassword;
+  }
+  if (req.file) {
+    try {
+      fs.unlinkSync(`./Images/${user.image}`);
+    } catch {
+      console.log("file does not exist, so ok!");
+    }
+    user.image = req.file.filename;
+  }
+  if (name) user.name = name;
   await user.save();
   return res.json({
     status: true,
