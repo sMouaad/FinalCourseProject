@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import multer from "multer";
 import fs from "fs";
-import { access, constants } from "fs";
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -107,155 +106,162 @@ router.post("/notifications", async (req, res) => {
 });
 
 router.post("/operation", async (req, res) => {
-  const {
-    token,
-    operation,
-    patientDate,
-    patientName,
-    assistantEmail,
-    doctorEmail,
-    tableData,
-    condition,
-    email,
-  } = req.body;
+  try {
+    const {
+      token,
+      operation,
+      patientDate,
+      patientName,
+      assistantEmail,
+      doctorEmail,
+      tableData,
+      condition,
+      email,
+    } = req.body;
 
-  if (token) {
-    const decoded = await jwt.verify(token, process.env.KEY);
-    const id = decoded.id;
-    var user = await User.findById(id);
-  }
-
-  if (email) {
-    var user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({
-        message: "Fatal Error! user is non-existent? logout and login again.",
-      });
+    if (token) {
+      const decoded = await jwt.verify(token, process.env.KEY);
+      const id = decoded.id;
+      var user = await User.findById(id);
     }
-  }
-  switch (operation) {
-    case "patient": {
-      //Creation d'un nouveau patient
-      const newPatient = new Patient({
-        name: patientName,
-        primaryAssistant: user._id,
-        date: patientDate,
-        condition: condition,
-      });
-      await newPatient.save();
 
-      return res.json({ status: true, message: "patient created" });
-      break;
-    }
-    case "assistant": {
-      //Ajouter un assistant
-      //Passer par chaque patient et enovyer l'invitation au nouvel assistant secondaire
-      if (email === assistantEmail) {
+    if (email) {
+      var user = await User.findOne({ email });
+      if (!user) {
         return res.status(400).json({
-          message: "Fatal Error! you can't invite yourself.",
+          message: "Fatal Error! user is non-existent? logout and login again.",
         });
       }
-      const secondaryAssistant = await User.findOne({
-        email: assistantEmail,
-      });
-      if (!secondaryAssistant) {
-        return res.json({
-          status: false,
-          message: "Not found",
+    }
+    switch (operation) {
+      case "patient": {
+        //Creation d'un nouveau patient
+        const newPatient = new Patient({
+          name: patientName,
+          primaryAssistant: user._id,
+          date: patientDate,
+          condition: condition,
         });
+        await newPatient.save();
+
+        return res.json({ status: true, message: "patient created" });
+        break;
       }
-      if (secondaryAssistant.type !== "assistant") {
-        return res.json({
-          status: false,
-          message: "This is not an assistant.",
-        });
-      }
-      for (let element of tableData) {
-        let patientX = await Patient.findOne({ _id: element });
-        //check if assistant is already associated with that patient
-        if (!patientX.assistants.includes(secondaryAssistant._id)) {
-          let newNotif = new Notification({
-            message: `Vous avez été invité par ${
-              user.name
-            } pour assister le patient ${patientX.name} atteint d'${
-              patientX.condition === "autism" ? "Autisme" : "Alzheimer"
-            }`,
-            sender: user._id,
-            receiver: secondaryAssistant._id,
-            patient: element,
+      case "assistant": {
+        //Ajouter un assistant
+        //Passer par chaque patient et enovyer l'invitation au nouvel assistant secondaire
+        if (email === assistantEmail) {
+          return res.status(400).json({
+            message: "Fatal Error! you can't invite yourself.",
           });
-          await newNotif.save();
         }
-      }
-      break;
-    }
-    case "doctor": {
-      //Ajouter un médecin
-      //Passer par chaque patient et lui associer le nouveau médecin
-      if (email === doctorEmail) {
-        return res.status(400).json({
-          message: "Fatal Error! you can't invite yourself.",
+        const secondaryAssistant = await User.findOne({
+          email: assistantEmail,
         });
-      }
-      const doctor = await User.findOne({
-        email: doctorEmail,
-      });
-      if (!doctor) {
-        return res.json({
-          status: false,
-          message: "Not found",
-        });
-      }
-      if (doctor.type !== "doctor") {
-        return res.json({
-          status: false,
-          message: "This is not a doctor.",
-        });
-      }
-      for (let element of tableData) {
-        let patientX = await Patient.findOne({ _id: element });
-        if (patientX) {
-          if (!patientX.doctors) {
+        if (!secondaryAssistant) {
+          return res.json({
+            status: false,
+            message: "Not found",
+          });
+        }
+        if (secondaryAssistant.type !== "assistant") {
+          return res.json({
+            status: false,
+            message: "This is not an assistant.",
+          });
+        }
+        for (let element of tableData) {
+          let patientX = await Patient.findOne({ _id: element });
+          //check if assistant is already associated with that patient
+          if (!patientX.assistants.includes(secondaryAssistant._id)) {
             let newNotif = new Notification({
-              message: `Vous avez reçu une invitation pour superviser le patient ${
-                patientX.name
-              } atteint d'${
+              message: `Vous avez été invité par ${
+                user.name
+              } pour assister le patient ${patientX.name} atteint d'${
                 patientX.condition === "autism" ? "Autisme" : "Alzheimer"
               }`,
               sender: user._id,
-              receiver: doctor._id,
+              receiver: secondaryAssistant._id,
               patient: element,
             });
             await newNotif.save();
           }
         }
+        break;
       }
-      break;
-    }
-    case "delete": {
-      //check first if checked patients are all created by that assistant, else, dissociate
-      //deleting
-      for (let element of tableData) {
-        let patientX = await Patient.findOne({ _id: element });
-        if (patientX.primaryAssistant.equals(user._id)) {
-          await patientX.deleteOne();
-        } else {
-          patientX.assistants = patientX.assistants.filter(
-            (element) => !element.equals(user._id)
-          );
-          await patientX.save();
+      case "doctor": {
+        //Ajouter un médecin
+        //Passer par chaque patient et lui associer le nouveau médecin
+        if (email === doctorEmail) {
+          return res.status(400).json({
+            message: "Fatal Error! you can't invite yourself.",
+          });
         }
+        const doctor = await User.findOne({
+          email: doctorEmail,
+        });
+        if (!doctor) {
+          return res.json({
+            status: false,
+            message: "Not found",
+          });
+        }
+        if (doctor.type !== "doctor") {
+          return res.json({
+            status: false,
+            message: "This is not a doctor.",
+          });
+        }
+        for (let element of tableData) {
+          let patientX = await Patient.findOne({ _id: element });
+          if (patientX) {
+            if (!patientX.doctors) {
+              let newNotif = new Notification({
+                message: `Vous avez reçu une invitation pour superviser le patient ${
+                  patientX.name
+                } atteint d'${
+                  patientX.condition === "autism" ? "Autisme" : "Alzheimer"
+                }`,
+                sender: user._id,
+                receiver: doctor._id,
+                patient: element,
+              });
+              await newNotif.save();
+            }
+          }
+        }
+        break;
       }
-      break;
+      case "delete": {
+        //check first if checked patients are all created by that assistant, else, dissociate
+        //deleting
+        for (let element of tableData) {
+          let patientX = await Patient.findOne({ _id: element });
+          if (patientX.primaryAssistant.equals(user._id)) {
+            await patientX.deleteOne();
+          } else {
+            patientX.assistants = patientX.assistants.filter(
+              (element) => !element.equals(user._id)
+            );
+            await patientX.save();
+          }
+        }
+        break;
+      }
+      default: {
+        console.log("Error, missing operation...");
+        return res
+          .status(401)
+          .json({ status: false, message: "operation failed!" });
+      }
     }
-    default: {
-      console.log("Error, missing operation...");
-      return res
-        .status(401)
-        .json({ status: false, message: "operation failed!" });
-    }
+    return res.json({ status: true, message: "operation succeeded" });
+  } catch {
+    return res.json({
+      status: false,
+      message: "Make sure to fill all the fields...",
+    });
   }
-  return res.json({ status: true, message: "operation succeeded" });
 });
 
 router.post("/login", async (req, res) => {
