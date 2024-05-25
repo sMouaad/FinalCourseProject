@@ -228,18 +228,22 @@ export default function Dashboard() {
                 </h1>
               </div>
             </div>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className=" bg-[#008de5] hover:bg-[#0184cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-            >
-              Chat with Groups
-            </motion.button>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className=" bg-[#0063e5] hover:bg-[#0152cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-            >
-              Chat with Assistants
-            </motion.button>
+            {role === "doctor" ? (
+              <>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  className=" bg-[#008de5] hover:bg-[#0184cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                >
+                  Chat with Groups
+                </motion.button>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  className=" bg-[#0063e5] hover:bg-[#0152cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                >
+                  Chat with Assistants
+                </motion.button>
+              </>
+            ) : null}
             <div
               onClick={() => setOpen(!open)}
               className="flex absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
