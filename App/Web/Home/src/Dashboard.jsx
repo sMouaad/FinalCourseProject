@@ -45,6 +45,7 @@ export default function Dashboard() {
   const [deleteError, setDeleteError] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
+  const [image, setImage] = useState("");
   const { setAuth } = useAuth();
 
   const handleLogout = () => {
@@ -151,6 +152,7 @@ export default function Dashboard() {
         setName(res.data.name);
         setEmail(res.data.email);
         setRole(res.data.type);
+        setImage(res.data.picture);
         setNotifications(res.data.notifications);
       }
       console.log(res);
@@ -190,22 +192,28 @@ export default function Dashboard() {
               </div>
               <div className="pr-4 items-center gap-6 flex">
                 <img className="h-[25px] button" src="assets/bell.svg" alt="" />
-                <img
-                  className="bg-yellow-300 rounded-full h-[40px]"
-                  src={ProfilePic}
-                  alt=""
-                />
+                <div className="rounded-full bg-yellow-300 w-[40px] h-[40px] overflow-hidden">
+                  <img
+                    className="w-full h-auto align-bottom"
+                    src={image ? `http://localhost:3000/${image}` : ProfilePic}
+                    alt=""
+                  />
+                </div>
+
                 <p className="font-bold">{name}</p>
               </div>
             </div>
           ) : null}
           <div className="flex gap-12 justify-between items-center">
             <div className="gap-4 flex">
-              <img
-                className="bg-yellow-300  h-[60px] rounded-full"
-                src={ProfilePic}
-                alt=""
-              />
+              <div className="rounded-full bg-yellow-300 w-[60px] h-[60px] overflow-hidden">
+                <img
+                  className="w-full h-auto align-bottom"
+                  src={image ? `http://localhost:3000/${image}` : ProfilePic}
+                  alt=""
+                />
+              </div>
+
               <div className="flex flex-col justify-center gap-1">
                 <p className="font-bold text-[0.8rem]">Hi there,</p>
                 <h1 className="text-lg">
