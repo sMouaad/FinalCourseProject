@@ -61,22 +61,15 @@ def search_encoding_in_list(img, list_encodings):
     return "This Person is not added by the assistant."
 
 
-# dict = {"name": "ahmed", "who": "friend" }
+# def patient(img, enco):
+#     for i in range(len(enco)):
+#         known_image = face_recognition.load_image_file(img)
 
-# enco = []
+#         known_image_enco = face_recognition.face_encodings(known_image)[0]
 
-# name, code, who = find_faces("./persons.jpg", list, enco)
-
-
-def patient(img, enco):
-    for i in range(len(enco)):
-        known_image = face_recognition.load_image_file(img)
-
-        known_image_enco = face_recognition.face_encodings(known_image)[0]
-
-        results = face_recognition.compare_faces([enco[i]], known_image_enco)
-        if results == [True]:
-            return i
+#         results = face_recognition.compare_faces([enco[i]], known_image_enco)
+#         if results == [True]:
+#             return i
 
 
 # i = patient("./person1.jpeg", code)
