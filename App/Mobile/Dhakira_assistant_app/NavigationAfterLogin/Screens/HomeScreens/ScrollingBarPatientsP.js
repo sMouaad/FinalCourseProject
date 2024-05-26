@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -6,36 +12,30 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  Image,
   View,
-  Modal,
   TextInput,
   RefreshControl,
   ActivityIndicator,
-  Pressable,
 } from "react-native";
-import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { storeData, getData, removeData } from "../../../localStorage";
 import Axios from "axios";
 import { SERVER_IP } from "@env";
 import { Picker } from "@react-native-picker/picker";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetScrollView,
+} from "@gorhom/bottom-sheet";
+import Icon from "../../../components/Icon";
 
 const Item = ({ navigation, patient }) => {
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
   return (
     <TouchableOpacity
       onPress={async () => {
         await storeData("patientName", patient.name);
         await storeData("patientId", patient.id);
-        const name = patient.name;
-        navigation.navigate("Home_RTC", { patientName: name });
+        navigation.navigate("Home_RTC", { patientName: patient.name });
       }}
       style={styles.patient}
     >
@@ -47,28 +47,29 @@ const Item = ({ navigation, patient }) => {
 };
 
 function HomePage({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [patients, setPatients] = useState([]);
   const [patientName, setPatientName] = useState("");
   const [patientAge, setPatientAge] = useState("");
   const [fetched, setFetsched] = useState(false);
   const [selectedConditon, setSelectedConditon] = useState("");
   const [refreshing, setRefreshing] = useState(true);
+  const snapPoints = useMemo(() => ["85%"], []);
+  const bottomSheetModalRef = useRef(null);
 
-  const openModal = () => {
-    setModalVisible(true);
-  };
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  const handleClosedModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
 
   const alertAdd = async () => {
     setFetsched(false);
 
     if (patientName && patientAge && selectedConditon !== "vide") {
       user_token = await getData("cookie");
-      Axios.post(`http://${SERVER_IP}/auth/operation`, {
+      Axios.post(`http://${SERVER_IP}:3000/auth/operation`, {
         token: user_token,
         operation: "patient",
         patientAge: patientAge,
@@ -87,24 +88,13 @@ function HomePage({ navigation }) {
           setFetsched(true);
           setPatientName("");
           setPatientAge("");
-          closeModal();
+          handleClosedModalPress;
         });
     } else {
       if (selectedConditon === "vide") {
         alert("Select a condition!");
       } else alert("Fill all fields!");
       setFetsched(true);
-    }
-  };
-
-  const getData = async (key) => {
-    try {
-      const userData = await AsyncStorage.getItem(key);
-      return userData;
-    } catch (e) {
-      // saving error
-      console.log(e);
-      return "error";
     }
   };
 
@@ -115,7 +105,7 @@ function HomePage({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getData("cookie");
-      Axios.post(`http://${process.env.SERVER_IP}/auth/profiles`, {
+      Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
         accessToken: userData,
       })
         .then((res) => {
@@ -137,15 +127,16 @@ function HomePage({ navigation }) {
           setFetsched(true);
         })
         .catch((err) => {
-          console.warn(err);
+          console.warn("ScrollingBarPatients " + err);
         });
     };
+
     if (refreshing) {
       fetchData();
       setRefreshing(false);
     }
   }, [refreshing]);
-
+  // removeData("cookie");
   if (!fetched) {
     return (
       <ScrollView
@@ -159,190 +150,174 @@ function HomePage({ navigation }) {
         </View>
       </ScrollView>
     );
+    y;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <GestureHandlerRootView>
-          <FlatList
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollViewContent}
-            data={patients}
-            renderItem={({ item }) => (
-              <Item patient={item} navigation={navigation} />
-            )} // Pass navigation prop
-            keyExtractor={(item) => item.id}
-            scrollEnabled={false}
-          />
-        </GestureHandlerRootView>
-        {/* <TouchableOpacity onPress={()=>navigation.navigate("Home_RTC", { patientName: "Younes BENSAFIA" })} style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Home_RTC")} style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Mouaad Sadi</Text></TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Home_RTC")} style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Abderaouf MAHDJOUB</Text></TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Home_RTC")} style={styles.patient}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Ahmed TEHAR</Text></TouchableOpacity>*/}
-
-        <TouchableOpacity
-          onPress={openModal}
-          style={{
-            height: 100,
-            width: "100%",
-            backgroundColor: "#fff",
-            marginBottom: 30,
-            borderRadius: 45,
-            alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 4,
-            borderColor: "#76A523",
-          }}
-        >
-          <Image
-            style={{ width: 60, height: 60 }}
-            source={require("../../../Images/ajouter.png")}
-          />
-        </TouchableOpacity>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={closeModal}
-        >
-          {!fetched && (
-            <View className="flex-1 justify-center">
-              <ActivityIndicator size={"large"} />
-            </View>
-          )}
-
-          {fetched && (
-            <View
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <SafeAreaView style={styles.container}>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <Text
+              className=" text-2xl text-center mx-4 font-medium rounded-[20px] text-[#654ff3]  bg-[#f2f1ff] p-2 my-[17px] "
               style={{
-                width: "100%",
-                height: "80%",
-                backgroundColor: "rgba(94, 94 , 206 , 0.9)",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 50,
-                borderWidth: 5,
-                borderColor: "#76A523",
+                shadowColor: "#654ff3",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                elevation: 15,
               }}
             >
-              <TextInput
-                placeholder="Name"
-                style={{
-                  borderWidth: 3,
-                  width: "80%",
-                  marginBottom: 20,
-                  height: 60,
-                  borderRadius: 30,
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  borderColor: "black",
-                  backgroundColor: "white",
-                }}
-                value={patientName}
-                onChangeText={setPatientName}
-              />
-              <TextInput
-                placeholder="Patient Age"
-                style={{
-                  borderWidth: 3,
-                  width: "80%",
-                  marginBottom: 20,
-                  height: 60,
-                  borderRadius: 30,
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  borderColor: "black",
-                  backgroundColor: "white",
-                }}
-                value={patientAge}
-                onChangeText={setPatientAge}
-              ></TextInput>
+              Home
+            </Text>
+            <View className=" flex-row mb-[20px] px-4 gap-2 ">
               <View
                 style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: 4,
-                  width: "90%",
-                  marginTop: 10,
-                  borderRadius: 30,
+                  shadowColor: "#654ff3",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  elevation: 15,
                 }}
-              />
-
-              <TextInput
-                placeholder="ID Doctor"
-                style={{
-                  borderWidth: 3,
-                  height: 60,
-                  borderRadius: 30,
-                  borderWidth: 3,
-                  marginTop: 15,
-                  width: "80%",
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  borderColor: "black",
-                  backgroundColor: "white",
-                }}
-              />
-              <View
-                style={{
-                  borderWidth: 3,
-                  borderRadius: 30,
-                  marginTop: 15,
-                  width: "80%",
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  borderColor: "black",
-                  backgroundColor: "white",
-                  alignItems: "center",
-                }}
+                className="text-xl f rounded-full py-2 px-3 justify-center bg-[#f2f1ff] flex-1 font-bold "
               >
-                <Picker
-                  style={{
-                    width: "74%",
-                  }}
-                  selectedValue={selectedConditon}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setSelectedConditon(itemValue)
-                  }
-                >
-                  <Picker.Item label="Select Condition" value="vide" />
-                  <Picker.Item label="Autism" value="autism" />
-                  <Picker.Item label="Alzheimer" value="alzheimer" />
-                </Picker>
-              </View>
-              <TouchableOpacity
-                onPress={alertAdd}
-                style={{
-                  height: 50,
-                  width: "80%",
-                  marginTop: 10,
-                  borderWidth: 3,
-                  borderColor: "black",
-                  borderRadius: 25,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#76A523",
-                }}
-              >
-                <Text
-                  style={{ fontWeight: "bold", fontSize: 18, color: "white" }}
-                >
-                  ADD
+                <Text className="text-[17px]  text-[#654ff3]  font-medium ">
+                  {" "}
+                  Your Patients{" "}
                 </Text>
-              </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  shadowColor: "#654ff3",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  elevation: 5,
+                }}
+                className="text-2xl rounded-full  p-1 items-center flex  bg-[#f2f1ff] flex-2 font-bold "
+              >
+                <Icon
+                  onPress={handlePresentModalPress}
+                  name={"plus-square"}
+                ></Icon>
+              </View>
             </View>
-          )}
-        </Modal>
-      </ScrollView>
-    </SafeAreaView>
+            <View style={styles.scrollViewContent}>
+              {patients.map((item) => (
+                <Item key={item.id} patient={item} navigation={navigation} />
+              ))}
+            </View>
+          </ScrollView>
+
+          <BottomSheetModal
+            index={0}
+            snapPoints={snapPoints}
+            ref={bottomSheetModalRef}
+            handleIndicatorStyle={{
+              backgroundColor: "#fff",
+            }}
+            backgroundStyle={{ backgroundColor: "#654ff3" }}
+          >
+            {!fetched && (
+              <View className="flex-1 justify-center">
+                <ActivityIndicator size={"large"} />
+              </View>
+            )}
+
+            {fetched && (
+              <BottomSheetScrollView className="flex-1 bg-[#f2f1ff]  ">
+                <View
+                  style={{
+                    backgroundColor: "#f2f1ff",
+                    justifyContent: "center",
+                    paddingHorizontal: 40,
+                    borderRadius: 45,
+                    marginHorizontal: 15,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      color: "#000",
+                      marginVertical: 10,
+                      marginTop: 40,
+                    }}
+                  >
+                    Create new patient
+                  </Text>
+                  <Text className="items-center font-[450] mt-6 ">Name:</Text>
+                  <TextInput
+                    placeholder="Email: Ali"
+                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
+                    value={patientName}
+                    onChangeText={setPatientName}
+                  />
+                  <Text className="items-center font-[450] mt-6">
+                    Patient Age:
+                  </Text>
+                  <TextInput
+                    placeholder="Age: 14"
+                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
+                    value={patientAge}
+                    onChangeText={setPatientAge}
+                  />
+
+                  <Text className="items-center font-[450] mt-6">
+                    Doctor's Email (Optional) :
+                  </Text>
+                  <TextInput
+                    placeholder="Email: example@mail.com"
+                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
+                  />
+                  <Text className="items-center font-[450] mt-6">
+                    Patient Condition:
+                  </Text>
+                  <View className="border-b-2  border-[#654ff3] px-[20] my rounded-[20px] mb-[20]">
+                    <Picker
+                      style={{
+                        width: "100%",
+                        color: "gray",
+                      }}
+                      selectedValue={selectedConditon}
+                      onValueChange={(itemValue, itemIndex) =>
+                        setSelectedConditon(itemValue)
+                      }
+                    >
+                      <Picker.Item label="Select Condition" value="vide" />
+                      <Picker.Item label="Autism" value="autism" />
+                      <Picker.Item label="Alzheimer" value="alzheimer" />
+                    </Picker>
+                  </View>
+                  <TouchableOpacity onPress={alertAdd} style={styles.Add}>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 18,
+                        color: "#f2f1ff",
+                      }}
+                    >
+                      ADD
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </BottomSheetScrollView>
+            )}
+          </BottomSheetModal>
+        </SafeAreaView>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -354,30 +329,74 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
+    padding: 5,
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: "#fff",
+    backgroundColor: "#f2f1ff",
   },
   scrollView: {
     flexDirection: "column",
     backgroundColor: "#fff",
-    marginHorizontal: 20,
+    flex: 1,
     borderRadius: 31,
+    backgroundColor: "#f2f1ff",
   },
   scrollViewContent: {
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#f2f1ff",
+    flex: 1,
+    borderRadius: 31,
+    marginHorizontal: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   patient: {
-    height: 100,
-    width: 320,
+    marginTop: 7,
+    padding: 20,
+    height: 120,
     backgroundColor: "#6c5ce7",
-    marginBottom: 30,
-    borderRadius: 45,
+    flexBasis: "49%",
+    maxWidth: "49%",
+    flex: 1,
+    borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 4,
-    borderColor: "#2d3436",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  inputField: {
+    padding: 7,
+    borderWidth: 3,
+    borderRadius: 30,
+    borderWidth: 3,
+    marginTop: 10,
+    width: "80%",
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    borderColor: "black",
+    backgroundColor: "white",
+  },
+  Add: {
+    marginTop: 15,
+    backgroundColor: "#654ff3",
+    height: 60,
+    marginHorizontal: 10,
+    marginVertical: 20,
+    borderRadius: 31,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 5,
   },
 });
 

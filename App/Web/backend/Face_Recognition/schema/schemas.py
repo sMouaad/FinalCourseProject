@@ -19,6 +19,7 @@ def read_patient_image(image) -> dict:
         "name": image["name"],
         "who": image["who"],
         "encoding": image["encoding"],
+        "url": image["url"],
     }
 
 
