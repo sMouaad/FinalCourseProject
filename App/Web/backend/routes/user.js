@@ -8,7 +8,6 @@ import nodemailer from "nodemailer";
 import multer from "multer";
 import fs from "fs";
 const router = express.Router();
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, "./Images");
@@ -60,6 +59,36 @@ router.post("/update", upload.single("file"), async (req, res) => {
     status: true,
     message: "Update Successfull!",
   });
+});
+
+router.post("/support", async (req, res) => {
+  try {
+    const { email, message, subject } = req.body;
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "mouaadsdi.usthb@gmail.com",
+        pass: process.env.MAIL_PASS,
+      },
+    });
+
+    var mailOptions = {
+      from: "mouaadsdi.usthb@gmail.com",
+      to: "mouaad.sadi11@gmail.com",
+      subject: subject,
+      text: `The user with email ${email} seeks support with the following message :\n ${message}`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return res.json({ message: "error sending mail" });
+      } else {
+        return res.json({ status: true, message: "mail sent" });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.post("/signup", async (req, res) => {

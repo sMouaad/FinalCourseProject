@@ -17,6 +17,7 @@ import ResetPassword from "./ResetPassword";
 import Dashboard from "./Dashboard";
 import "./styles/index.css";
 import Settings from "./Settings";
+import Support from "./Support";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -74,6 +75,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               element={
                 <>
                   <Settings />
+                </>
+              }
+            />
+            <Route
+              path="/support"
+              element={
+                <>
+                  <Support />
                 </>
               }
             />
