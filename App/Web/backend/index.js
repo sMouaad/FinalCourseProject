@@ -5,11 +5,8 @@ import { UserRouter } from "./routes/user.js";
 import { TodoRouter } from "./routes/todo-list.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-<<<<<<< HEAD
-=======
 import { Server } from "socket.io";
 
->>>>>>> face-recognation-integration
 dotenv.config();
 const app = express();
 app.use(express.json());
