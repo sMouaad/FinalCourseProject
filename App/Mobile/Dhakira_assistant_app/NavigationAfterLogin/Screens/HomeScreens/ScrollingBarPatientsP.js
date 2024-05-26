@@ -16,6 +16,8 @@ import {
   TextInput,
   RefreshControl,
   ActivityIndicator,
+  Button,
+  Pressable,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storeData, getData, removeData } from "../../../localStorage";
@@ -28,6 +30,8 @@ import {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import Icon from "../../../components/Icon";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import IconFont from "react-native-vector-icons/Feather";
 
 const Item = ({ navigation, patient }) => {
   return (
@@ -49,12 +53,30 @@ const Item = ({ navigation, patient }) => {
 function HomePage({ navigation }) {
   const [patients, setPatients] = useState([]);
   const [patientName, setPatientName] = useState("");
-  const [patientAge, setPatientAge] = useState("");
   const [fetched, setFetsched] = useState(false);
   const [selectedConditon, setSelectedConditon] = useState("");
   const [refreshing, setRefreshing] = useState(true);
   const snapPoints = useMemo(() => ["85%"], []);
   const bottomSheetModalRef = useRef(null);
+
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -67,12 +89,12 @@ function HomePage({ navigation }) {
   const alertAdd = async () => {
     setFetsched(false);
 
-    if (patientName && patientAge && selectedConditon !== "vide") {
+    if (patientName && date && selectedConditon !== "vide") {
       user_token = await getData("cookie");
       Axios.post(`http://${SERVER_IP}:3000/auth/operation`, {
         token: user_token,
         operation: "patient",
-        patientAge: patientAge,
+        patientDate: date,
         patientName: patientName,
         condition: selectedConditon,
       })
@@ -82,12 +104,13 @@ function HomePage({ navigation }) {
           }
         })
         .catch((err) => {
+          // console.log(err.response);
           console.log(err);
         })
         .then(() => {
           setFetsched(true);
           setPatientName("");
-          setPatientAge("");
+          setDate(new Date(1598051730000));
           handleClosedModalPress;
         });
     } else {
@@ -128,6 +151,7 @@ function HomePage({ navigation }) {
         })
         .catch((err) => {
           console.warn("ScrollingBarPatients " + err);
+          console.log("ScrollingBarPatients " + err.response);
         });
     };
 
@@ -267,13 +291,30 @@ function HomePage({ navigation }) {
                   <Text className="items-center font-[450] mt-6">
                     Patient Age:
                   </Text>
-                  <TextInput
-                    placeholder="Age: 14"
-                    className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
-                    value={patientAge}
-                    onChangeText={setPatientAge}
-                  />
 
+                  <SafeAreaView className="border-b-2 flex-row  justify-between items-center border-[#654ff3] px-[10] pt-[7] mb-[20]">
+                    <Text className="">{date.toLocaleDateString()}</Text>
+                    <Pressable
+                      onPress={showDatepicker}
+                      title="Show date picker!"
+                      className="p-2 rounded-[20px] items-center"
+                    >
+                      <IconFont name="calendar" size={30} color="#654ff3" />
+                    </Pressable>
+                    {show && (
+                      <DateTimePicker
+                        style={{
+                          backgroundColor: "#f2f1ff",
+                          borderRadius: 20,
+                        }}
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        onChange={onChange}
+                      />
+                    )}
+                  </SafeAreaView>
                   <Text className="items-center font-[450] mt-6">
                     Doctor's Email (Optional) :
                   </Text>
