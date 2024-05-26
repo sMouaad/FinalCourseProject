@@ -28,6 +28,8 @@ export default function Support() {
     }).then((res) => {
       if (res.data.status) {
         alert("success");
+      } else {
+        setError(res.data.message);
       }
     });
   };
