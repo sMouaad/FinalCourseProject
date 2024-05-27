@@ -285,7 +285,7 @@ router.post("/operation", async (req, res) => {
       }
     }
     return res.json({ status: true, message: "operation succeeded" });
-  } catch {
+  } catch (err) {
     return res.json({
       status: false,
       message: "Make sure to fill all the fields...",
