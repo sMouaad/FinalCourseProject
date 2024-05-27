@@ -459,7 +459,13 @@ export default function Dashboard() {
                                   </div>
                                   <div className="flex justify-center">
                                     <button
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        if (!assistantEmail) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Make sure you typed the assistant's email"
+                                          );
+                                        }
                                         setOperation("assistant");
                                       }}
                                       form="mainForm"
@@ -524,7 +530,13 @@ export default function Dashboard() {
                                   </div>
                                   <div className="flex justify-center">
                                     <button
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        if (!doctorEmail) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Make sure you typed the doctor's email"
+                                          );
+                                        }
                                         setOperation("doctor");
                                       }}
                                       form="mainForm"
@@ -635,6 +647,8 @@ export default function Dashboard() {
                       patientId={element._id}
                       handleCheck={handleCheck}
                       patient={element.name}
+                      assistant={element.assistants}
+                      doctor={element.doctors}
                     />
                   );
                 })}
@@ -781,20 +795,27 @@ function Row({
       <td>
         <div className="flex select-none w-max">
           <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
+            <img
+              src={assistant.length === 0 ? Profile : assistant[0].image}
+              alt=""
+            />
           </div>
-          <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
-          </div>
-          <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
-            ...
-          </div>
+          {assistant.length > 1 ? (
+            <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+              <img src={assistant[1].image} alt="" />
+            </div>
+          ) : null}
+          {assistant.length > 2 ? (
+            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
+              ...
+            </div>
+          ) : null}
         </div>
       </td>
       <td>
         <div className="flex select-none">
           <div className=" border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
+            <img src={doctor ? doctor.image : Profile} alt="" />
           </div>
         </div>
       </td>
