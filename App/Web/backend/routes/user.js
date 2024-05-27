@@ -420,13 +420,49 @@ router.get("/userdata", async (req, res) => {
     const secondaryPatients = patients.filter((element) =>
       element.assistants.includes(info._id)
     );
+    let newSecondaryPatients = [];
+    let newPrimaryPatients = [];
+    if (secondaryPatients.length !== 0) {
+      for (let element of secondaryPatients) {
+        let patientElement = element;
+        patientElement = {
+          ...patientElement._doc,
+        };
+        patientElement.assistants = [];
+        for (let x of element.assistants) {
+          let assistantFound = await User.findById(x);
+          patientElement.assistants.push({
+            id: x,
+            image: assistantFound.image,
+          });
+        }
+        newSecondaryPatients.push(patientElement);
+      }
+    }
+    if (patientsCreated.length !== 0) {
+      for (let element of patientsCreated) {
+        let patientElement = element;
+        patientElement = {
+          ...patientElement._doc,
+        };
+        patientElement.assistants = [];
+        for (let x of element.assistants) {
+          let assistantFound = await User.findById(x);
+          patientElement.assistants.push({
+            id: x,
+            image: assistantFound.image,
+          });
+        }
+        newPrimaryPatients.push(patientElement);
+      }
+    }
     return res.json({
       status: true,
       name: info.name,
       email: info.email,
       type: info.type,
-      patientsCreated: [...patientsCreated],
-      secondaryPatients: [...secondaryPatients],
+      patientsCreated: newPrimaryPatients,
+      secondaryPatients: newSecondaryPatients,
       notifications: [...notifications],
       picture: info.image,
     });
