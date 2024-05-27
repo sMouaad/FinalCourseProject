@@ -465,6 +465,11 @@ export default function Dashboard() {
                                           setDeleteError(
                                             "Make sure you typed the assistant's email"
                                           );
+                                        } else if (tableData.length === 0) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Check at least one patient."
+                                          );
                                         }
                                         setOperation("assistant");
                                       }}
@@ -535,6 +540,11 @@ export default function Dashboard() {
                                           e.preventDefault();
                                           setDeleteError(
                                             "Make sure you typed the doctor's email"
+                                          );
+                                        } else if (tableData.length === 0) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Check at least one patient."
                                           );
                                         }
                                         setOperation("doctor");
