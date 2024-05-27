@@ -197,7 +197,6 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="pr-4 items-center gap-6 flex">
-                <img className="h-[25px] button" src="assets/bell.svg" alt="" />
                 <div className="rounded-full bg-yellow-300 w-[40px] h-[40px] overflow-hidden">
                   <img
                     className="w-full h-auto align-bottom"
@@ -249,6 +248,11 @@ export default function Dashboard() {
               className="flex absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
             >
               <img className="w-8" src={Bell} alt="notifications" />
+              {notifications.length !== 0 ? (
+                <div className="absolute flex justify-center items-center font-bold right-0 bottom-0 rounded-full bg-yellow-300 w-5 h-5">
+                  {notifications.length}
+                </div>
+              ) : null}
             </div>
             <div
               onClick={handleLogout}
@@ -377,8 +381,6 @@ export default function Dashboard() {
                                   <input
                                     onChange={(e) => {
                                       setPatientDate(e.target.value);
-                                      console.log(typeof patientDate);
-                                      console.log(patientDate);
                                       setDeleteError("");
                                     }}
                                     id="patientDate"
@@ -691,6 +693,8 @@ export default function Dashboard() {
                           key={element._id}
                           patientId={element._id}
                           handleCheck={handleCheck}
+                          assistant={element.assistants}
+                          doctor={element.doctors}
                           patient={element.name}
                         />
                       );
@@ -805,18 +809,26 @@ function Row({
       <td>
         <div className="flex select-none w-max">
           <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img
-              src={assistant.length === 0 ? Profile : assistant[0].image}
-              alt=""
-            />
+            {assistant.length > 0 ? (
+              <img src={`http://localhost:3000/${assistant[0].image}`} alt="" />
+            ) : (
+              <div className="text-[8px] flex font-bold justify-center items-center h-full w-full">
+                Empty
+              </div>
+            )}
           </div>
           {assistant.length > 1 ? (
             <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-              <img src={assistant[1].image} alt="" />
+              <img src={`http://localhost:3000/${assistant[1].image}`} alt="" />
             </div>
           ) : null}
           {assistant.length > 2 ? (
-            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
+            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full overflow-hidden">
+              <img src={`http://localhost:3000/${assistant[2].image}`} alt="" />
+            </div>
+          ) : null}
+          {assistant.length > 3 ? (
+            <div className="relative border-slate-300 border-2 z-[4] right-9 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
               ...
             </div>
           ) : null}
