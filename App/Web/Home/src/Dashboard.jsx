@@ -128,7 +128,7 @@ export default function Dashboard() {
         setDoctorEmail("");
         setPatientDate("");
         setPatientName("");
-        setCondition("");
+        setCondition("alzheimer");
         setDelete("");
       });
   };
