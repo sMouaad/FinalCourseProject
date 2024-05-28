@@ -14,6 +14,7 @@ export default function Messages() {
   const [role, setRole] = useState("user");
   const [picture, setPicture] = useState("");
   const [patients, setPatients] = useState([]);
+  const [thread, setThread] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
@@ -66,11 +67,11 @@ export default function Messages() {
               ) : null}
               {patients.map((element) => {
                 return (
-                  <tr key={element._id}>
-                    <td className="text-lg transition-all ease-linear border-none hover:bg-slate-100 rounded-md hover:cursor-pointer h-16">
-                      {element.name}
-                    </td>
-                  </tr>
+                  <Thread
+                    element={element}
+                    thread={thread}
+                    setThread={setThread}
+                  />
                 );
               })}
             </table>
@@ -78,5 +79,39 @@ export default function Messages() {
         </div>
       </section>
     </div>
+  );
+}
+
+function Thread({ element, thread, setThread }) {
+  return (
+    <tr
+      className={`border-none ${
+        thread === element._id ? null : "hover:bg-slate-50"
+      } ${
+        thread === element._id ? "bg-slate-100" : null
+      } rounded-md hover:cursor-pointer transition-all`}
+    >
+      <td
+        style={{ padding: 0 }}
+        className="border-none text-lg rounded-md  ease-linear h-16"
+      >
+        <label
+          htmlFor={element._id}
+          className="flex items-center px-2  hover:cursor-pointer w-full h-full"
+        >
+          {element.name}
+        </label>
+      </td>
+      <input
+        id={element._id}
+        type="radio"
+        className="size-0 border-none outline-none opacity-0"
+        name="patient"
+        value={element._id}
+        onChange={(e) => {
+          setThread(e.target.value);
+        }}
+      />
+    </tr>
   );
 }
