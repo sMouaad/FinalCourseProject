@@ -12,7 +12,7 @@ Stack = createNativeStackNavigator();
 
 export default function App() {
   const [initialRouteName, setInitialRouteName] = useState("");
-  removeData("cookie");
+  // removeData("cookie");
   useEffect(() => {
     const fetchData = async () => {
       try {

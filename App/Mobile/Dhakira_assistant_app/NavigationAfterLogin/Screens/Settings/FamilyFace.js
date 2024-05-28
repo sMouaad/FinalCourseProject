@@ -85,7 +85,14 @@ export default function FamilyFace() {
       .then((res) => {
         if (res.data.status === 200) {
           alert(res.data.message);
-          setRefreshing(true);
+          setPeoples((peoples) => [
+            {
+              url: image,
+              name: name,
+              who: who,
+            },
+            ...peoples,
+          ]);
         } else if (res.data.status === 422) {
           alert(res.data.message);
         } else alert(res.data.message);
@@ -121,7 +128,7 @@ export default function FamilyFace() {
 
         setPeoples(response.data);
       } catch (err) {
-        console.error("useeffect", err);
+        console.warn("useeffect", err);
       }
     }
     if (patientId) {

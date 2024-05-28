@@ -1,8 +1,18 @@
+from datetime import datetime
+
+
 def patient_serial(patient) -> dict:
+    try:
+        date_of_birth = datetime.strptime(
+            patient["date"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        ).date()
+    except ValueError as e:
+        raise ValueError(f"Error parsing date: {e}")
+
     return {
         "id": str(patient["_id"]),
         "name": patient["name"],
-        "age": int(patient["age"]),
+        "dateOfBirth": date_of_birth,
         "condition": patient["condition"],
         "primaryAssistant": str(patient["primaryAssistant"]),
         "assistants": [str(assistant) for assistant in patient["assistants"]],
