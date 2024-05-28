@@ -849,7 +849,13 @@ function Row({
       </td>
       <td>
         <div className="flex select-none w-max">
-          <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
+          <div
+            className={`relative border-slate-300 border-2 w-8 h-8 ${
+              assistant.length > 0 && !assistant[0].image
+                ? "bg-yellow-300"
+                : "bg-slate-200"
+            } rounded-full overflow-hidden`}
+          >
             {assistant.length > 0 ? (
               <img
                 src={

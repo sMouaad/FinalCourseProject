@@ -26,7 +26,7 @@ export default function Maps() {
   return (
     <APIProvider apiKey="AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg">
       <div className="h-screen">
-        <Map zoom={9} center={position}>
+        <Map defaultZoom={9} center={position}>
           <Marker position={position} icon={Brain}></Marker>
         </Map>
       </div>
