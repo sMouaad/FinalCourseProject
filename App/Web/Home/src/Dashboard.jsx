@@ -869,8 +869,8 @@ function Row({
             </div>
           ) : null}
           {assistant.length > 3 ? (
-            <div className="relative border-slate-300 border-2 z-[4] right-9 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
-              ...
+            <div className="flex justify-center items-center relative border-slate-300 border-2 z-[4] right-8 w-6 h-6 bg-slate-200 text-xs font-bold rounded-full">
+              {assistant.length - 3}+
             </div>
           ) : null}
         </div>
