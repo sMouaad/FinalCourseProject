@@ -31,6 +31,8 @@ function LoginPageInterface() {
   const [passwordLogin, setPassword] = useState("");
   const [emailReset, setEmailReset] = useState("");
 
+  
+
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
@@ -54,6 +56,7 @@ function LoginPageInterface() {
       })
       .catch((err) => {
         console.log("login rPage", err);
+        console.log("login rPage", err.response);
         if (err.response.status === 401) {
           alert("Email or password is incorrect");
         }

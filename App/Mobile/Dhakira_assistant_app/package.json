@@ -13,6 +13,7 @@
     "@freakycoder/react-native-custom-text": "^0.1.2",
     "@gorhom/bottom-sheet": "^4.6.1",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/datetimepicker": "8.0.1",
     "@react-native-picker/picker": "2.7.5",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
@@ -25,6 +26,7 @@
     "expo-dev-client": "~4.0.14",
     "expo-image-picker": "~15.0.5",
     "expo-linear-gradient": "~13.0.2",
+    "expo-modules-core": "^1.12.11",
     "expo-status-bar": "~1.12.1",
     "express": "^4.19.2",
     "moment": "^2.30.1",
@@ -41,7 +43,9 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-swiper": "^1.6.0",
-    "react-native-vector-icons": "^10.0.3"
+    "react-native-vector-icons": "^10.0.3",
+    "react-dom": "18.2.0",
+    "react-native-web": "~0.19.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

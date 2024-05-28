@@ -35,7 +35,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("a user connected ");
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
@@ -45,5 +45,16 @@ io.on("connection", (socket) => {
     console.log("message: " + msg);
   });
 
-  socket.emit("gps", "Hello from the server!");
+  socket.on("locationUpdate", ({ longitude, latitude }) => {
+    console.log("latitude: " + latitude);
+    console.log("longitude: " + longitude);
+    socket.broadcast.emit("patientLoc", { lng: longitude, lat: latitude });
+  });
+
+  socket.on("chat message", (msg) => {
+    console.log("message:" + msg[0].text);
+  });
+  socket.on("chat message", (msg) => {
+    socket.broadcast.emit("chat message", msg);
+  });
 });
