@@ -851,7 +851,14 @@ function Row({
         <div className="flex select-none w-max">
           <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
             {assistant.length > 0 ? (
-              <img src={`http://localhost:3000/${assistant[0].image}`} alt="" />
+              <img
+                src={
+                  assistant[0].image
+                    ? `http://localhost:3000/${assistant[0].image}`
+                    : ProfilePic
+                }
+                alt=""
+              />
             ) : (
               <div className="text-[8px] flex  justify-center items-center h-full w-full">
                 Empty
@@ -859,13 +866,27 @@ function Row({
             )}
           </div>
           {assistant.length > 1 ? (
-            <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-              <img src={`http://localhost:3000/${assistant[1].image}`} alt="" />
+            <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-yellow-300 rounded-full overflow-hidden">
+              <img
+                src={
+                  assistant[1].image
+                    ? `http://localhost:3000/${assistant[1].image}`
+                    : ProfilePic
+                }
+                alt=""
+              />
             </div>
           ) : null}
           {assistant.length > 2 ? (
-            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full overflow-hidden">
-              <img src={`http://localhost:3000/${assistant[2].image}`} alt="" />
+            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-yellow-300 text-center text-gray-400 rounded-full overflow-hidden">
+              <img
+                src={
+                  assistant[2].image
+                    ? `http://localhost:3000/${assistant[2].image}`
+                    : ProfilePic
+                }
+                alt=""
+              />
             </div>
           ) : null}
           {assistant.length > 3 ? (
