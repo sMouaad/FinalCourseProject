@@ -48,7 +48,7 @@ export default function Messages() {
               />
             </div>
           </div>
-          <div className="rounded-md bg-white shadow-xl flex-1 ">
+          <div className="rounded-md px-2 bg-white shadow-xl flex-1 ">
             <table className="w-full border-collapse">
               <tr>
                 <th className="text-start py-4 border-none text-2xl font-bold">
