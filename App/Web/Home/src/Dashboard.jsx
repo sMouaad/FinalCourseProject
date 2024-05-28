@@ -42,6 +42,7 @@ export default function Dashboard() {
   const [updateNotif, setUpdateNotif] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const [notifications, setNotifications] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("");
   const { setAuth } = useAuth();
@@ -147,6 +148,7 @@ export default function Dashboard() {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
+        setPatients(res.data.patients);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -295,8 +297,8 @@ export default function Dashboard() {
             )}
           </div>
         </nav>
-        <main className="flex-1 p-4 bg-contrast grid">
-          <div className="flex flex-col bg-white rounded-xl pt-0">
+        <main className="flex-1 gap-2 flex flex-col p-4 bg-contrast">
+          <div className="flex flex-1 flex-col  bg-white rounded-xl pt-0">
             <>
               <table className=" border-collapse">
                 <tr className="text-sm h-16 text-black tracking-widest">
@@ -652,32 +654,64 @@ export default function Dashboard() {
                   <th>SOCIAL SKILLS</th>
                   <th>TRACK PATIENT</th>
                 </tr>
-                {tableRows.map((element) => {
-                  return (
-                    <Row
-                      key={element._id}
-                      patientId={element._id}
-                      handleCheck={handleCheck}
-                      patient={element.name}
-                      assistant={element.assistants}
-                      doctor={element.doctors}
-                    />
-                  );
-                })}
+                {role === "assistant" &&
+                  tableRows.map((element) => {
+                    return (
+                      <Row
+                        key={element._id}
+                        patientId={element._id}
+                        handleCheck={handleCheck}
+                        patient={element.name}
+                        assistant={element.assistants}
+                        doctor={element.doctors}
+                      />
+                    );
+                  })}
+                {role === "doctor" &&
+                  patients.map((element) => {
+                    return (
+                      <Row
+                        key={element._id}
+                        patientId={element._id}
+                        handleCheck={handleCheck}
+                        patient={element.name}
+                        assistant={element.assistants}
+                        doctor={element.doctors}
+                      />
+                    );
+                  })}
               </table>
-              {tableRows.length === 0 && secondaryRows.length !== 0 ? (
+              {role === "doctor" && patients.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
+                  <div>No patients found yet.</div>
+                  <div
+                    onClick={() => role === "assistant" && openPatient(true)}
+                    className=" transition-all text-slate-400 text-sm hover:cursor-pointer hover:text-slate-500"
+                  >
+                    {role === "assistant" ? (
+                      <span>try creating one</span>
+                    ) : (
+                      <span>Try giving your email to a caregiver.</span>
+                    )}
+                  </div>
+                  <Lottie className="h-96 mb-8" animationData={animation} />
+                </div>
+              ) : null}
+              {role === "assistant" &&
+              tableRows.length === 0 &&
+              secondaryRows.length !== 0 ? (
                 <div className="h-full flex items-center text-slate-500 justify-center text-md mt-8">
                   <div>No patients created yet.</div>
                 </div>
               ) : null}
-              {secondaryRows.length !== 0 ? (
+              {role === "assistant" && secondaryRows.length !== 0 ? (
                 <>
                   <div className="flex justify-center text-slate-700 tracking-wider font-Poppins text-lg mt-8">
                     <div className="border-b-slate-200 flex-1 border-b-2"></div>
                     <div>Secondary Patients</div>
                     <div className="border-b-slate-200 flex-1 border-b-2"></div>
                   </div>
-                  <table className=" border-collapse">
+                  <table className="border-collapse">
                     <tr className="text-sm h-16 text-black tracking-widest">
                       <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
                         &nbsp;
@@ -687,22 +721,25 @@ export default function Dashboard() {
                       <th className=" border-none ">&nbsp;</th>
                       <th className=" border-none ">&nbsp;</th>
                     </tr>
-                    {secondaryRows.map((element) => {
-                      return (
-                        <Row
-                          key={element._id}
-                          patientId={element._id}
-                          handleCheck={handleCheck}
-                          assistant={element.assistants}
-                          doctor={element.doctors}
-                          patient={element.name}
-                        />
-                      );
-                    })}
+                    {role === "assistant" &&
+                      secondaryRows.map((element) => {
+                        return (
+                          <Row
+                            key={element._id}
+                            patientId={element._id}
+                            handleCheck={handleCheck}
+                            assistant={element.assistants}
+                            doctor={element.doctors}
+                            patient={element.name}
+                          />
+                        );
+                      })}
                   </table>
                 </>
               ) : null}
-              {tableRows.length === 0 && secondaryRows.length === 0 ? (
+              {role === "assistant" &&
+              tableRows.length === 0 &&
+              secondaryRows.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
                   <div>No patients found yet.</div>
                   <div
@@ -721,7 +758,7 @@ export default function Dashboard() {
             </>
           </div>
           {role === "doctor" ? (
-            <div className="flex gap-8">
+            <div className="mt-auto  flex gap-8">
               <motion.button
                 onClick={() =>
                   modalInstructionsOpen
@@ -812,7 +849,7 @@ function Row({
             {assistant.length > 0 ? (
               <img src={`http://localhost:3000/${assistant[0].image}`} alt="" />
             ) : (
-              <div className="text-[8px] flex font-bold justify-center items-center h-full w-full">
+              <div className="text-[8px] flex  justify-center items-center h-full w-full">
                 Empty
               </div>
             )}
@@ -837,7 +874,13 @@ function Row({
       <td>
         <div className="flex select-none">
           <div className=" border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={doctor ? doctor.image : Profile} alt="" />
+            {assistant.length > 0 ? (
+              <img src={`http://localhost:3000/${assistant[0].image}`} alt="" />
+            ) : (
+              <div className="text-[8px] flex  justify-center items-center h-full w-full">
+                Empty
+              </div>
+            )}
           </div>
         </div>
       </td>
