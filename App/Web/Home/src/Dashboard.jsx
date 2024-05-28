@@ -980,7 +980,7 @@ export function Sidebar({ role, setAuth }) {
           <SidebarButton route="/dashboard" name="Home" img={Home} />
           <SidebarButton route="/messages" name="Messages" img={Message} />
           <SidebarButton route="/settings" name="Settings" img={Settings} />
-          <SidebarButton name="Support" img={Support} />
+          <SidebarButton route="/support" name="Support" img={Support} />
         </ul>
       </div>
       <div className="static md:bottom-[25px] md:fixed">
