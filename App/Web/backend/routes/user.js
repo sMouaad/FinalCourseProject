@@ -269,9 +269,13 @@ router.post("/operation", async (req, res) => {
           if (patientX.primaryAssistant.equals(user._id)) {
             await patientX.deleteOne();
           } else {
-            patientX.assistants = patientX.assistants.filter(
-              (element) => !element.equals(user._id)
-            );
+            if (user.type === "assistant") {
+              patientX.assistants = patientX.assistants.filter(
+                (element) => !element.equals(user._id)
+              );
+            } else {
+              patientX.doctors = null;
+            }
             await patientX.save();
           }
         }
@@ -285,7 +289,7 @@ router.post("/operation", async (req, res) => {
       }
     }
     return res.json({ status: true, message: "operation succeeded" });
-  } catch {
+  } catch (err) {
     return res.json({
       status: false,
       message: "Make sure to fill all the fields...",
@@ -414,22 +418,116 @@ router.get("/userdata", async (req, res) => {
     const decoded = await jwt.verify(token, process.env.KEY);
     const id = decoded.id;
     const info = await User.findById(id);
-    const patientsCreated = await Patient.find({ primaryAssistant: info._id });
-    const notifications = await Notification.find({ receiver: info._id });
-    const patients = await Patient.find({});
-    const secondaryPatients = patients.filter((element) =>
-      element.assistants.includes(info._id)
-    );
-    return res.json({
-      status: true,
-      name: info.name,
-      email: info.email,
-      type: info.type,
-      patientsCreated: [...patientsCreated],
-      secondaryPatients: [...secondaryPatients],
-      notifications: [...notifications],
-      picture: info.image,
-    });
+    switch (info.type) {
+      case "assistant":
+        const patientsCreated = await Patient.find({
+          primaryAssistant: info._id,
+        });
+        const notifications = await Notification.find({ receiver: info._id });
+        const patients = await Patient.find({});
+        const secondaryPatients = patients.filter((element) =>
+          element.assistants.includes(info._id)
+        );
+        let newSecondaryPatients = [];
+        let newPrimaryPatients = [];
+        if (secondaryPatients.length !== 0) {
+          for (let element of secondaryPatients) {
+            let patientElement = element;
+            patientElement = {
+              ...patientElement._doc,
+            };
+            patientElement.assistants = [];
+            for (let x of element.assistants) {
+              let assistantFound = await User.findById(x);
+              patientElement.assistants.push({
+                id: x,
+                image: assistantFound.image,
+              });
+            }
+            if (element.doctors) {
+              let doctorImage = await User.findById(element.doctors);
+              doctorImage = doctorImage.image;
+              patientElement = { ...patientElement, doctorImage: doctorImage };
+            }
+            console.log(patientElement);
+            newSecondaryPatients.push(patientElement);
+          }
+        }
+        if (patientsCreated.length !== 0) {
+          for (let element of patientsCreated) {
+            let patientElement = element;
+            patientElement = {
+              ...patientElement._doc,
+            };
+            patientElement.assistants = [];
+            for (let x of element.assistants) {
+              let assistantFound = await User.findById(x);
+              patientElement.assistants.push({
+                id: x,
+                image: assistantFound.image,
+              });
+            }
+            if (element.doctors) {
+              let doctorImage = await User.findById(element.doctors);
+              doctorImage = doctorImage.image;
+              patientElement = { ...patientElement, doctorImage: doctorImage };
+            }
+            newPrimaryPatients.push(patientElement);
+          }
+        }
+        return res.json({
+          status: true,
+          name: info.name,
+          email: info.email,
+          type: info.type,
+          patientsCreated: newPrimaryPatients,
+          secondaryPatients: newSecondaryPatients,
+          notifications: [...notifications],
+          picture: info.image,
+        });
+      case "doctor":
+        const notificationsDoctor = await Notification.find({
+          receiver: info._id,
+        });
+        const patientsDoctor = await Patient.find({
+          doctors: info._id,
+        });
+        let newPatientsDoctor = [];
+        if (patientsDoctor.length !== 0) {
+          for (let element of patientsDoctor) {
+            let patientElement = element;
+            patientElement = {
+              ...patientElement._doc,
+            };
+            patientElement.assistants = [];
+            for (let x of element.assistants) {
+              let assistantFound = await User.findById(x);
+              patientElement.assistants.push({
+                id: x,
+                image: assistantFound.image,
+              });
+            }
+            if (element.doctors) {
+              let doctorImage = await User.findById(element.doctors);
+              doctorImage = doctorImage.image;
+              patientElement = { ...patientElement, doctorImage: doctorImage };
+            }
+            console.log(patientElement);
+            newPatientsDoctor.push(patientElement);
+          }
+        }
+        return res.json({
+          status: true,
+          name: info.name,
+          email: info.email,
+          type: info.type,
+          patients: newPatientsDoctor,
+          notifications: [...notificationsDoctor],
+          picture: info.image,
+        });
+      default:
+        return res.json({ status: false, message: "user not logged." });
+    }
   } catch (err) {
     return res.json(err);
   }
