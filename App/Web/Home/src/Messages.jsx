@@ -35,7 +35,7 @@ export default function Messages() {
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <Sidebar setAuth={setAuth} role={role} />
-      <div className="bg-slate-100 flex flex-1 p-4 gap-4 border-black border-2 max-h-full">
+      <div className="bg-slate-100 flex flex-1 p-4 gap-4 max-h-full">
         <div className="flex flex-col rounded-md  max-h-full min-h-full h-full bg-white shadow-xl flex-[2]">
           <div className="shadow-sm p-4 text-lg">Conversation</div>
           <div
