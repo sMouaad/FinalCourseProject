@@ -447,8 +447,9 @@ router.get("/userdata", async (req, res) => {
             if (element.doctors) {
               let doctorImage = await User.findById(element.doctors);
               doctorImage = doctorImage.image;
-              console.log(doctorImage);
+              patientElement = { ...patientElement, doctorImage: doctorImage };
             }
+            console.log(patientElement);
             newSecondaryPatients.push(patientElement);
           }
         }
@@ -465,6 +466,11 @@ router.get("/userdata", async (req, res) => {
                 id: x,
                 image: assistantFound.image,
               });
+            }
+            if (element.doctors) {
+              let doctorImage = await User.findById(element.doctors);
+              doctorImage = doctorImage.image;
+              patientElement = { ...patientElement, doctorImage: doctorImage };
             }
             newPrimaryPatients.push(patientElement);
           }
@@ -504,8 +510,9 @@ router.get("/userdata", async (req, res) => {
             if (element.doctors) {
               let doctorImage = await User.findById(element.doctors);
               doctorImage = doctorImage.image;
-              console.log(doctorImage);
+              patientElement = { ...patientElement, doctorImage: doctorImage };
             }
+            console.log(patientElement);
             newPatientsDoctor.push(patientElement);
           }
         }

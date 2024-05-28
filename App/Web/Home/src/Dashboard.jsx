@@ -664,6 +664,7 @@ export default function Dashboard() {
                         patient={element.name}
                         assistant={element.assistants}
                         doctor={element.doctors}
+                        doctorImage={element.doctorImage}
                       />
                     );
                   })}
@@ -677,6 +678,7 @@ export default function Dashboard() {
                         patient={element.name}
                         assistant={element.assistants}
                         doctor={element.doctors}
+                        doctorImage={element.doctorImage}
                       />
                     );
                   })}
@@ -730,6 +732,7 @@ export default function Dashboard() {
                             handleCheck={handleCheck}
                             assistant={element.assistants}
                             doctor={element.doctors}
+                            doctorImage={element.doctorImage}
                             patient={element.name}
                           />
                         );
@@ -827,6 +830,7 @@ function Row({
   patientId,
   assistant,
   doctor,
+  doctorImage,
   handleCheck,
 }) {
   return (
@@ -873,9 +877,20 @@ function Row({
       </td>
       <td>
         <div className="flex select-none">
-          <div className=" border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            {assistant.length > 0 ? (
-              <img src={`http://localhost:3000/${assistant[0].image}`} alt="" />
+          <div
+            className={` border-slate-300 border-2 w-8 h-8 ${
+              !doctorImage && doctor ? "bg-yellow-300" : "bg-slate-200"
+            } rounded-full overflow-hidden`}
+          >
+            {doctor ? (
+              <img
+                src={
+                  doctorImage
+                    ? `http://localhost:3000/${doctorImage}`
+                    : ProfilePic
+                }
+                alt=""
+              />
             ) : (
               <div className="text-[8px] flex  justify-center items-center h-full w-full">
                 Empty
