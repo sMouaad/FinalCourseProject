@@ -43,6 +43,7 @@ export default function Dashboard() {
   const [deleteError, setDeleteError] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
+  const [thread, setThread] = useState("");
   const [image, setImage] = useState("");
   const { setAuth } = useAuth();
 
