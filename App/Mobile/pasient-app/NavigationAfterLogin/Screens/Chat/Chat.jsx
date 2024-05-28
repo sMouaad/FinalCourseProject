@@ -19,117 +19,6 @@ export function Chat() {
       user: {
         _id: 2,
         name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 2,
-      text: "aqwzsx",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 3,
-      text: "kjw",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 4,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 5,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 6,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 7,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 8,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 9,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 10,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 11,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-    {
-      _id: 12,
-      text: "lsqd",
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
       },
     },
   ]);
@@ -138,7 +27,7 @@ export function Chat() {
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const socket = io("http://192.168.8.10:4000");
+    const socket = io(`http://${process.env.SERVER_IP}`);
     setSocket(socket);
 
     // Emit a test message to the server
