@@ -42,7 +42,9 @@ export default function Dashboard() {
   const [updateNotif, setUpdateNotif] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const [notifications, setNotifications] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [open, setOpen] = useState(false);
+  const [thread, setThread] = useState("");
   const [image, setImage] = useState("");
   const { setAuth } = useAuth();
 
@@ -128,7 +130,7 @@ export default function Dashboard() {
         setDoctorEmail("");
         setPatientDate("");
         setPatientName("");
-        setCondition("");
+        setCondition("alzheimer");
         setDelete("");
       });
   };
@@ -147,6 +149,7 @@ export default function Dashboard() {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
+        setPatients(res.data.patients);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -197,7 +200,6 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="pr-4 items-center gap-6 flex">
-                <img className="h-[25px] button" src="assets/bell.svg" alt="" />
                 <div className="rounded-full bg-yellow-300 w-[40px] h-[40px] overflow-hidden">
                   <img
                     className="w-full h-auto align-bottom"
@@ -249,6 +251,11 @@ export default function Dashboard() {
               className="flex absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
             >
               <img className="w-8" src={Bell} alt="notifications" />
+              {notifications.length !== 0 ? (
+                <div className="absolute flex justify-center items-center font-bold right-0 bottom-0 rounded-full bg-yellow-300 w-5 h-5">
+                  {notifications.length}
+                </div>
+              ) : null}
             </div>
             <div
               onClick={handleLogout}
@@ -291,8 +298,8 @@ export default function Dashboard() {
             )}
           </div>
         </nav>
-        <main className="flex-1 p-4 bg-contrast grid">
-          <div className="flex flex-col bg-white rounded-xl pt-0">
+        <main className="flex-1 gap-2 flex flex-col p-4 bg-contrast">
+          <div className="flex flex-1 flex-col  bg-white rounded-xl pt-0">
             <>
               <table className=" border-collapse">
                 <tr className="text-sm h-16 text-black tracking-widest">
@@ -377,8 +384,6 @@ export default function Dashboard() {
                                   <input
                                     onChange={(e) => {
                                       setPatientDate(e.target.value);
-                                      console.log(typeof patientDate);
-                                      console.log(patientDate);
                                       setDeleteError("");
                                     }}
                                     id="patientDate"
@@ -459,7 +464,18 @@ export default function Dashboard() {
                                   </div>
                                   <div className="flex justify-center">
                                     <button
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        if (!assistantEmail) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Make sure you typed the assistant's email"
+                                          );
+                                        } else if (tableData.length === 0) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Check at least one patient."
+                                          );
+                                        }
                                         setOperation("assistant");
                                       }}
                                       form="mainForm"
@@ -524,7 +540,18 @@ export default function Dashboard() {
                                   </div>
                                   <div className="flex justify-center">
                                     <button
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        if (!doctorEmail) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Make sure you typed the doctor's email"
+                                          );
+                                        } else if (tableData.length === 0) {
+                                          e.preventDefault();
+                                          setDeleteError(
+                                            "Check at least one patient."
+                                          );
+                                        }
                                         setOperation("doctor");
                                       }}
                                       form="mainForm"
@@ -628,30 +655,66 @@ export default function Dashboard() {
                   <th>SOCIAL SKILLS</th>
                   <th>TRACK PATIENT</th>
                 </tr>
-                {tableRows.map((element) => {
-                  return (
-                    <Row
-                      key={element._id}
-                      patientId={element._id}
-                      handleCheck={handleCheck}
-                      patient={element.name}
-                    />
-                  );
-                })}
+                {role === "assistant" &&
+                  tableRows.map((element) => {
+                    return (
+                      <Row
+                        key={element._id}
+                        patientId={element._id}
+                        handleCheck={handleCheck}
+                        patient={element.name}
+                        assistant={element.assistants}
+                        doctor={element.doctors}
+                        doctorImage={element.doctorImage}
+                      />
+                    );
+                  })}
+                {role === "doctor" &&
+                  patients.map((element) => {
+                    return (
+                      <Row
+                        key={element._id}
+                        patientId={element._id}
+                        handleCheck={handleCheck}
+                        patient={element.name}
+                        assistant={element.assistants}
+                        doctor={element.doctors}
+                        doctorImage={element.doctorImage}
+                      />
+                    );
+                  })}
               </table>
-              {tableRows.length === 0 && secondaryRows.length !== 0 ? (
+              {role === "doctor" && patients.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
+                  <div>No patients found yet.</div>
+                  <div
+                    onClick={() => role === "assistant" && openPatient(true)}
+                    className=" transition-all text-slate-400 text-sm hover:cursor-pointer hover:text-slate-500"
+                  >
+                    {role === "assistant" ? (
+                      <span>try creating one</span>
+                    ) : (
+                      <span>Try giving your email to a caregiver.</span>
+                    )}
+                  </div>
+                  <Lottie className="h-96 mb-8" animationData={animation} />
+                </div>
+              ) : null}
+              {role === "assistant" &&
+              tableRows.length === 0 &&
+              secondaryRows.length !== 0 ? (
                 <div className="h-full flex items-center text-slate-500 justify-center text-md mt-8">
                   <div>No patients created yet.</div>
                 </div>
               ) : null}
-              {secondaryRows.length !== 0 ? (
+              {role === "assistant" && secondaryRows.length !== 0 ? (
                 <>
                   <div className="flex justify-center text-slate-700 tracking-wider font-Poppins text-lg mt-8">
                     <div className="border-b-slate-200 flex-1 border-b-2"></div>
                     <div>Secondary Patients</div>
                     <div className="border-b-slate-200 flex-1 border-b-2"></div>
                   </div>
-                  <table className=" border-collapse">
+                  <table className="border-collapse">
                     <tr className="text-sm h-16 text-black tracking-widest">
                       <th className="w-1/5 text-left border-none tracking-normal text-lg font-bold">
                         &nbsp;
@@ -661,20 +724,26 @@ export default function Dashboard() {
                       <th className=" border-none ">&nbsp;</th>
                       <th className=" border-none ">&nbsp;</th>
                     </tr>
-                    {secondaryRows.map((element) => {
-                      return (
-                        <Row
-                          key={element._id}
-                          patientId={element._id}
-                          handleCheck={handleCheck}
-                          patient={element.name}
-                        />
-                      );
-                    })}
+                    {role === "assistant" &&
+                      secondaryRows.map((element) => {
+                        return (
+                          <Row
+                            key={element._id}
+                            patientId={element._id}
+                            handleCheck={handleCheck}
+                            assistant={element.assistants}
+                            doctor={element.doctors}
+                            doctorImage={element.doctorImage}
+                            patient={element.name}
+                          />
+                        );
+                      })}
                   </table>
                 </>
               ) : null}
-              {tableRows.length === 0 && secondaryRows.length === 0 ? (
+              {role === "assistant" &&
+              tableRows.length === 0 &&
+              secondaryRows.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
                   <div>No patients found yet.</div>
                   <div
@@ -693,7 +762,7 @@ export default function Dashboard() {
             </>
           </div>
           {role === "doctor" ? (
-            <div className="flex gap-8">
+            <div className="mt-auto  flex gap-8">
               <motion.button
                 onClick={() =>
                   modalInstructionsOpen
@@ -762,6 +831,7 @@ function Row({
   patientId,
   assistant,
   doctor,
+  doctorImage,
   handleCheck,
 }) {
   return (
@@ -780,21 +850,80 @@ function Row({
       </td>
       <td>
         <div className="flex select-none w-max">
-          <div className="relative border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
+          <div
+            className={`relative border-slate-300 border-2 w-8 h-8 ${
+              assistant.length > 0 && !assistant[0].image
+                ? "bg-yellow-300"
+                : "bg-slate-200"
+            } rounded-full overflow-hidden`}
+          >
+            {assistant.length > 0 ? (
+              <img
+                src={
+                  assistant[0].image
+                    ? `http://localhost:3000/${assistant[0].image}`
+                    : ProfilePic
+                }
+                alt=""
+              />
+            ) : (
+              <div className="text-[8px] flex  justify-center items-center h-full w-full">
+                Empty
+              </div>
+            )}
           </div>
-          <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
-          </div>
-          <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-slate-200 text-center text-gray-400 rounded-full">
-            ...
-          </div>
+          {assistant.length > 1 ? (
+            <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-yellow-300 rounded-full overflow-hidden">
+              <img
+                src={
+                  assistant[1].image
+                    ? `http://localhost:3000/${assistant[1].image}`
+                    : ProfilePic
+                }
+                alt=""
+              />
+            </div>
+          ) : null}
+          {assistant.length > 2 ? (
+            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-yellow-300 text-center text-gray-400 rounded-full overflow-hidden">
+              <img
+                src={
+                  assistant[2].image
+                    ? `http://localhost:3000/${assistant[2].image}`
+                    : ProfilePic
+                }
+                alt=""
+              />
+            </div>
+          ) : null}
+          {assistant.length > 3 ? (
+            <div className="flex justify-center items-center relative border-slate-300 border-2 z-[4] right-8 w-6 h-6 bg-slate-200 text-xs font-bold rounded-full">
+              {assistant.length - 3}+
+            </div>
+          ) : null}
         </div>
       </td>
       <td>
         <div className="flex select-none">
-          <div className=" border-slate-300 border-2 w-8 h-8 bg-slate-200 rounded-full overflow-hidden">
-            <img src={Profile} alt="" />
+          <div
+            className={` border-slate-300 border-2 w-8 h-8 ${
+              !doctorImage && doctor ? "bg-yellow-300" : "bg-slate-200"
+            } rounded-full overflow-hidden`}
+          >
+            {doctor ? (
+              <img
+                src={
+                  doctorImage
+                    ? `http://localhost:3000/${doctorImage}`
+                    : ProfilePic
+                }
+                alt=""
+              />
+            ) : (
+              <div className="text-[8px] flex  justify-center items-center h-full w-full">
+                Empty
+              </div>
+            )}
           </div>
         </div>
       </td>
@@ -849,9 +978,9 @@ export function Sidebar({ role, setAuth }) {
       <div className="static md:top-[56px] md:fixed">
         <ul className="md:block flex flex-wrap gap-4 justify-around md:pt-12 md:ml-2 pt-2">
           <SidebarButton route="/dashboard" name="Home" img={Home} />
-          <SidebarButton name="Messages" img={Message} />
+          <SidebarButton route="/messages" name="Messages" img={Message} />
           <SidebarButton route="/settings" name="Settings" img={Settings} />
-          <SidebarButton name="Support" img={Support} />
+          <SidebarButton route="/support" name="Support" img={Support} />
         </ul>
       </div>
       <div className="static md:bottom-[25px] md:fixed">

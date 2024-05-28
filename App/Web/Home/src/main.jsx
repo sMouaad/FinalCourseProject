@@ -17,6 +17,7 @@ import ResetPassword from "./ResetPassword";
 import Dashboard from "./Dashboard";
 import "./styles/index.css";
 import Settings from "./Settings";
+import Messages from "./Messages";
 import Support from "./Support";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -75,6 +76,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               element={
                 <>
                   <Settings />
+                </>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <>
+                  <Messages />
                 </>
               }
             />
