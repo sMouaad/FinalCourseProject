@@ -449,7 +449,6 @@ router.get("/userdata", async (req, res) => {
               doctorImage = doctorImage.image;
               patientElement = { ...patientElement, doctorImage: doctorImage };
             }
-            console.log(patientElement);
             newSecondaryPatients.push(patientElement);
           }
         }

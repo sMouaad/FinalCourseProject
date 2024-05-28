@@ -5,6 +5,10 @@ const Image = new mongoose.Schema({
   encoding: [{ type: Number }],
   imagePath: { type: String },
 });
+const Messages = new mongoose.Schema({
+  sender: { type: String },
+  messageContent: { type: String },
+});
 const PatientSchema = new mongoose.Schema({
   name: { type: String, required: true },
   date: { type: String, required: true },
@@ -13,6 +17,7 @@ const PatientSchema = new mongoose.Schema({
   assistants: [{ type: mongoose.SchemaTypes.ObjectId }],
   doctors: { type: mongoose.SchemaTypes.ObjectId },
   images: [Image],
+  messages: [Messages],
 });
 const PatientModel = mongoose.model("Patient", PatientSchema);
 export { PatientModel as Patient };
