@@ -44,7 +44,8 @@ export default function Dashboard() {
   const [notifications, setNotifications] = useState([]);
   const [patients, setPatients] = useState([]);
   const [open, setOpen] = useState(false);
-  const [thread, setThread] = useState("");
+  const [instruction, setInstruction] = useState("");
+  const [details, setDetails] = useState("");
   const [image, setImage] = useState("");
   const { setAuth } = useAuth();
 
@@ -108,6 +109,8 @@ export default function Dashboard() {
       assistantEmail,
       doctorEmail,
       tableData,
+      instruction,
+      details,
     })
       .then((res) => {
         if (res.data.status) {
@@ -126,6 +129,8 @@ export default function Dashboard() {
         setDeleteError("The email you provided is invalid.");
       })
       .finally(() => {
+        setInstruction("");
+        setDetails("");
         setAssistantEmail("");
         setDoctorEmail("");
         setPatientDate("");
@@ -177,6 +182,7 @@ export default function Dashboard() {
         closeDoctor();
         closeDelete();
         closePatient();
+        closeInstructions();
       }
     });
   }, []);
@@ -789,12 +795,18 @@ export default function Dashboard() {
                           Instructions
                         </div>
                         <input
+                          onChange={(e) => {
+                            setInstruction(e.target.value);
+                          }}
                           autoComplete="off"
                           className="bg-slate-200 text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                           placeholder="Instruction..."
                           type="text"
                         />
                         <textarea
+                          onChange={(e) => {
+                            setDetails(e.target.value);
+                          }}
                           className="bg-slate-200 flex-1 resize-none text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
                           name=""
                           id=""
@@ -802,8 +814,26 @@ export default function Dashboard() {
                           rows="10"
                           placeholder="Details..."
                         ></textarea>
-                        <div className="text-center">
-                          <button className=" bg-green-500 py-4 px-8 text-white text-[12px] self-center basis-1/2 border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                        <div className="text-center flex flex-col gap-3">
+                          <div className="text-sm h-4 text-red-800 font-bold">
+                            {deleteError}
+                          </div>
+                          <button
+                            className=" bg-green-500 py-4 px-8 text-white text-[12px] self-center basis-1/2 border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase cursor-pointer"
+                            onClick={(e) => {
+                              if (tableData.length === 0) {
+                                e.preventDefault();
+
+                                setDeleteError("Check at least one patient.");
+                              } else if (instruction && details) {
+                                setOperation("instruction");
+                              } else {
+                                e.preventDefault();
+                                setDeleteError("Fill the empty fields.");
+                              }
+                            }}
+                            form="mainForm"
+                          >
                             Add
                           </button>
                         </div>
@@ -812,12 +842,6 @@ export default function Dashboard() {
                   />
                 )}
               </AnimatePresence>
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 bg-[#00e500] h-16 hover:bg-[#2ca92c] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-              >
-                Tests
-              </motion.button>
             </div>
           ) : null}
         </main>
