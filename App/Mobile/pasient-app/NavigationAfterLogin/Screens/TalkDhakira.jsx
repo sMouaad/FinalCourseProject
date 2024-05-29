@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   GiftedChat,
   InputToolbar,
@@ -10,28 +10,7 @@ import AvaterTalkDhakira from "../../assets/images/talkDhakira.png";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const TalkDhakira = ({ navigation }) => {
-  const [messages, setMessages] = React.useState([
-    {
-      _id: 1,
-      text: "azerty",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-        avatar: AvaterTalkDhakira,
-      },
-    },
-    {
-      _id: 2,
-      text: "hello",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-        avatar: AvaterTalkDhakira,
-      },
-    },
-  ]);
+  const [messages, setMessages] = React.useState([]);
 
   const renderInputToolbar = (props) => {
     return (
@@ -90,9 +69,22 @@ const TalkDhakira = ({ navigation }) => {
   };
 
   const onSend = (messages) => {
-    // Update state with the sent message
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
+    );
+
+    const test = {
+      _id: 1,
+      text: " I'm Dhakira, your Alzheimer's assistant. How can I help you today??",
+      createdAt: new Date("2024-04-13"),
+      user: {
+        _id: 2,
+        name: "React Native",
+        avatar: AvaterTalkDhakira,
+      },
+    };
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, test)
     );
   };
 

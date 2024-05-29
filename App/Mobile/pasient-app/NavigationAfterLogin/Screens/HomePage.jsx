@@ -21,7 +21,7 @@ const HomePage = ({ navigation }) => {
         textColor={"#fff"}
       />
       <PressableButton
-        onPress={() => console.log("Play with Dhakira")}
+        onPress={() => navigation.navigate("Game")}
         imageSource={playDhakira}
         buttonText="Play with Dhakira"
       />
@@ -34,13 +34,13 @@ const HomePage = ({ navigation }) => {
         backgroundColor="#00A7FF"
         textColor={"#fff"}
       />
-      <PressableButton
+      {/* <PressableButton
         onPress={() => {
           navigation.navigate("Test");
         }}
         imageSource={test}
         buttonText="Tests"
-      />
+      /> */}
     </View>
   );
 };
