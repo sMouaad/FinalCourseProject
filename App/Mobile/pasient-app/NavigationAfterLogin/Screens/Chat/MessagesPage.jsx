@@ -1,13 +1,5 @@
 import React, { useRef, useState } from "react";
-import {
-  View,
-  ScrollView,
-  Dimensions,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-
-import AllChats from "./AllChats";
+import { View, ScrollView } from "react-native";
 import Group from "./Group";
 import Assistants from "./Assistants";
 import TabBar from "./TabBar";
