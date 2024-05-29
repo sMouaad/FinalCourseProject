@@ -170,13 +170,12 @@ function Thread({ element, thread, setThread, setThreadName }) {
       >
         <label
           htmlFor={element._id}
-          className="flex items-center px-2  hover:cursor-pointer w-full h-full"
+          className="flex justify-between items-center px-2  hover:cursor-pointer w-full h-full"
         >
+          {element.name}
           <div className="w-12 h-12 border-2 overflow-hidden rounded-full mr-2">
-            {" "}
             <img src={`http://localhost:3000/${element.primaryImage}`} alt="" />
           </div>
-          {element.name}
         </label>
       </td>
       <input
