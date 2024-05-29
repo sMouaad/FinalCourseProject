@@ -1,5 +1,9 @@
 import React, { useRef, useState } from "react";
-import { View, ScrollView } from "react-native";
+import {
+  View,
+  ScrollView,
+} from "react-native";
+
 import Group from "./Group";
 import Assistants from "./Assistants";
 import TabBar from "./TabBar";
