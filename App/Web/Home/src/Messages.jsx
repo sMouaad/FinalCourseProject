@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import animation from "./assets/search.json";
 import messageanimation from "./assets/bloom-messaging.json";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import airplane from "./assets/dashboard/airplane.svg";
 import { Sidebar } from "./Dashboard";
 
@@ -18,7 +18,8 @@ export default function Messages() {
   const [secondaryPatients, setSecondaryPatients] = useState([]);
   const [thread, setThread] = useState("");
   const [threadName, setThreadName] = useState("");
-
+  const lastMessage = useRef(null);
+  const { setAuth } = useAuth();
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
@@ -32,7 +33,10 @@ export default function Messages() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    lastMessage.current?.scrollIntoView({ behavior: "smooth" });
+  }, [thread]);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <Sidebar setAuth={setAuth} role={role} />
@@ -68,6 +72,7 @@ export default function Messages() {
                 <Message thread={thread} />
                 <Message thread={thread} />
                 <Message thread={thread} />
+                <div className="border-none size-0" ref={lastMessage}></div>
               </>
             )}
           </div>
