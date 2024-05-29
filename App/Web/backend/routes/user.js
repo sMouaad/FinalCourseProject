@@ -146,6 +146,8 @@ router.post("/operation", async (req, res) => {
       tableData,
       condition,
       email,
+      instruction,
+      details,
     } = req.body;
 
     if (token) {
@@ -278,6 +280,18 @@ router.post("/operation", async (req, res) => {
             }
             await patientX.save();
           }
+        }
+        break;
+      }
+      case "instruction": {
+        for (let element of tableData) {
+          let patientX = await Patient.findOne({ _id: element });
+          patientX.instructions.push({
+            task: instruction,
+            description: details,
+            done: false,
+          });
+          await patientX.save();
         }
         break;
       }
@@ -520,7 +534,6 @@ router.get("/userdata", async (req, res) => {
               doctorImage = doctorImage.image;
               patientElement = { ...patientElement, doctorImage: doctorImage };
             }
-            console.log(patientElement);
             newPatientsDoctor.push(patientElement);
           }
         }
