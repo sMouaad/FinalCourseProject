@@ -444,12 +444,16 @@ router.get("/userdata", async (req, res) => {
                 image: assistantFound.image,
               });
             }
+            //get doctor profile picture
             if (element.doctors) {
               let doctorImage = await User.findById(element.doctors);
               doctorImage = doctorImage.image;
               patientElement = { ...patientElement, doctorImage: doctorImage };
             }
-            console.log(patientElement);
+            //get primary assistant profile picture
+            let primaryImage = await User.findById(element.primaryAssistant);
+            primaryImage = primaryImage.image;
+            patientElement = { ...patientElement, primaryImage: primaryImage };
             newSecondaryPatients.push(patientElement);
           }
         }
@@ -472,6 +476,10 @@ router.get("/userdata", async (req, res) => {
               doctorImage = doctorImage.image;
               patientElement = { ...patientElement, doctorImage: doctorImage };
             }
+            //get primary assistant profile picture
+            let primaryImage = await User.findById(element.primaryAssistant);
+            primaryImage = primaryImage.image;
+            patientElement = { ...patientElement, primaryImage: primaryImage };
             newPrimaryPatients.push(patientElement);
           }
         }
