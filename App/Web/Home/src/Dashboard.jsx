@@ -19,6 +19,7 @@ import Settings from "./assets/dashboard/settings.svg";
 import Support from "./assets/dashboard/support.svg";
 import Check from "./assets/dashboard/check.svg";
 import Cross from "./assets/dashboard/cross.svg";
+import { ImCross } from "react-icons/im";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
@@ -45,6 +46,7 @@ export default function Dashboard() {
   const [patients, setPatients] = useState([]);
   const [open, setOpen] = useState(false);
   const [instruction, setInstruction] = useState("");
+  const [instructions, setInstructions] = useState([]);
   const [image, setImage] = useState("");
   const [thread, setThread] = useState("");
   const [threadName, setThreadName] = useState("");
@@ -102,6 +104,19 @@ export default function Dashboard() {
       setTableData([...tableData, data]);
     }
   };
+  const handleTodoDelete = (taskid, patientid) => {
+    Axios.post("http://localhost:3000/auth/delete", {
+      taskid: taskid,
+      patientid: patientid,
+    })
+      .then((res) => {
+        console.log(res.data);
+        setUpdateDash(!updateDash);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleForm = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:3000/auth/operation", {
@@ -124,7 +139,6 @@ export default function Dashboard() {
           closeAssistant();
           closeDelete();
           closeDoctor();
-          closeInstructions();
           setUpdateDash(!updateDash);
         } else {
           setDeleteError("The email you provided is invalid.");
@@ -134,7 +148,6 @@ export default function Dashboard() {
         setDeleteError("The email you provided is invalid.");
       })
       .finally(() => {
-        setInstruction("");
         setAssistantEmail("");
         setDoctorEmail("");
         setPatientDate("");
@@ -153,6 +166,15 @@ export default function Dashboard() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateNotif]);
+  useEffect(() => {
+    Axios.get(`http://localhost:3000/auth/get/${thread}`).then((res) => {
+      if (res.data.status) {
+        setInstructions(res.data.instructions);
+        console.log(res.data.instructions);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [thread, updateDash]);
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
@@ -431,8 +453,8 @@ export default function Dashboard() {
                                       Instructions
                                     </div>
                                     <div className="bg-slate-100 flex flex-1 p-4 gap-4 h-full">
-                                      <div className="flex flex-col rounded-md bg-white shadow-xl flex-[2]">
-                                        <div className="flex justify-between shadow-sm p-4 text-lg">
+                                      <div className="flex flex-col rounded-md bg-white shadow-xl h-full flex-[2]">
+                                        <div className="flex justify-between shadow-sm p-4  text-lg">
                                           <div>To-do List</div>
                                           <div className="font-bold tracking-widest">
                                             {threadName}
@@ -452,7 +474,20 @@ export default function Dashboard() {
                                           >
                                             Select a Patient
                                           </div>
-                                        ) : null}
+                                        ) : (
+                                          <ul className="px-8 flex flex-col gap-2 py-4 font-thin h-full overflow-auto">
+                                            {instructions.map((element) => {
+                                              return (
+                                                <Instruction
+                                                  key={element._id}
+                                                  element={element}
+                                                  handler={handleTodoDelete}
+                                                  thread={thread}
+                                                />
+                                              );
+                                            })}
+                                          </ul>
+                                        )}
                                         <div className="transition-all ease-linear flex items-center gap-2 p-4 border-t-2 border-slate-200 mt-auto w-full self-center">
                                           <input
                                             placeholder="Task..."
@@ -467,18 +502,17 @@ export default function Dashboard() {
                                             onClick={(e) => {
                                               if (!thread) {
                                                 e.preventDefault();
-                                                alert("err1");
+
                                                 setDeleteError(
                                                   "Select a patient first."
                                                 );
                                               } else if (!instruction) {
                                                 e.preventDefault();
-                                                alert(instruction);
+
                                                 setDeleteError(
                                                   "Fill empty field."
                                                 );
                                               } else {
-                                                alert("err3");
                                                 setOperation("instruction");
                                               }
                                             }}
@@ -1147,5 +1181,20 @@ function PatientRow({ element, thread, setThread, setThreadName }) {
         }}
       />
     </tr>
+  );
+}
+function Instruction({ element, handler, thread }) {
+  return (
+    <li className="shadow-sm justify-between flex   transition-all rounded-md bg-green-50 p-2">
+      {element.task}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          handler(element._id, thread);
+        }}
+      >
+        <ImCross className="h-3" color="green" />
+      </button>
+    </li>
   );
 }
