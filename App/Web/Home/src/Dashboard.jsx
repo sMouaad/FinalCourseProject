@@ -78,6 +78,7 @@ export default function Dashboard() {
   const openDoctor = () => setDoctorModalOpen(true);
   const closeInstructions = () => {
     setInstructionsModalOpen(false);
+    setInstruction("");
     setThread("");
     setThreadName("");
   };
