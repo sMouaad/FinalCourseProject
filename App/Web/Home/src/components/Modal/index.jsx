@@ -22,14 +22,17 @@ const dropIn = {
     opacity: 0,
   },
 };
-const Modal = ({ handleClose, text }) => {
+const Modal = ({ handleClose, text, styleAdd = "" }) => {
   return (
     <Backdrop onClick={handleClose}>
       <motion.div
         onClick={(e) => e.stopPropagation()}
-        className="relative modal m-auto
+        className={
+          styleAdd ||
+          `relative modal m-auto
         py-2
-        rounded-lg flex flex-col items-center justify-center bg-slate-100"
+        rounded-lg flex flex-col items-center justify-center bg-slate-100`
+        }
         variants={dropIn}
         initial="hidden"
         animate="visible"
