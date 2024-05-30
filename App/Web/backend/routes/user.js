@@ -147,7 +147,7 @@ router.post("/operation", async (req, res) => {
       condition,
       email,
       instruction,
-      details,
+      thread,
     } = req.body;
 
     if (token) {
@@ -284,15 +284,14 @@ router.post("/operation", async (req, res) => {
         break;
       }
       case "instruction": {
-        for (let element of tableData) {
-          let patientX = await Patient.findOne({ _id: element });
-          patientX.instructions.push({
-            task: instruction,
-            description: details,
-            done: false,
-          });
-          await patientX.save();
-        }
+        console.log(thread);
+        let patientX = await Patient.findOne({ _id: thread });
+        patientX.instructions.push({
+          task: instruction,
+
+          done: false,
+        });
+        await patientX.save();
         break;
       }
       default: {
@@ -553,5 +552,19 @@ router.get("/userdata", async (req, res) => {
     return res.json(err);
   }
 });
+
+// router.put("/update/:id", (req, res) => {
+//   const { id } = req.params;
+//   Todo.findByIdAndUpdate(id, { done: true })
+//     .then((result) => res.json(result))
+//     .catch((err) => res.json(err));
+// });
+
+// router.delete("/delete/:id", (req, res) => {
+//   const { id } = req.params;
+//   Todo.findByIdAndDelete(id)
+//     .then((result) => res.json(result))
+//     .catch((err) => res.json(err));
+// });
 
 export { router as UserRouter };

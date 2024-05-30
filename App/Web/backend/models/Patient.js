@@ -7,7 +7,6 @@ const Image = new mongoose.Schema({
 });
 const TodoSchema = new mongoose.Schema({
   task: String,
-  description: String,
   done: {
     type: Boolean,
     default: false,
