@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import animation from "./assets/search.json";
 import messageanimation from "./assets/bloom-messaging.json";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import airplane from "./assets/dashboard/airplane.svg";
 import { Sidebar } from "./Dashboard";
 
@@ -14,9 +14,12 @@ export default function Messages() {
   const [role, setRole] = useState("user");
   const [currentMessage, setCurrentMessage] = useState("");
   const [picture, setPicture] = useState("");
-  const [patients, setPatients] = useState([]);
+  const [patients, setPrimaryPatients] = useState([]);
+  const [secondaryPatients, setSecondaryPatients] = useState([]);
   const [thread, setThread] = useState("");
-
+  const [threadName, setThreadName] = useState("");
+  const lastMessage = useRef(null);
+  const { setAuth } = useAuth();
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
@@ -24,20 +27,30 @@ export default function Messages() {
         setEmail(res.data.email);
         setRole(res.data.type);
         setPicture(res.data.picture);
-        setPatients(
-          res.data.patientsCreated.concat(res.data.secondaryPatients)
-        );
+        setPrimaryPatients(res.data.patientsCreated);
+        setSecondaryPatients(res.data.secondaryPatients);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    lastMessage.current?.scrollIntoView({ behavior: "smooth" });
+  }, [thread]);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <Sidebar setAuth={setAuth} role={role} />
       <div className="bg-slate-100 flex flex-1 p-4 gap-4 max-h-full">
         <div className="flex flex-col rounded-md  max-h-full min-h-full h-full bg-white shadow-xl flex-[2]">
-          <div className="shadow-sm p-4 text-lg">Conversation</div>
+          <div className="flex justify-between shadow-sm p-4 text-lg">
+            <div>Conversation</div>
+            <div className="font-bold tracking-widest">{threadName}</div>
+            <div>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;
+            </div>
+          </div>
           <div
             className={`flex ${
               !thread
@@ -59,6 +72,7 @@ export default function Messages() {
                 <Message thread={thread} />
                 <Message thread={thread} />
                 <Message thread={thread} />
+                <div className="border-none size-0" ref={lastMessage}></div>
               </>
             )}
           </div>
@@ -88,7 +102,7 @@ export default function Messages() {
                 Patients
               </th>
             </thead>
-            {patients.length === 0 ? (
+            {patients.length === 0 && secondaryPatients.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
                 <Lottie className="h-96 mb-8" animationData={animation} />
                 <div className="text-slate-800">No conversations yet...</div>
@@ -98,6 +112,13 @@ export default function Messages() {
               </div>
             ) : null}
             <tbody className="overflow-y-auto flex flex-col h-full ">
+              {patients.length !== 0 ? (
+                <div className="flex text-center mb-4">
+                  <div className="flex-1 border-b-2 border-blue-200 rounded-l-lg"></div>
+                  <div className="font-Poppins font-light">Your Groups</div>
+                  <div className="flex-1 border-b-2 border-blue-200 rounded-r-lg"></div>
+                </div>
+              ) : null}
               {patients.map((element) => {
                 return (
                   <>
@@ -105,6 +126,28 @@ export default function Messages() {
                       element={element}
                       thread={thread}
                       setThread={setThread}
+                      setThreadName={setThreadName}
+                    />
+                  </>
+                );
+              })}
+              {secondaryPatients.length !== 0 ? (
+                <div className="flex text-center mt-4 mb-4">
+                  <div className="flex-1 border-b-2 border-blue-200 rounded-l-lg"></div>
+                  <div className="font-Poppins font-light">
+                    Secondary Groups
+                  </div>
+                  <div className="flex-1 border-b-2 border-blue-200 rounded-r-lg"></div>
+                </div>
+              ) : null}
+              {secondaryPatients.map((element) => {
+                return (
+                  <>
+                    <Thread
+                      element={element}
+                      thread={thread}
+                      setThread={setThread}
+                      setThreadName={setThreadName}
                     />
                   </>
                 );
@@ -117,7 +160,7 @@ export default function Messages() {
   );
 }
 
-function Thread({ element, thread, setThread }) {
+function Thread({ element, thread, setThread, setThreadName }) {
   return (
     <tr
       className={`border-none flex-none h-16 ${
@@ -132,9 +175,12 @@ function Thread({ element, thread, setThread }) {
       >
         <label
           htmlFor={element._id}
-          className="flex items-center px-2  hover:cursor-pointer w-full h-full"
+          className="flex justify-between items-center px-2  hover:cursor-pointer w-full h-full"
         >
           {element.name}
+          <div className="w-12 h-12 border-2 overflow-hidden rounded-full mr-2">
+            <img src={`http://localhost:3000/${element.primaryImage}`} alt="" />
+          </div>
         </label>
       </td>
       <input
@@ -145,6 +191,7 @@ function Thread({ element, thread, setThread }) {
         value={element._id}
         onChange={(e) => {
           setThread(e.target.value);
+          setThreadName(element.name);
         }}
       />
     </tr>
