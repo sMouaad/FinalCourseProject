@@ -121,9 +121,9 @@ async def process_image_caregiver(
         # raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
-@router.put("/update_image")
-async def update_image():
-    return
+# @router.put("/update_image")
+# async def update_image():
+#     return
 
 
 @router.get("/person_image/{url}")  # url the path of the image
