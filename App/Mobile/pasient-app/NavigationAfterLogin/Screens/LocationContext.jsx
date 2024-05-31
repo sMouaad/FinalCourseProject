@@ -9,6 +9,7 @@ const LocationContext = createContext();
 
 const LOCATION_TASK_NAME = "background-location-task";
 const SOCKET_SERVER_URL = `http://${process.env.SERVER_IP}`;
+const newSocket = io(SOCKET_SERVER_URL);
 
 const LocationProvider = ({ children }) => {
   const [location, setLocation] = useState(null);
@@ -17,9 +18,13 @@ const LocationProvider = ({ children }) => {
   const [patientId, setPatientId] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(SOCKET_SERVER_URL);
     setSocket(newSocket);
     setPatientId(getData("patientId"));
+    return () => {
+      if (socket !== null) {
+        socket.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -57,17 +62,19 @@ const LocationProvider = ({ children }) => {
         // setLocationStarted(hasStarted);
         // console.log("tracking started?", hasStarted);
 
-        setTimeout(async () => {
-          let location = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Highest,
-            timeInterval: 10000, // Update every 10 seconds
-            distanceInterval: 10, // Update every 10 meters
-          });
-          const { longitude, latitude } = location.coords;
-          socket.emit("locationUpdate", { longitude, latitude });
-          setLocation(location);
-          console.log(location);
-        }, 2000);
+        if (socket !== null) {
+          setTimeout(async () => {
+            let location = await Location.getCurrentPositionAsync({
+              accuracy: Location.Accuracy.Highest,
+              timeInterval: 10000, // Update every 10 seconds
+              distanceInterval: 10, // Update every 10 meters
+            });
+            const { longitude, latitude } = location.coords;
+            socket.emit("locationUpdate", { longitude, latitude });
+            setLocation(location);
+            console.log(location);
+          }, 2000);
+        }
 
         // treat error
       } catch (error) {
@@ -76,7 +83,7 @@ const LocationProvider = ({ children }) => {
     };
 
     Permission();
-  }, [location]);
+  }, [location, socket]);
 
   let text = "Waiting..";
   if (errorMsg) {

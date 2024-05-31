@@ -7,6 +7,7 @@ import MessagesPage from "./Chat/MessagesPage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomePageNav } from "./HomePageNav";
 
+
 const TabBarNav = () => {
   const Tab = createBottomTabNavigator();
   return (
