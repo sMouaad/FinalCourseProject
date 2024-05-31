@@ -1,8 +1,5 @@
 import React, { useRef, useState } from "react";
-import {
-  View,
-  ScrollView,
-} from "react-native";
+import { View, ScrollView, Text, StyleSheet, StatusBar } from "react-native";
 
 import Group from "./Group";
 import Assistants from "./Assistants";
@@ -53,8 +50,22 @@ const Home = () => {
     previousOffsetX = offsetX;
   };
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <TabBar
+    <View style={styles.container}>
+      <Text
+        className=" text-2xl text-center mx-4 font-medium rounded-[20px] text-[#654ff3]  bg-[#f2f1ff] p-2 my-[17px] "
+        style={{
+          shadowColor: "#654ff3",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          elevation: 15,
+        }}
+      >
+        Messages
+      </Text>
+      {/* <TabBar
         onPress1={() => {
           scrollview.current.scrollTo({ x: 0 });
         }}
@@ -63,7 +74,7 @@ const Home = () => {
         }}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-      />
+      /> */}
 
       <ScrollView
         className
@@ -83,3 +94,12 @@ const Home = () => {
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 5,
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: "#f2f1ff",
+  },
+});

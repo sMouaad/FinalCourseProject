@@ -59,7 +59,7 @@ function HomePage({ navigation }) {
   const snapPoints = useMemo(() => ["85%"], []);
   const bottomSheetModalRef = useRef(null);
 
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date(1730));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
@@ -150,7 +150,6 @@ function HomePage({ navigation }) {
           setFetsched(true);
         })
         .catch((err) => {
-          console.warn("ScrollingBarPatients " + err);
           console.log("ScrollingBarPatients " + err.response);
         });
     };
@@ -283,7 +282,7 @@ function HomePage({ navigation }) {
                   </Text>
                   <Text className="items-center font-[450] mt-6 ">Name:</Text>
                   <TextInput
-                    placeholder="Email: Ali"
+                    placeholder="Name: Ali"
                     className="border-b-2 items-center border-[#654ff3] px-[10] py-[7] mb-[20] "
                     value={patientName}
                     onChangeText={setPatientName}

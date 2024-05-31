@@ -15,6 +15,7 @@ export function Chat() {
     {
       _id: 1,
       text: "azerty",
+      image: "default-image.png",
       createdAt: new Date(),
       user: {
         _id: 2,
@@ -114,7 +115,7 @@ export function Chat() {
       <TouchableOpacity>
         <Send {...props}>
           <View style={{ marginRight: 10, marginBottom: 7 }}>
-            <Ionicons name="send" size={28} color="#00A588" />
+            <Ionicons name="send" size={28} color="#654ff3" />
           </View>
         </Send>
       </TouchableOpacity>
@@ -126,7 +127,7 @@ export function Chat() {
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
-        user={{ _id: 1 }}
+        user={{ _id: 1, image: "default-image.png" }}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
         renderSend={renderSend}

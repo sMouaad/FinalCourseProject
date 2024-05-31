@@ -36,7 +36,9 @@ function Home_PatientX({ navigation, patientName }) {
         </View>
         <View className="flex-1 items-center justify-center ">
           <TouchableOpacity
-            onPress={() => navigation.navigate("Track")}
+            onPress={() =>
+              navigation.navigate("Track", { patientName: patientName })
+            }
             className=" bg-[#00a4bd] "
             style={{
               width: "80%",

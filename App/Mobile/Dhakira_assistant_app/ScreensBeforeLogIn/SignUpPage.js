@@ -139,7 +139,7 @@ function SignUpPageInter() {
         ></TextInput>
 
         <Text style={styles.TextLogin}>
-          Already have account?,{" "}
+          Already have account?{" "}
           <Text
             style={{ color: "#42b72a", textDecorationLine: "underline" }}
             onPress={() => navigation.navigate("LoginPage")}
@@ -209,7 +209,9 @@ const styles = StyleSheet.create({
   FirstInputSignUp: {
     width: "90%",
     height: 60,
-    borderWidth: 4,
+    borderLeftWidth: 4,
+    borderRightWidth: 4,
+    borderTopWidth: 4,
     borderTopLeftRadius: 22,
     borderColor: "#6930C3",
     borderTopRightRadius: 22,
