@@ -203,7 +203,6 @@ const Login = ({ navigation }) => {
                             storeData("cookie", res.data.accessToken).then(
                               navigation.navigate("Profiles")
                             );
-
                           }
                         })
                         .catch((err) => {

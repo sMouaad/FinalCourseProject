@@ -25,20 +25,6 @@ enableScreens();
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
-    console.log("hello");
-    if (error) {
-      // Error occurred - check `error.message` for more details.
-      return;
-    }
-    if (data) {
-      const { locations } = data;
-
-      console.log("locations", locations);
-
-      // do something with the locations captured in the background
-    }
-  });
   // removeData("patientId");
   // removeData("cookie");
   const [initialRouteName, setInitialRouteName] = useState("");
