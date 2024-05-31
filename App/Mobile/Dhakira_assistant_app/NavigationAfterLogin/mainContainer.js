@@ -13,6 +13,7 @@ import UserSettings from "./Screens/UserSettings";
 import ToDoPageAssistantDoctor from "./Screens/TodoScreens/ToDoPage";
 import EditPatient from "./Screens/Settings/EditPatient";
 import FamilyFace from "./Screens/Settings/FamilyFace";
+import { Text } from "react-native";
 
 const SettingsStack = createNativeStackNavigator();
 function SettingsStackGroup({ patientName }) {
@@ -57,7 +58,7 @@ function RecordTrackSettingsGroup({ route }) {
       <RTC.Screen
         name="Track"
         component={Track}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       ></RTC.Screen>
       <RTC.Screen name="Settings" options={{ headerShown: false }}>
         {(props) => {
@@ -145,7 +146,9 @@ export default function MainContainer() {
       <Tab.Screen
         name="Messages"
         component={MessagesPage}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Settings"

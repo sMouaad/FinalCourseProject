@@ -128,7 +128,7 @@ export default function FamilyFace() {
 
         setPeoples(response.data);
       } catch (err) {
-        console.warn("useeffect", err);
+        console.warn("useEffect:", err);
       }
     }
     if (patientId) {
