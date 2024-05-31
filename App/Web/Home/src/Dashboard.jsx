@@ -171,7 +171,6 @@ export default function Dashboard() {
     Axios.get(`http://localhost:3000/auth/get/${thread}`).then((res) => {
       if (res.data.status) {
         setInstructions(res.data.instructions);
-        console.log(res.data.instructions);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -180,6 +179,7 @@ export default function Dashboard() {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
+        console.log(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
         setPatients(res.data.patients);
       }
@@ -726,7 +726,11 @@ export default function Dashboard() {
                   </th>
                   <th className=" border-none ">&nbsp;</th>
 
-                  <th className=" border-none ">
+                  <th
+                    className={`border-none ${
+                      role === "doctor" ? "text-end pr-4" : ""
+                    }`}
+                  >
                     <motion.button
                       onClick={() =>
                         modalDeleteOpen ? closeDelete() : openDelete()
@@ -805,8 +809,18 @@ export default function Dashboard() {
                   <th className="text-left">PATIENT</th>
                   <th>ASSISTANT</th>
                   <th>DOCTOR</th>
-                  <th>SOCIAL SKILLS</th>
-                  <th>TRACK PATIENT</th>
+                  {role === "assistant" ? (
+                    <>
+                      {" "}
+                      <th>SOCIAL SKILLS</th>
+                      <th>TRACK PATIENT</th>
+                    </>
+                  ) : (
+                    <>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </>
+                  )}
                 </tr>
                 {role === "assistant" &&
                   tableRows.map((element) => {
@@ -819,6 +833,7 @@ export default function Dashboard() {
                         assistant={element.assistants}
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
+                        role={role}
                       />
                     );
                   })}
@@ -833,6 +848,7 @@ export default function Dashboard() {
                         assistant={element.assistants}
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
+                        role={role}
                       />
                     );
                   })}
@@ -888,6 +904,7 @@ export default function Dashboard() {
                             doctor={element.doctors}
                             doctorImage={element.doctorImage}
                             patient={element.name}
+                            role={role}
                           />
                         );
                       })}
@@ -927,6 +944,7 @@ function Row({
   doctor,
   doctorImage,
   handleCheck,
+  role,
 }) {
   return (
     <tr className="h-16">
@@ -1021,20 +1039,29 @@ function Row({
           </div>
         </div>
       </td>
-      <td className="text-center px-2">
-        <Link to="/home">
-          <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-            Improve Social Skills
-          </button>
-        </Link>
-      </td>
-      <td className="text-center px-2">
-        <Link to="/maps">
-          <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-            Track your Patient
-          </button>
-        </Link>
-      </td>
+      {role === "assistant" ? (
+        <>
+          <td className="text-center px-2">
+            <Link to="/home">
+              <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                Improve Social Skills
+              </button>
+            </Link>
+          </td>
+          <td className="text-center px-2">
+            <Link to="/maps">
+              <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                Track your Patient
+              </button>
+            </Link>
+          </td>
+        </>
+      ) : (
+        <>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </>
+      )}
     </tr>
   );
 }
