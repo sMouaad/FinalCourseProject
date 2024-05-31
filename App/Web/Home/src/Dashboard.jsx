@@ -19,6 +19,7 @@ import Settings from "./assets/dashboard/settings.svg";
 import Support from "./assets/dashboard/support.svg";
 import Check from "./assets/dashboard/check.svg";
 import Cross from "./assets/dashboard/cross.svg";
+import { ImCross } from "react-icons/im";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
@@ -44,14 +45,16 @@ export default function Dashboard() {
   const [notifications, setNotifications] = useState([]);
   const [patients, setPatients] = useState([]);
   const [open, setOpen] = useState(false);
-  const [thread, setThread] = useState("");
+  const [instruction, setInstruction] = useState("");
+  const [instructions, setInstructions] = useState([]);
   const [image, setImage] = useState("");
+  const [thread, setThread] = useState("");
+  const [threadName, setThreadName] = useState("");
   const { setAuth } = useAuth();
 
   const handleLogout = () => {
     Axios.get("http://localhost:3000/auth/logout")
       .then((res) => {
-        console.log("here!");
         if (res.data.status) console.log("cookies cleared");
         setAuth({});
       })
@@ -73,7 +76,12 @@ export default function Dashboard() {
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
-  const closeInstructions = () => setInstructionsModalOpen(false);
+  const closeInstructions = () => {
+    setInstructionsModalOpen(false);
+    setInstruction("");
+    setThread("");
+    setThreadName("");
+  };
   const closeDelete = () => {
     setDeleteModalOpen(false);
     setDelete("");
@@ -97,6 +105,19 @@ export default function Dashboard() {
       setTableData([...tableData, data]);
     }
   };
+  const handleTodoDelete = (taskid, patientid) => {
+    Axios.post("http://localhost:3000/auth/delete", {
+      taskid: taskid,
+      patientid: patientid,
+    })
+      .then((res) => {
+        console.log(res.data);
+        setUpdateDash(!updateDash);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleForm = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:3000/auth/operation", {
@@ -108,6 +129,8 @@ export default function Dashboard() {
       assistantEmail,
       doctorEmail,
       tableData,
+      instruction,
+      thread,
     })
       .then((res) => {
         if (res.data.status) {
@@ -145,9 +168,18 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateNotif]);
   useEffect(() => {
+    Axios.get(`http://localhost:3000/auth/get/${thread}`).then((res) => {
+      if (res.data.status) {
+        setInstructions(res.data.instructions);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [thread, updateDash]);
+  useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
       if (res.data.status) {
         setTableRows(res.data.patientsCreated);
+        console.log(res.data.patientsCreated);
         setSecondaryRows(res.data.secondaryPatients);
         setPatients(res.data.patients);
       }
@@ -177,41 +209,35 @@ export default function Dashboard() {
         closeDoctor();
         closeDelete();
         closePatient();
+        closeInstructions();
       }
     });
   }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <form id="mainForm" onSubmit={handleForm}></form>
-      {role === "assistant" ? <Sidebar setAuth={setAuth} role={role} /> : null}
+      <Sidebar setAuth={setAuth} role={role} />
       <section className="flex-[6] flex flex-col">
-        <nav
-          className={
-            role === "doctor"
-              ? "grid-rows-1 px-12 py-4 gap-4 shadow-lg z-[2] grid"
-              : "grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid"
-          }
-        >
-          {role === "assistant" ? (
-            <div className="items-center justify-between gap-12 flex">
-              <div className="flex shrink gap-4 basis-[75%]">
-                <div className="items-center flex">
-                  <div></div>
-                </div>
-              </div>
-              <div className="pr-4 items-center gap-6 flex">
-                <div className="rounded-full bg-yellow-300 w-[40px] h-[40px] overflow-hidden">
-                  <img
-                    className="w-full h-auto align-bottom"
-                    src={image ? `http://localhost:3000/${image}` : ProfilePic}
-                    alt=""
-                  />
-                </div>
-
-                <p className="font-bold">{name}</p>
+        <nav className="grid-rows-2 px-12 py-4 gap-4 shadow-lg z-[2] grid">
+          <div className="items-center justify-between gap-12 flex">
+            <div className="flex shrink gap-4 basis-[75%]">
+              <div className="items-center flex">
+                <div></div>
               </div>
             </div>
-          ) : null}
+            <div className="pr-4 items-center gap-6 flex">
+              <div className="rounded-full bg-yellow-300 w-[40px] h-[40px] overflow-hidden">
+                <img
+                  className="w-full h-auto align-bottom"
+                  src={image ? `http://localhost:3000/${image}` : ProfilePic}
+                  alt=""
+                />
+              </div>
+
+              <p className="font-bold">{name}</p>
+            </div>
+          </div>
+
           <div className="flex gap-12 justify-between items-center">
             <div className="gap-4 flex">
               <div className="rounded-full bg-yellow-300 w-[60px] h-[60px] overflow-hidden">
@@ -230,22 +256,7 @@ export default function Dashboard() {
                 </h1>
               </div>
             </div>
-            {role === "doctor" ? (
-              <>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  className=" bg-[#008de5] hover:bg-[#0184cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                >
-                  Chat with Groups
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  className=" bg-[#0063e5] hover:bg-[#0152cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                >
-                  Chat with Assistants
-                </motion.button>
-              </>
-            ) : null}
+
             <div
               onClick={() => setOpen(!open)}
               className="flex absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
@@ -414,7 +425,149 @@ export default function Dashboard() {
                         </AnimatePresence>
                       </>
                     ) : (
-                      <span>&nbsp;</span>
+                      <span>
+                        <div className="mt-auto  flex gap-8">
+                          <motion.button
+                            onClick={() =>
+                              modalInstructionsOpen
+                                ? closeInstructions()
+                                : openInstructions()
+                            }
+                            whileTap={{ scale: 0.95 }}
+                            className=" bg-[#00e5bd] hover:bg-[#01cba9] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                          >
+                            Add Instructions
+                          </motion.button>
+                          <AnimatePresence
+                            initial={false}
+                            mode="wait"
+                            onExitComplete={() => null}
+                          >
+                            {modalInstructionsOpen && (
+                              <Modal
+                                styleAdd="h-5/6 w-5/6 py-4 rounded-lg bg-slate-100"
+                                modalInstructionsOpen={modalInstructionsOpen}
+                                handleClose={closeInstructions}
+                                text={
+                                  <>
+                                    <div className="text-2xl text-center">
+                                      Instructions
+                                    </div>
+                                    <div className="bg-slate-100 flex flex-1 p-4 gap-4 h-full">
+                                      <div className="flex flex-col rounded-md bg-white shadow-xl h-full flex-[2]">
+                                        <div className="flex justify-between shadow-sm p-4  text-lg">
+                                          <div>To-do List</div>
+                                          <div className="font-bold tracking-widest">
+                                            {threadName}
+                                          </div>
+                                          <div>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                          </div>
+                                        </div>
+                                        {!thread ? (
+                                          <div
+                                            className={`flex ${
+                                              !thread
+                                                ? "font-light h-full"
+                                                : null
+                                            } items-center justify-center`}
+                                          >
+                                            Select a Patient
+                                          </div>
+                                        ) : (
+                                          <ul className="px-8 flex flex-col gap-2 py-4 font-thin h-full overflow-auto">
+                                            {instructions.map((element) => {
+                                              return (
+                                                <Instruction
+                                                  key={element._id}
+                                                  element={element}
+                                                  handler={handleTodoDelete}
+                                                  thread={thread}
+                                                />
+                                              );
+                                            })}
+                                          </ul>
+                                        )}
+                                        <div className="transition-all ease-linear flex items-center gap-2 p-4 border-t-2 border-slate-200 mt-auto w-full self-center">
+                                          <input
+                                            placeholder="Task..."
+                                            className="border-none rounded-full w-full bg-slate-200"
+                                            type="text"
+                                            onChange={(e) => {
+                                              setInstruction(e.target.value);
+                                            }}
+                                          />
+                                          <motion.button
+                                            form="mainForm"
+                                            onClick={(e) => {
+                                              if (!thread) {
+                                                e.preventDefault();
+
+                                                setDeleteError(
+                                                  "Select a patient first."
+                                                );
+                                              } else if (!instruction) {
+                                                e.preventDefault();
+
+                                                setDeleteError(
+                                                  "Fill empty field."
+                                                );
+                                              } else {
+                                                setOperation("instruction");
+                                              }
+                                            }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className={` flex gap-3 items-center justify-center bg-blue-500 hover:bg-blue-600 text-white text-[12px] border-[1px] px-4 border-transparent py-1 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100 `}
+                                          >
+                                            Add
+                                          </motion.button>
+                                        </div>
+                                      </div>
+                                      <div className="rounded-md px-2 bg-white shadow-xl flex-1 ">
+                                        <table className="w-full h-full  border-collapse">
+                                          <thead>
+                                            <th className="block text-center py-4 border-none text-2xl font-bold">
+                                              Patients
+                                            </th>
+                                          </thead>
+                                          {patients.length === 0 ? (
+                                            <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
+                                              <Lottie
+                                                className="h-96 mb-8"
+                                                animationData={animation}
+                                              />
+                                              <div className="text-slate-800">
+                                                No patients yet...
+                                              </div>
+                                              <div className="text-sm text-slate-600">
+                                                Ask assistants to invite you
+                                              </div>
+                                            </div>
+                                          ) : null}
+                                          {patients.map((element) => {
+                                            return (
+                                              <>
+                                                <PatientRow
+                                                  element={element}
+                                                  thread={thread}
+                                                  setThread={setThread}
+                                                  setThreadName={setThreadName}
+                                                />
+                                              </>
+                                            );
+                                          })}
+                                          <tbody className="overflow-y-auto flex flex-col h-full "></tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </>
+                                }
+                              />
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </span>
                     )}
                   </th>
                   <th className="w-1/6 border-none ">
@@ -573,7 +726,11 @@ export default function Dashboard() {
                   </th>
                   <th className=" border-none ">&nbsp;</th>
 
-                  <th className=" border-none ">
+                  <th
+                    className={`border-none ${
+                      role === "doctor" ? "text-end pr-4" : ""
+                    }`}
+                  >
                     <motion.button
                       onClick={() =>
                         modalDeleteOpen ? closeDelete() : openDelete()
@@ -652,8 +809,18 @@ export default function Dashboard() {
                   <th className="text-left">PATIENT</th>
                   <th>ASSISTANT</th>
                   <th>DOCTOR</th>
-                  <th>SOCIAL SKILLS</th>
-                  <th>TRACK PATIENT</th>
+                  {role === "assistant" ? (
+                    <>
+                      {" "}
+                      <th>SOCIAL SKILLS</th>
+                      <th>TRACK PATIENT</th>
+                    </>
+                  ) : (
+                    <>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </>
+                  )}
                 </tr>
                 {role === "assistant" &&
                   tableRows.map((element) => {
@@ -666,6 +833,7 @@ export default function Dashboard() {
                         assistant={element.assistants}
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
+                        role={role}
                       />
                     );
                   })}
@@ -680,6 +848,7 @@ export default function Dashboard() {
                         assistant={element.assistants}
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
+                        role={role}
                       />
                     );
                   })}
@@ -735,6 +904,7 @@ export default function Dashboard() {
                             doctor={element.doctors}
                             doctorImage={element.doctorImage}
                             patient={element.name}
+                            role={role}
                           />
                         );
                       })}
@@ -761,65 +931,6 @@ export default function Dashboard() {
               ) : null}
             </>
           </div>
-          {role === "doctor" ? (
-            <div className="mt-auto  flex gap-8">
-              <motion.button
-                onClick={() =>
-                  modalInstructionsOpen
-                    ? closeInstructions()
-                    : openInstructions()
-                }
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 bg-[#1ba8ff] h-16 hover:bg-[#0184cb] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-              >
-                Instructions
-              </motion.button>
-              <AnimatePresence
-                initial={false}
-                mode="wait"
-                onExitComplete={() => null}
-              >
-                {modalInstructionsOpen && (
-                  <Modal
-                    modalInstructionsOpen={modalInstructionsOpen}
-                    handleClose={closeInstructions}
-                    text={
-                      <div className="py-3 h-full w-4/5 flex flex-col gap-4">
-                        <div className="text-center text-3xl font-bold">
-                          Instructions
-                        </div>
-                        <input
-                          autoComplete="off"
-                          className="bg-slate-200 text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                          placeholder="Instruction..."
-                          type="text"
-                        />
-                        <textarea
-                          className="bg-slate-200 flex-1 resize-none text-slate-700 focus:text-black font-bold border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-                          name=""
-                          id=""
-                          cols="30"
-                          rows="10"
-                          placeholder="Details..."
-                        ></textarea>
-                        <div className="text-center">
-                          <button className=" bg-green-500 py-4 px-8 text-white text-[12px] self-center basis-1/2 border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase cursor-pointer">
-                            Add
-                          </button>
-                        </div>
-                      </div>
-                    }
-                  />
-                )}
-              </AnimatePresence>
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 bg-[#00e500] h-16 hover:bg-[#2ca92c] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-              >
-                Tests
-              </motion.button>
-            </div>
-          ) : null}
         </main>
       </section>
     </div>
@@ -833,6 +944,7 @@ function Row({
   doctor,
   doctorImage,
   handleCheck,
+  role,
 }) {
   return (
     <tr className="h-16">
@@ -927,20 +1039,29 @@ function Row({
           </div>
         </div>
       </td>
-      <td className="text-center px-2">
-        <Link to="/home">
-          <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-            Improve Social Skills
-          </button>
-        </Link>
-      </td>
-      <td className="text-center px-2">
-        <Link to="/maps">
-          <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
-            Track your Patient
-          </button>
-        </Link>
-      </td>
+      {role === "assistant" ? (
+        <>
+          <td className="text-center px-2">
+            <Link to="/home">
+              <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                Improve Social Skills
+              </button>
+            </Link>
+          </td>
+          <td className="text-center px-2">
+            <Link to="/maps">
+              <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
+                Track your Patient
+              </button>
+            </Link>
+          </td>
+        </>
+      ) : (
+        <>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </>
+      )}
     </tr>
   );
 }
@@ -1053,5 +1174,55 @@ function Notification({
         />
       </button>
     </div>
+  );
+}
+
+function PatientRow({ element, thread, setThread, setThreadName }) {
+  return (
+    <tr
+      className={`border-none flex-none h-16 flex ${
+        thread === element._id ? null : "hover:bg-slate-50"
+      } ${
+        thread === element._id ? "bg-slate-100" : null
+      } rounded-md hover:cursor-pointer transition-all`}
+    >
+      <td
+        style={{ padding: 0 }}
+        className="border-none block flex-1 text-lg rounded-md  ease-linear h-16"
+      >
+        <label
+          htmlFor={element._id}
+          className="flex  justify-between items-center px-2  hover:cursor-pointer w-full h-full"
+        >
+          {element.name}
+        </label>
+      </td>
+      <input
+        id={element._id}
+        type="radio"
+        className="size-0 border-none outline-none opacity-0"
+        name="patient"
+        value={element._id}
+        onChange={(e) => {
+          setThread(e.target.value);
+          setThreadName(element.name);
+        }}
+      />
+    </tr>
+  );
+}
+function Instruction({ element, handler, thread }) {
+  return (
+    <li className="shadow-sm justify-between flex   transition-all rounded-md bg-green-50 p-2">
+      {element.task}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          handler(element._id, thread);
+        }}
+      >
+        <ImCross className="h-3" color="green" />
+      </button>
+    </li>
   );
 }
