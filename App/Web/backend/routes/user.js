@@ -146,6 +146,8 @@ router.post("/operation", async (req, res) => {
       tableData,
       condition,
       email,
+      instruction,
+      thread,
     } = req.body;
 
     if (token) {
@@ -279,6 +281,17 @@ router.post("/operation", async (req, res) => {
             await patientX.save();
           }
         }
+        break;
+      }
+      case "instruction": {
+        console.log(thread);
+        let patientX = await Patient.findOne({ _id: thread });
+        patientX.instructions.push({
+          task: instruction,
+
+          done: false,
+        });
+        await patientX.save();
         break;
       }
       default: {
@@ -520,7 +533,6 @@ router.get("/userdata", async (req, res) => {
               doctorImage = doctorImage.image;
               patientElement = { ...patientElement, doctorImage: doctorImage };
             }
-            console.log(patientElement);
             newPatientsDoctor.push(patientElement);
           }
         }
@@ -539,6 +551,35 @@ router.get("/userdata", async (req, res) => {
   } catch (err) {
     return res.json(err);
   }
+});
+
+// router.put("/update/:id", (req, res) => {
+//   const { id } = req.params;
+//   Todo.findByIdAndUpdate(id, { done: true })
+//     .then((result) => res.json(result))
+//     .catch((err) => res.json(err));
+// });
+
+router.post("/delete", async (req, res) => {
+  const { taskid, patientid } = req.body;
+  if (taskid && patientid) {
+    const patientX = await Patient.findById(patientid);
+    patientX.instructions = patientX.instructions.filter(
+      (element) => element._id != taskid
+    );
+    patientX.save();
+    return res.json({ status: true, message: "success" });
+  }
+  return res.json({ status: false, message: "error, no task or patient" });
+});
+
+router.get("/get/:id", async (req, res) => {
+  const { id } = req.params;
+  if (id) {
+    const patientX = await Patient.findById(id);
+    return res.json({ status: true, instructions: patientX.instructions });
+  }
+  return res.json({ status: false, message: "error, no thread" });
 });
 
 export { router as UserRouter };

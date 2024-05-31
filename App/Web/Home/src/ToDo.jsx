@@ -5,7 +5,7 @@ import {
   BsFillTrashFill,
 } from "react-icons/bs";
 
-function ToDo() {
+export default function ToDo() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -45,7 +45,6 @@ function ToDo() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-center font-bold mb-4">TODAY</h1>
       <div className="w-full max-w-lg">
         {todos.length === 0 ? (
           <div className="text-center">
@@ -78,43 +77,6 @@ function ToDo() {
           ))
         )}
       </div>
-      <Create />
     </div>
   );
 }
-
-const Create = () => {
-  const [task, setTask] = useState("");
-
-  const handleAdd = () => {
-    fetch("http://localhost:3000/todo/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ task: task }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        location.reload();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  return (
-    <div className="border-2 bg-white border-green-400 rounded-xl p-2 flex flex-row m-2 h-20 w-90">
-      <input
-        className="rounded-xl w-full focus:outline-none"
-        type="text"
-        placeholder="enter task"
-        onChange={(e) => setTask(e.target.value)}
-      />
-      <button type="button" onClick={handleAdd}>
-        ADD
-      </button>
-    </div>
-  );
-};
-
-export default ToDo;
