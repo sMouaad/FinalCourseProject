@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 router.post("/update", upload.single("file"), async (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, name, password, phone } = req.body;
   const dbInfo = await User.find({});
   const token = req.cookies.token;
   if (!token) {
@@ -44,6 +44,9 @@ router.post("/update", upload.single("file"), async (req, res) => {
   if (password) {
     const hashPassword = await bcryt.hash(password, 10);
     user.password = hashPassword;
+  }
+  if (phone) {
+    user.phone = phone;
   }
   if (req.file) {
     try {
@@ -453,9 +456,21 @@ router.get("/patientdata/:currentPatient", async (req, res) => {
       patientElement.assistants.push({
         id: x,
         name: assistantFound.name,
+        email: assistantFound.email,
         phone: assistantFound.phone,
         image: assistantFound.image,
       });
+    }
+    let doctorImage = await User.findById(patientX.doctors);
+    if (doctorImage) {
+      doctorImage = {
+        image: doctorImage.image,
+        name: doctorImage.name,
+        email: doctorImage.email,
+        phone: doctorImage.phone,
+        id: doctorImage._id,
+      };
+      patientElement = { ...patientElement, doctorData: doctorImage };
     }
     //get primary assistant profile picture
     let primaryImage = await User.findById(patientX.primaryAssistant);
@@ -468,12 +483,17 @@ router.get("/patientdata/:currentPatient", async (req, res) => {
 });
 
 router.post("/dissociate", async (req, res) => {
-  const { patientId, assistantId } = req.body;
+  const { patientId, assistantId, doctorId } = req.body;
   if (patientId && assistantId) {
     const patientX = await Patient.findById(patientId);
     patientX.assistants = patientX.assistants.filter(
       (element) => !element.equals(assistantId)
     );
+    await patientX.save();
+    return res.json({ status: true, message: "success" });
+  } else if (patientId && doctorId) {
+    const patientX = await Patient.findById(patientId);
+    patientX.doctors = undefined;
     await patientX.save();
     return res.json({ status: true, message: "success" });
   }

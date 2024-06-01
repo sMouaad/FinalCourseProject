@@ -117,11 +117,11 @@ export default function Dashboard() {
         console.log(err);
       });
   };
-  const handleAssistants = (currentPatient) => {
+  const handleAssistants = (currentPatient, operationtype) => {
     Axios.get(`http://localhost:3000/auth/patientdata/${currentPatient}`).then(
       (res) => {
         setCurrentPatient(res.data.patient);
-        openListAssistants();
+        operationtype !== "doctor" ? openListAssistants() : openListDoctors();
       }
     );
   };
@@ -203,7 +203,6 @@ export default function Dashboard() {
         setImage(res.data.picture);
         setNotifications(res.data.notifications);
       }
-      console.log(res);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -217,6 +216,8 @@ export default function Dashboard() {
         closeDelete();
         closePatient();
         closeInstructions();
+        closeListAssistants();
+        closeListDoctors();
       }
     });
   }, []);
@@ -244,7 +245,8 @@ export default function Dashboard() {
                             />
                           </div>
 
-                          {data.name}
+                          <div className="font-bold">{data.name}</div>
+                          <div>&#40;{data.email}&#41;</div>
                           <div className="flex justify-center items-center font-bold text-sm text-slate-400">
                             {data.phone
                               ? "+213" + data.phone
@@ -275,6 +277,55 @@ export default function Dashboard() {
                       </div>
                     );
                   })}
+                </div>
+              </>
+            }
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {modalListDoctorsOpen && (
+          <Modal
+            modalListDoctorsOpen={modalListDoctorsOpen}
+            handleClose={closeListDoctors}
+            text={
+              <>
+                <div className="absolute top-8 text-lg font-bold">Doctor</div>
+                <div className="flex w-full px-4 flex-col gap-4">
+                  <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
+                    <div className="flex items-center justify-center gap-4">
+                      <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
+                        <img
+                          src={`http://localhost:3000/${currentPatient.doctorData.image}`}
+                          alt=""
+                        />
+                      </div>
+                      {currentPatient.doctorData.name}
+                      <div className="flex justify-center items-center font-bold text-sm text-slate-400">
+                        {currentPatient.doctorData.phone
+                          ? "+213" + currentPatient.doctorData.phone
+                          : "No phone number"}
+                      </div>
+                    </div>
+
+                    {owner ? (
+                      <motion.button
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => {
+                          Axios.post("http://localhost:3000/auth/dissociate", {
+                            patientId: currentPatient._id,
+                            doctorId: currentPatient.doctorData.id,
+                          }).then(() => {
+                            setUpdateDash(!updateDash);
+                            handleAssistants(currentPatient._id, "doctor");
+                          });
+                        }}
+                        className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                      >
+                        Dissociate
+                      </motion.button>
+                    ) : null}
+                  </div>
                 </div>
               </>
             }
@@ -889,6 +940,8 @@ export default function Dashboard() {
                         role={role}
                         modalListAssistantsOpen={modalListAssistantsOpen}
                         closeListAssistants={closeListAssistants}
+                        modalListDoctorsOpen={modalListDoctorsOpen}
+                        closeListDoctors={closeListDoctors}
                         setOwner={setOwner}
                         handleAssistants={handleAssistants}
                         owner={true}
@@ -1015,6 +1068,8 @@ function Row({
   modalListAssistantsOpen,
   closeListAssistants,
   handleAssistants,
+  modalListDoctorsOpen,
+  closeListDoctors,
   owner = false,
   setOwner,
 }) {
@@ -1109,6 +1164,11 @@ function Row({
       <td>
         <div className="flex select-none">
           <div
+            onClick={() => {
+              setOwner(owner);
+              handleAssistants(patientId, "doctor");
+              modalListDoctorsOpen ? closeListDoctors() : null;
+            }}
             className={` border-slate-300 border-2 w-8 h-8 ${
               !doctorImage && doctor ? "bg-yellow-300" : "bg-slate-200"
             } rounded-full hover:w-[34px] hover:h-[34px] transition-all cursor-pointer overflow-hidden`}
