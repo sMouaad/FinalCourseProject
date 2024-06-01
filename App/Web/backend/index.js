@@ -41,6 +41,10 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 
+  socket.on("join", (msg) => {
+    console.log("join: " + msg);
+  });
+
   socket.on("msg", (msg) => {
     console.log("message: " + msg);
   });
