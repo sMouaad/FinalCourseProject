@@ -2,7 +2,6 @@ import Brain from "./assets/brain.svg";
 import { IoIosApps } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 import { IoGameController } from "react-icons/io5";
-import { RiNotification3Fill } from "react-icons/ri";
 import { LuListTodo } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { Link } from "react-router-dom";
@@ -67,11 +66,6 @@ function DesktopIcons() {
           msg={"Games"}
           icon={<IoGameController size="30" />}
         />
-        <SidebarIcon
-          route="notifications"
-          msg={"Notifications"}
-          icon={<RiNotification3Fill size="30" />}
-        />
       </div>
       <div className="flex sm:flex-col">
         <SidebarIcon
@@ -115,11 +109,7 @@ function MobileIcons() {
                 msg={"Games"}
                 icon={<IoGameController size="30" />}
               />
-              <SidebarIcon
-                route="notifications"
-                msg={"Notifications"}
-                icon={<RiNotification3Fill size="30" />}
-              />
+
               <SidebarIcon
                 route="/assistant"
                 msg={"Virtual Assistant"}
