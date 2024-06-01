@@ -268,12 +268,6 @@ export default function Dashboard() {
                 </div>
               ) : null}
             </div>
-            <div
-              onClick={handleLogout}
-              className="flex justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
-            >
-              <img className="w-8" src={Logout} alt="logout" />
-            </div>
             {open && (
               <div className="px-4 absolute overflow-y-auto z-50 bg-[#F7FBFE] shadow-xl rounded-lg min-w-96 w-96 top-[9.2rem] right-4 h-96">
                 <Dropdown>
