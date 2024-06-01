@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Apps from "./Apps";
 import Home from "./Home";
 import ErrorPage from "./ErrorPage";
-import Sidebar from "./Sidebar";
 import Assistant from "./Assistant";
 import HomePage from "./HomePage";
 import Login from "./Login";
@@ -19,6 +18,8 @@ import "./styles/index.css";
 import Settings from "./Settings";
 import Messages from "./Messages";
 import Support from "./Support";
+import Autism from "./Autism";
+import Alzheimer from "./Alzheimer";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -28,11 +29,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/maps" element={<Maps />} />
+          <Route path="/autism" element={<Autism />} />
+          <Route path="/alzheimer" element={<Alzheimer />} />
           <Route
-            path="/to-do-list"
+            path="/to-do-list/:patientId"
             element={
               <>
-                <Sidebar />
                 <ToDo />
               </>
             }
@@ -45,28 +47,25 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route element={<RequireAuth />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
-              path="/home"
+              path="/home/:patientId"
               element={
                 <>
-                  <Sidebar />
                   <Home />
                 </>
               }
             />
             <Route
-              path="/apps"
+              path="/apps/:patientId"
               element={
                 <>
-                  <Sidebar />
                   <Apps />
                 </>
               }
             />
             <Route
-              path="/assistant"
+              path="/assistant/:patientId"
               element={
                 <>
-                  <Sidebar />
                   <Assistant />
                 </>
               }
