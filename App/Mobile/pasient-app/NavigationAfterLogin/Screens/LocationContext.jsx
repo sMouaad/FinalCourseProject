@@ -9,7 +9,6 @@ const LocationContext = createContext();
 
 const LOCATION_TASK_NAME = "background-location-task";
 const SOCKET_SERVER_URL = `http://${process.env.SERVER_IP}`;
-const newSocket = io(SOCKET_SERVER_URL);
 
 const LocationProvider = ({ children }) => {
   const [location, setLocation] = useState(null);
@@ -18,7 +17,12 @@ const LocationProvider = ({ children }) => {
   const [patientId, setPatientId] = useState(null);
 
   useEffect(() => {
-    setSocket(newSocket);
+    const socket = io(SOCKET_SERVER_URL);
+    setSocket(socket);
+
+    // Emit a test message to the server
+    socket.emit("test message", "test");
+
     setPatientId(getData("patientId"));
     return () => {
       if (socket !== null) {
@@ -34,7 +38,6 @@ const LocationProvider = ({ children }) => {
         if (status !== "granted") {
           throw new Error("Permission to access location was denied");
         }
-
         let backgroundStatus =
           await Location.requestBackgroundPermissionsAsync();
 
@@ -43,25 +46,7 @@ const LocationProvider = ({ children }) => {
             "Permission to access background location was denied"
           );
         }
-
-        // await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        //   accuracy: Location.Accuracy.Highest,
-        //   timeInterval: 10000, // Update every 10 seconds
-        //   distanceInterval: 10, // Update every 10 meters
-        //   foregroundService: {
-        //     notificationTitle: "Background location",
-        //     notificationBody: "Used to track location",
-        //   },
-        // });
-
-        // const hasStarted = await Location.hasStartedLocationUpdatesAsync(
-        //   LOCATION_TRACKING
-        // );
         // console.log("hi");
-
-        // setLocationStarted(hasStarted);
-        // console.log("tracking started?", hasStarted);
-
         if (socket !== null) {
           setTimeout(async () => {
             let location = await Location.getCurrentPositionAsync({
@@ -73,7 +58,7 @@ const LocationProvider = ({ children }) => {
             socket.emit("locationUpdate", { longitude, latitude });
             setLocation(location);
             console.log(location);
-          }, 2000);
+          }, 10000);
         }
 
         // treat error
@@ -83,7 +68,7 @@ const LocationProvider = ({ children }) => {
     };
 
     Permission();
-  }, [location, socket]);
+  }, [location]);
 
   let text = "Waiting..";
   if (errorMsg) {
