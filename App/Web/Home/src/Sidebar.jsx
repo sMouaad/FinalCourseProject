@@ -47,15 +47,6 @@ function SidebarIcon({ route, icon, clickable = true, msg }) {
 export default Sidebar;
 
 function DesktopIcons({ patientId }) {
-  const handleLogout = () => {
-    Axios.get("http://localhost:3000/auth/logout")
-      .then((res) => {
-        if (res.data.status) console.log("cookies cleared");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   return (
     <>
       <div className="flex sm:flex-col sm:gap-1">
@@ -87,7 +78,7 @@ function DesktopIcons({ patientId }) {
           icon={<LuListTodo size="30" />}
         />
       </div>
-      <div onClick={handleLogout} className="sm:mt-auto">
+      <div className="sm:mt-auto">
         <SidebarIcon
           route="/dashboard"
           msg={"Exit"}
