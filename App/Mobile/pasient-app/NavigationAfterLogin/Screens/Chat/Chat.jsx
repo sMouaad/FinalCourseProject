@@ -7,8 +7,10 @@ import {
 } from "react-native-gifted-chat";
 import { TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import getData from "../../../localStorage";
 
 import io from "socket.io-client";
+import { user } from "osenv";
 
 export function Chat() {
   const [messages, setMessages] = useState([
@@ -23,33 +25,45 @@ export function Chat() {
     },
   ]);
   const [socket, setSocket] = useState(null);
+  const [userId, setUserId] = useState(null);
   const giftedChatRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Socket.IO connection
-    const socket = io(`http://${process.env.SERVER_IP}`);
-    setSocket(socket);
+    // Get the user ID from the local storage
+    const fetchUserId = async () => {
+      const userId = await getData("patientId");
+      setUserId(userId);
+      console.log(userId);
+    };
+    const connection = async () => {
+      await fetchUserId();
 
-    // Emit a test message to the server
-    socket.emit("test message", "test");
+      // Initialize Socket.IO connection
+      const socket = io(`http://${process.env.SERVER_IP}`);
+      setSocket(socket);
 
-    // Event listener for receiving messages from the server
-    socket.on("chat message", (msg) => {
-      const modifiedMessages = msg.map((message) => ({
-        ...message,
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar:
-            "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
-        },
-      }));
+      socket.emit("join room", { userId: userId });
+      // Emit a test message to the server
+      socket.emit("test message", "test");
 
-      // Update state with the modified message
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, modifiedMessages)
-      );
-    });
+      // Event listener for receiving messages from the server
+      socket.on("chat message", (msg) => {
+        const modifiedMessages = msg.map((message) => ({
+          ...message,
+          user: {
+            _id: 2,
+            name: "React Native",
+            avatar:
+              "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
+          },
+        }));
+
+        // Update state with the modified message
+        setMessages((previousMessages) =>
+          GiftedChat.append(previousMessages, modifiedMessages)
+        );
+      });
+    };
     // Cleanup function to disconnect socket when component unmounts
     return () => {
       if (socket) {
