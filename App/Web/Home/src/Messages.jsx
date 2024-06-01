@@ -27,8 +27,10 @@ export default function Messages() {
         setEmail(res.data.email);
         setRole(res.data.type);
         setPicture(res.data.picture);
-        setPrimaryPatients(res.data.patientsCreated);
-        setSecondaryPatients(res.data.secondaryPatients);
+        if (res.data.type === "assistant") {
+          setPrimaryPatients(res.data.patientsCreated);
+          setSecondaryPatients(res.data.secondaryPatients);
+        } else setPrimaryPatients(res.data.patients);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

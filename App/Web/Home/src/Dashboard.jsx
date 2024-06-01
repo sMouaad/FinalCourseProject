@@ -1042,7 +1042,7 @@ function Row({
       {role === "assistant" ? (
         <>
           <td className="text-center px-2">
-            <Link to="/home">
+            <Link to={`/home/${patientId}`}>
               <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
                 Improve Social Skills
               </button>
@@ -1213,7 +1213,11 @@ function PatientRow({ element, thread, setThread, setThreadName }) {
 }
 function Instruction({ element, handler, thread }) {
   return (
-    <li className="shadow-sm justify-between flex   transition-all rounded-md bg-green-50 p-2">
+    <li
+      className={`shadow-sm justify-between flex   transition-all rounded-md bg-green-50 p-2 ${
+        element.done ? "line-through" : null
+      }`}
+    >
       {element.task}
       <button
         onClick={(e) => {

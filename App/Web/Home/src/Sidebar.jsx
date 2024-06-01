@@ -10,14 +10,18 @@ import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import Axios from "axios";
-function Sidebar() {
+function Sidebar({ patientId = "" }) {
   const isDesktop = useMediaQuery({
     query: "(min-width: 640px)",
   });
   return (
     <div className="fixed top-0 z-10 sm:gap-10 sm:rounded-xl sm:top-10 sm:left-7 sm:h-sidebar w-screen sm:w-16 m-0 flex sm:flex-col bg-primary text-white shadow-lg pt-1 sm:pt-4 sm:pb-4">
       <SidebarIcon clickable={false} icon={<img src={Brain} />} />
-      {isDesktop ? <DesktopIcons /> : <MobileIcons />}
+      {isDesktop ? (
+        <DesktopIcons patientId={patientId} />
+      ) : (
+        <MobileIcons patientId={patientId} />
+      )}
     </div>
   );
 }
@@ -42,45 +46,44 @@ function SidebarIcon({ route, icon, clickable = true, msg }) {
 }
 export default Sidebar;
 
-function DesktopIcons() {
-  const handleLogout = () => {
-    Axios.get("http://localhost:3000/auth/logout")
-      .then((res) => {
-        if (res.data.status) console.log("cookies cleared");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+function DesktopIcons({ patientId }) {
   return (
     <>
       <div className="flex sm:flex-col sm:gap-1">
-        <SidebarIcon route="/home" msg={"Home"} icon={<FaHome size="30" />} />
         <SidebarIcon
-          route="/apps"
+          route={`/home/${patientId}`}
+          msg={"Home"}
+          icon={<FaHome size="30" />}
+        />
+        <SidebarIcon
+          route={`/apps/${patientId}`}
           msg={"Apps"}
           icon={<IoIosApps size="30" />}
         />
         <SidebarIcon
-          route="/games"
+          route={`/games/${patientId}`}
           msg={"Games"}
           icon={<IoGameController size="30" />}
         />
       </div>
       <div className="flex sm:flex-col">
         <SidebarIcon
-          route="/assistant"
+          route={`/assistant/${patientId}`}
           msg={"Virtual Assistant"}
           icon={<GoCopilot size="30" />}
         />
         <SidebarIcon
-          route="/to-do-list"
+          route={`/to-do-list/${patientId}`}
           msg={"To-do list"}
           icon={<LuListTodo size="30" />}
         />
       </div>
-      <div onClick={handleLogout} className="sm:mt-auto">
-        <SidebarIcon route="/" msg={"Exit"} icon={<LuLogOut size="30" />} />
+      <div className="sm:mt-auto">
+        <SidebarIcon
+          route="/dashboard"
+          msg={"Exit"}
+          icon={<LuLogOut size="30" />}
+        />
       </div>
     </>
   );

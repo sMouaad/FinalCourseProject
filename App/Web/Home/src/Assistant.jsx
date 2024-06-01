@@ -9,8 +9,11 @@ import { useRunPolling } from "./hooks/useRunPolling";
 import { useRunRequiredActionsProcessing } from "./hooks/useRunRequiredActionsProcessing";
 import { useRunStatus } from "./hooks/useRunStatus";
 import { postMessage } from "./services/api";
+import { useParams } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 function App() {
+  const { patientId } = useParams();
   const [run, setRun] = useState(undefined);
   const { threadId, messages, setActionMessages, clearThread } = useThread(
     run,
@@ -34,22 +37,25 @@ function App() {
     });
 
   return (
-    <div className="sm:ml-24 mt-10 lg:px-32 h-[80vh] sm:h-screen sm:mt-0 flex flex-col">
-      <Header onNewChat={clearThread} />
-      <div className="flex flex-col-reverse grow overflow-y-scroll">
-        {status !== undefined && <ChatStatusIndicator status={status} />}
-        {processing && <Loading />}
-        {messageList}
+    <>
+      <Sidebar patientId={patientId} />
+      <div className="sm:ml-24 mt-10 lg:px-32 h-[80vh] sm:h-screen sm:mt-0 flex flex-col">
+        <Header onNewChat={clearThread} />
+        <div className="flex flex-col-reverse grow overflow-y-scroll">
+          {status !== undefined && <ChatStatusIndicator status={status} />}
+          {processing && <Loading />}
+          {messageList}
+        </div>
+        <div className="my-4">
+          <ChatInput
+            onSend={(message) => {
+              postMessage(threadId, message).then(setRun);
+            }}
+            disabled={processing}
+          />
+        </div>
       </div>
-      <div className="my-4">
-        <ChatInput
-          onSend={(message) => {
-            postMessage(threadId, message).then(setRun);
-          }}
-          disabled={processing}
-        />
-      </div>
-    </div>
+    </>
   );
 }
 

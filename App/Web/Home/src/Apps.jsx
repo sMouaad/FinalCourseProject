@@ -4,16 +4,22 @@ import { memory } from "./data.jsx";
 import { focus } from "./data.jsx";
 import ArrowL from "./assets/arrow-left.svg";
 import ArrowR from "./assets/arrow-right.svg";
+import Sidebar from "./Sidebar";
+import { useParams } from "react-router-dom";
 export default function Apps() {
+  const { patientId } = useParams();
   return (
-    <div
-      id="Games"
-      className="sm:ml-32 items-center flex flex-col py-16 pb-32 sm:pl-16 gap-8 min-h-screen "
-    >
-      <Row msg="Improve your Social Skills" dataset={social} />
-      <Row msg="Improve your Memory" dataset={memory} />
-      <Row msg="Improve your Focus" dataset={focus} />
-    </div>
+    <>
+      <Sidebar patientId={patientId} />
+      <div
+        id="Games"
+        className="sm:ml-32 items-center flex flex-col py-16 pb-32 sm:pl-16 gap-8 min-h-screen "
+      >
+        <Row msg="Improve your Social Skills" dataset={social} />
+        <Row msg="Improve your Memory" dataset={memory} />
+        <Row msg="Improve your Focus" dataset={focus} />
+      </div>
+    </>
   );
 }
 function Row({ msg, dataset }) {
