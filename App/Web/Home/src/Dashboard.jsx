@@ -1213,7 +1213,11 @@ function PatientRow({ element, thread, setThread, setThreadName }) {
 }
 function Instruction({ element, handler, thread }) {
   return (
-    <li className="shadow-sm justify-between flex   transition-all rounded-md bg-green-50 p-2">
+    <li
+      className={`shadow-sm justify-between flex   transition-all rounded-md bg-green-50 p-2 ${
+        element.done ? "line-through" : null
+      }`}
+    >
       {element.task}
       <button
         onClick={(e) => {
