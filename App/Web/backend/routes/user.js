@@ -542,6 +542,7 @@ router.get("/userdata", async (req, res) => {
           email: info.email,
           type: info.type,
           patients: newPatientsDoctor,
+          patientsCreated: newPatientsDoctor,
           notifications: [...notificationsDoctor],
           picture: info.image,
         });
