@@ -53,6 +53,7 @@ export default function Dashboard() {
   const [thread, setThread] = useState("");
   const [threadName, setThreadName] = useState("");
   const [currentPatient, setCurrentPatient] = useState([]);
+  const [owner, setOwner] = useState(false);
   const { setAuth } = useAuth();
 
   const closeAssistant = () => {
@@ -250,20 +251,22 @@ export default function Dashboard() {
                               : "No phone number"}
                           </div>
                         </div>
-                        <motion.button
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => {
-                            Axios.post(
-                              "http://localhost:3000/auth/dissociate",
-                              { assistantId: data._id }
-                            ).then(() => {
-                              setUpdateDash(!updateDash);
-                            });
-                          }}
-                          className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                        >
-                          Dissociate
-                        </motion.button>
+                        {owner ? (
+                          <motion.button
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              Axios.post(
+                                "http://localhost:3000/auth/dissociate",
+                                { assistantId: data._id }
+                              ).then(() => {
+                                setUpdateDash(!updateDash);
+                              });
+                            }}
+                            className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                          >
+                            Dissociate
+                          </motion.button>
+                        ) : null}
                       </div>
                     );
                   })}
@@ -881,8 +884,9 @@ export default function Dashboard() {
                         role={role}
                         modalListAssistantsOpen={modalListAssistantsOpen}
                         closeListAssistants={closeListAssistants}
-                        openListAssistants={openListAssistants}
+                        setOwner={setOwner}
                         handleAssistants={handleAssistants}
+                        owner={true}
                       />
                     );
                   })}
@@ -898,9 +902,9 @@ export default function Dashboard() {
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
                         role={role}
+                        setOwner={setOwner}
                         modalListAssistantsOpen={modalListAssistantsOpen}
                         closeListAssistants={closeListAssistants}
-                        openListAssistants={openListAssistants}
                         handleAssistants={handleAssistants}
                       />
                     );
@@ -960,8 +964,9 @@ export default function Dashboard() {
                             role={role}
                             modalListAssistantsOpen={modalListAssistantsOpen}
                             closeListAssistants={closeListAssistants}
-                            openListAssistants={openListAssistants}
                             handleAssistants={handleAssistants}
+                            setOwner={setOwner}
+                            owner={false}
                           />
                         );
                       })}
@@ -1004,8 +1009,9 @@ function Row({
   role,
   modalListAssistantsOpen,
   closeListAssistants,
-  openListAssistants,
   handleAssistants,
+  owner = false,
+  setOwner,
 }) {
   return (
     <tr className="h-16">
@@ -1030,6 +1036,7 @@ function Row({
                 : "bg-slate-200"
             } rounded-full overflow-hidden`}
             onClick={() => {
+              setOwner(owner);
               handleAssistants(patientId);
               modalListAssistantsOpen ? closeListAssistants() : null;
             }}
@@ -1052,6 +1059,7 @@ function Row({
           {assistant.length > 1 ? (
             <div
               onClick={() => {
+                setOwner(owner);
                 handleAssistants(patientId);
                 modalListAssistantsOpen ? closeListAssistants() : null;
               }}
@@ -1070,6 +1078,7 @@ function Row({
           {assistant.length > 2 ? (
             <div
               onClick={() => {
+                setOwner(owner);
                 handleAssistants(patientId);
                 modalListAssistantsOpen ? closeListAssistants() : null;
               }}
