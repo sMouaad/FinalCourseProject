@@ -12,6 +12,10 @@ const TodoSchema = new mongoose.Schema({
     default: false,
   },
 });
+const Messages = new mongoose.Schema({
+  sender: { type: String },
+  messageContent: { type: String },
+});
 const PatientSchema = new mongoose.Schema({
   name: { type: String, required: true },
   date: { type: String, required: true },
@@ -21,6 +25,7 @@ const PatientSchema = new mongoose.Schema({
   doctors: { type: mongoose.SchemaTypes.ObjectId },
   images: [Image],
   instructions: [TodoSchema],
+  messages: [Messages],
 });
 const PatientModel = mongoose.model("Patient", PatientSchema);
 export { PatientModel as Patient };
