@@ -15,6 +15,7 @@ export default function Settings() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [picture, setPicture] = useState("");
   const [error, setError] = useState("");
   const [update, setUpdate] = useState(true);
@@ -24,6 +25,7 @@ export default function Settings() {
     formData.append("email", updateEmail);
     formData.append("name", updateName);
     formData.append("password", password);
+    formData.append("phone", phone);
     Axios.post("http://localhost:3000/auth/update", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -117,6 +119,9 @@ export default function Settings() {
                   Phone Number
                 </label>
                 <input
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
                   className="my-[8px] rounded-[8px] outline-none"
                   type="tel"
                   placeholder="+213xxxxxxxx"
