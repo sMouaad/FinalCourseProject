@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Apps from "./Apps";
 import Home from "./Home";
 import ErrorPage from "./ErrorPage";
-import Sidebar from "./Sidebar";
 import Assistant from "./Assistant";
 import HomePage from "./HomePage";
 import Login from "./Login";
@@ -29,10 +28,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<Login />} />
           <Route path="/maps" element={<Maps />} />
           <Route
-            path="/to-do-list"
+            path="/to-do-list/:patientId"
             element={
               <>
-                <Sidebar />
                 <ToDo />
               </>
             }
@@ -45,28 +43,25 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route element={<RequireAuth />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
-              path="/home"
+              path="/home/:patientId"
               element={
                 <>
-                  <Sidebar />
                   <Home />
                 </>
               }
             />
             <Route
-              path="/apps"
+              path="/apps/:patientId"
               element={
                 <>
-                  <Sidebar />
                   <Apps />
                 </>
               }
             />
             <Route
-              path="/assistant"
+              path="/assistant/:patientId"
               element={
                 <>
-                  <Sidebar />
                   <Assistant />
                 </>
               }
