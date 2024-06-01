@@ -251,15 +251,20 @@ export default function Dashboard() {
                               : "No phone number"}
                           </div>
                         </div>
+
                         {owner ? (
                           <motion.button
                             whileTap={{ scale: 0.95 }}
                             onClick={() => {
                               Axios.post(
                                 "http://localhost:3000/auth/dissociate",
-                                { assistantId: data._id }
+                                {
+                                  patientId: currentPatient._id,
+                                  assistantId: data.id,
+                                }
                               ).then(() => {
                                 setUpdateDash(!updateDash);
+                                handleAssistants(currentPatient._id);
                               });
                             }}
                             className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"

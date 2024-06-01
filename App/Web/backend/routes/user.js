@@ -467,6 +467,19 @@ router.get("/patientdata/:currentPatient", async (req, res) => {
   }
 });
 
+router.post("/dissociate", async (req, res) => {
+  const { patientId, assistantId } = req.body;
+  if (patientId && assistantId) {
+    const patientX = await Patient.findById(patientId);
+    patientX.assistants = patientX.assistants.filter(
+      (element) => !element.equals(assistantId)
+    );
+    await patientX.save();
+    return res.json({ status: true, message: "success" });
+  }
+  return res.json({ status: false, message: "ERROR" });
+});
+
 router.get("/userdata", async (req, res) => {
   try {
     const token = req.cookies.token;
