@@ -950,7 +950,7 @@ function Row({
       <td>
         <div className="flex select-none w-max">
           <div
-            className={`relative border-slate-300 border-2 w-8 h-8 ${
+            className={`relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 w-8 h-8 ${
               assistant.length > 0 && !assistant[0].image
                 ? "bg-yellow-300"
                 : "bg-slate-200"
@@ -972,7 +972,7 @@ function Row({
             )}
           </div>
           {assistant.length > 1 ? (
-            <div className="relative border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-yellow-300 rounded-full overflow-hidden">
+            <div className="relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-yellow-300 rounded-full overflow-hidden">
               <img
                 src={
                   assistant[1].image
@@ -984,7 +984,7 @@ function Row({
             </div>
           ) : null}
           {assistant.length > 2 ? (
-            <div className="relative border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-yellow-300 text-center text-gray-400 rounded-full overflow-hidden">
+            <div className="relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-yellow-300 text-center text-gray-400 rounded-full overflow-hidden">
               <img
                 src={
                   assistant[2].image
@@ -1007,7 +1007,7 @@ function Row({
           <div
             className={` border-slate-300 border-2 w-8 h-8 ${
               !doctorImage && doctor ? "bg-yellow-300" : "bg-slate-200"
-            } rounded-full overflow-hidden`}
+            } rounded-full hover:w-[34px] hover:h-[34px] transition-all cursor-pointer overflow-hidden`}
           >
             {doctor ? (
               <img
@@ -1019,7 +1019,7 @@ function Row({
                 alt=""
               />
             ) : (
-              <div className="text-[8px] flex  justify-center items-center h-full w-full">
+              <div className="text-[8px] flex cursor-default justify-center items-center h-full w-full">
                 Empty
               </div>
             )}
