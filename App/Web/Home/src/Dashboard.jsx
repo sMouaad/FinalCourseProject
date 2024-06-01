@@ -233,51 +233,55 @@ export default function Dashboard() {
                 <div className="absolute top-8 text-lg font-bold">
                   Secondary Assistants
                 </div>
-                <div className="flex w-full px-4 flex-col gap-4">
-                  {currentPatient.assistants.map((data) => {
-                    return (
-                      <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
-                        <div className="flex items-center justify-center gap-4">
-                          <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
-                            <img
-                              src={`http://localhost:3000/${data.image}`}
-                              alt=""
-                            />
+                {currentPatient.assistants.length === 0 ? (
+                  <div className="text-center">No Secondary Assistants Yet</div>
+                ) : (
+                  <div className="flex w-full px-4 flex-col gap-4">
+                    {currentPatient.assistants.map((data) => {
+                      return (
+                        <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
+                          <div className="flex items-center justify-center gap-4">
+                            <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
+                              <img
+                                src={`http://localhost:3000/${data.image}`}
+                                alt=""
+                              />
+                            </div>
+
+                            <div className="font-bold">{data.name}</div>
+                            <div>&#40;{data.email}&#41;</div>
+                            <div className="flex justify-center items-center font-bold text-sm text-slate-400">
+                              {data.phone
+                                ? "+213" + data.phone
+                                : "No phone number"}
+                            </div>
                           </div>
 
-                          <div className="font-bold">{data.name}</div>
-                          <div>&#40;{data.email}&#41;</div>
-                          <div className="flex justify-center items-center font-bold text-sm text-slate-400">
-                            {data.phone
-                              ? "+213" + data.phone
-                              : "No phone number"}
-                          </div>
+                          {owner ? (
+                            <motion.button
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => {
+                                Axios.post(
+                                  "http://localhost:3000/auth/dissociate",
+                                  {
+                                    patientId: currentPatient._id,
+                                    assistantId: data.id,
+                                  }
+                                ).then(() => {
+                                  setUpdateDash(!updateDash);
+                                  handleAssistants(currentPatient._id);
+                                });
+                              }}
+                              className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                            >
+                              Dissociate
+                            </motion.button>
+                          ) : null}
                         </div>
-
-                        {owner ? (
-                          <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => {
-                              Axios.post(
-                                "http://localhost:3000/auth/dissociate",
-                                {
-                                  patientId: currentPatient._id,
-                                  assistantId: data.id,
-                                }
-                              ).then(() => {
-                                setUpdateDash(!updateDash);
-                                handleAssistants(currentPatient._id);
-                              });
-                            }}
-                            className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                          >
-                            Dissociate
-                          </motion.button>
-                        ) : null}
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </>
             }
           />
@@ -292,40 +296,47 @@ export default function Dashboard() {
               <>
                 <div className="absolute top-8 text-lg font-bold">Doctor</div>
                 <div className="flex w-full px-4 flex-col gap-4">
-                  <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
-                    <div className="flex items-center justify-center gap-4">
-                      <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
-                        <img
-                          src={`http://localhost:3000/${currentPatient.doctorData.image}`}
-                          alt=""
-                        />
+                  {currentPatient.doctorData ? (
+                    <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
+                      <div className="flex items-center justify-center gap-4">
+                        <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
+                          <img
+                            src={`http://localhost:3000/${currentPatient.doctorData.image}`}
+                            alt=""
+                          />
+                        </div>
+                        {currentPatient.doctorData.name}
+                        <div className="flex justify-center items-center font-bold text-sm text-slate-400">
+                          {currentPatient.doctorData.phone
+                            ? "+213" + currentPatient.doctorData.phone
+                            : "No phone number"}
+                        </div>
                       </div>
-                      {currentPatient.doctorData.name}
-                      <div className="flex justify-center items-center font-bold text-sm text-slate-400">
-                        {currentPatient.doctorData.phone
-                          ? "+213" + currentPatient.doctorData.phone
-                          : "No phone number"}
-                      </div>
-                    </div>
 
-                    {owner ? (
-                      <motion.button
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => {
-                          Axios.post("http://localhost:3000/auth/dissociate", {
-                            patientId: currentPatient._id,
-                            doctorId: currentPatient.doctorData.id,
-                          }).then(() => {
-                            setUpdateDash(!updateDash);
-                            handleAssistants(currentPatient._id, "doctor");
-                          });
-                        }}
-                        className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
-                      >
-                        Dissociate
-                      </motion.button>
-                    ) : null}
-                  </div>
+                      {owner ? (
+                        <motion.button
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            Axios.post(
+                              "http://localhost:3000/auth/dissociate",
+                              {
+                                patientId: currentPatient._id,
+                                doctorId: currentPatient.doctorData.id,
+                              }
+                            ).then(() => {
+                              handleAssistants(currentPatient._id, "doctor");
+                              setUpdateDash(!updateDash);
+                            });
+                          }}
+                          className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                        >
+                          Dissociate
+                        </motion.button>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div className="text-center">No doctor assigned.</div>
+                  )}
                 </div>
               </>
             }
