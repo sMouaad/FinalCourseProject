@@ -259,7 +259,7 @@ export default function Dashboard() {
 
             <div
               onClick={() => setOpen(!open)}
-              className="flex absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
+              className="flex cursor-pointer absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
             >
               <img className="w-8" src={Bell} alt="notifications" />
               {notifications.length !== 0 ? (
