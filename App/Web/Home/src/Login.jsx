@@ -23,6 +23,7 @@ export default function Login() {
   const [error, setError] = useState(false);
   const [fill, setFill] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [phone, setPhone] = useState("");
 
   Axios.defaults.withCredentials = true;
   const handleSubmitRegister = (e) => {
@@ -32,6 +33,7 @@ export default function Login() {
       email,
       password,
       type,
+      phone,
     })
       .then((res) => {
         if (res.data.status) {
@@ -182,6 +184,15 @@ export default function Login() {
               placeholder="Password"
               onChange={(e) => {
                 setPassword(e.target.value);
+              }}
+            />
+            <input
+              className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+              type="tel"
+              name="name"
+              placeholder="Phone Number"
+              onChange={(e) => {
+                setPhone(e.target.value);
               }}
             />
             <div className="h-3 text-xs text-red-600">
