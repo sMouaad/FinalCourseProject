@@ -1,30 +1,28 @@
 import Chat from "./assets/chat.svg";
-import Social from "./assets/social.svg";
 import Game from "./assets/game.svg";
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div
       id="Home"
       className="flex justify-center flex-wrap sm:px-16 pr-32 py-16 gap-16 max-h-fit min-h-card ml-32 "
     >
-      <Card
-        cardColor="bg-Chat"
-        textShadow="hover:shadow-Chat"
-        textColor="text-Chat"
-        img={Chat}
-      ></Card>
-      <Card
-        cardColor="bg-Gam"
-        textShadow="hover:shadow-Gam"
-        textColor="text-Gam"
-        img={Game}
-      ></Card>
-      <Card
-        cardColor="bg-Social"
-        textShadow="hover:shadow-Social"
-        textColor="text-Social"
-        img={Social}
-      ></Card>
+      <Link className="flex flex-1" to="/assistant">
+        <Card
+          cardColor="bg-Chat"
+          textShadow="hover:shadow-Chat"
+          textColor="text-Chat"
+          img={Chat}
+        ></Card>
+      </Link>
+      <Link className="flex flex-1" to="/apps">
+        <Card
+          cardColor="bg-Gam"
+          textShadow="hover:shadow-Gam"
+          textColor="text-Gam"
+          img={Game}
+        ></Card>
+      </Link>
     </div>
   );
 }
