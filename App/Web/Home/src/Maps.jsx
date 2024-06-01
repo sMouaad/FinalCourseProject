@@ -30,12 +30,13 @@ export default function Maps() {
       socket.disconnect();
     };
   }, []);
+
   console.log(markerPos);
   const position = { lat: markerPos.lat, lng: markerPos.lng };
   return (
     <APIProvider apiKey={"AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"}>
       <div className="h-screen">
-        <Map defaultZoom={20} defaultCenter={position}>
+        <Map defaultZoom={20} defaultCenter={position} center={position}>
           <Marker
             position={position}
             icon={Brain}
