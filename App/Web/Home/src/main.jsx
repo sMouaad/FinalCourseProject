@@ -18,6 +18,8 @@ import "./styles/index.css";
 import Settings from "./Settings";
 import Messages from "./Messages";
 import Support from "./Support";
+import Autism from "./Autism";
+import Alzheimer from "./Alzheimer";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -27,6 +29,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/maps" element={<Maps />} />
+          <Route path="/autism" element={<Autism />} />
+          <Route path="/alzheimer" element={<Alzheimer />} />
           <Route
             path="/to-do-list/:patientId"
             element={
