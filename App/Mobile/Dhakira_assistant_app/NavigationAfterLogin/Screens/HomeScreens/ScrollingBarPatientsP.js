@@ -151,6 +151,7 @@ function HomePage({ navigation }) {
         })
         .catch((err) => {
           console.log("ScrollingBarPatients " + err.response);
+          console.log("ScrollingBarPatients " + err);
         });
     };
 
