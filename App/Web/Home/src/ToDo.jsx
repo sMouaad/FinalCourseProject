@@ -1,82 +1,66 @@
 import { useEffect, useState } from "react";
-import {
-  BsFillCheckCircleFill,
-  BsCircleFill,
-  BsFillTrashFill,
-} from "react-icons/bs";
+import { BsFillCheckCircleFill, BsCircleFill } from "react-icons/bs";
+import Sidebar from "./Sidebar";
+import { useParams } from "react-router-dom";
+import Axios from "axios";
 
 export default function ToDo() {
   const [todos, setTodos] = useState([]);
-
+  const { patientId } = useParams();
+  const [update, setUpdate] = useState(false);
+  const handleCheck = (taskId) => {
+    Axios.post(`http://localhost:3000/auth/check/`, { taskId, patientId }).then(
+      (res) => {
+        console.log(res);
+        if (res.data.status) {
+          setUpdate(!update);
+        }
+      }
+    );
+  };
   useEffect(() => {
-    fetch("http://localhost:3000/todo/get")
-      .then((response) => response.json())
-      .then((data) => setTodos(data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  const handleEdit = (id) => {
-    fetch(`http://localhost:3000/todo/update/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ done: true }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        location.reload();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleDelete = (id) => {
-    fetch(`http://localhost:3000/todo/delete/${id}`, {
-      method: "DELETE",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        location.reload();
-      })
-      .catch((err) => console.log(err));
-  };
-
+    Axios.get(`http://localhost:3000/auth/get/${patientId}`).then((res) => {
+      if (res.data.status) {
+        setTodos(res.data.instructions);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [update]);
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="w-full max-w-lg">
-        {todos.length === 0 ? (
-          <div className="text-center">
-            <h2>NO RECORD</h2>
-          </div>
-        ) : (
-          todos.map((todo) => (
-            <div
-              key={todo._id}
-              className="flex items-center justify-between bg-gray-100 p-2 mb-2 rounded"
-            >
-              <div
-                className="flex items-center"
-                onClick={() => handleEdit(todo._id)}
-              >
-                {todo.done ? (
-                  <BsFillCheckCircleFill className="mr-2 text-green-500" />
-                ) : (
-                  <BsCircleFill className="mr-2 text-gray-500" />
-                )}
-                <p className={todo.done ? "line-through" : ""}>{todo.task}</p>
-              </div>
-              <div>
-                <BsFillTrashFill
-                  className="cursor-pointer"
-                  onClick={() => handleDelete(todo._id)}
-                />
-              </div>
+    <>
+      <Sidebar patientId={patientId} />
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="w-full max-w-lg">
+          {todos.length === 0 ? (
+            <div className="text-center">
+              <h2>NO TASKS ASSIGNED BY THE DOCTOR YET.</h2>
             </div>
-          ))
-        )}
+          ) : (
+            todos.map((todo) => (
+              <div
+                key={todo._id}
+                className="flex items-center justify-between bg-gray-100 p-2 mb-2 rounded"
+              >
+                <div className="flex items-center">
+                  {todo.done ? (
+                    <BsFillCheckCircleFill className="mr-2 text-green-500" />
+                  ) : (
+                    <BsCircleFill
+                      onClick={() => {
+                        handleCheck(todo._id);
+                      }}
+                      className="mr-2 hover:cursor-pointer text-gray-500"
+                    />
+                  )}
+                  <p className={todo.done ? "line-through" : null}>
+                    {todo.task}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
