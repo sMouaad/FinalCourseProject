@@ -12,29 +12,36 @@ import io from "socket.io-client";
 import pointer from "../../../assets/pointer.png";
 
 const INITIANL_REGION = {
-  latitude: 36.7316582,
-  longitude: 3.1833552,
+  latitude: 36.7125,
+  longitude: 3.1822,
   latitudeDelta: 0.0922,
   longitudeDelta: 0.0421,
 };
 
 export default function Track({ route }) {
   const [markerPos, setMarkerPos] = useState({
-    lat: 36.7313881,
-    lng: 3.1832396,
+    latitude: 36.7125,
+    longitude: 3.1822,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
   });
   const [open, setOpen] = useState(false);
 
   const [socketIO, setSocketIO] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io(`http://${process.env.SERVER_IP}:3000`);
 
     // Event listener for receiving messages from the server
+
+    // console.log("socket", socket);
+
     socket.on("patientLoc", (msg) => {
+      // console.log("msg");
+      // console.log(msg.lat, msg.lng);
       setMarkerPos({
         latitude: msg.lat,
-        latitude: msg.lng,
+        longitude: msg.lng,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
@@ -45,7 +52,8 @@ export default function Track({ route }) {
     };
   }, []);
   const { patientName } = route.params;
-  const position = { lat: markerPos.lat, lng: markerPos.lng };
+  console.log(markerPos);
+  // console.log("position", position);
   return (
     <SafeAreaView style={styles.container} className="bg-[#f2f1ff] flex-1">
       <Text
@@ -68,8 +76,8 @@ export default function Track({ route }) {
           initialRegion={INITIANL_REGION}
           initialCamera={{
             center: {
-              latitude: position.lat,
-              longitude: position.lng,
+              latitude: markerPos.latitude,
+              longitude: markerPos.longitude,
             },
             pitch: 0,
             heading: 0,
@@ -81,7 +89,10 @@ export default function Track({ route }) {
         >
           <Marker
             title="Patient Location"
-            coordinate={{ latitude: 36.7316582, longitude: 3.1833552 }}
+            coordinate={{
+              latitude: markerPos.latitude,
+              longitude: markerPos.longitude,
+            }}
           >
             <Image source={pointer} style={{ width: 30, height: 30 }} />
           </Marker>
