@@ -533,6 +533,9 @@ router.get("/userdata", async (req, res) => {
               doctorImage = doctorImage.image;
               patientElement = { ...patientElement, doctorImage: doctorImage };
             }
+            let primaryImage = await User.findById(element.primaryAssistant);
+            primaryImage = primaryImage.image;
+            patientElement = { ...patientElement, primaryImage: primaryImage };
             newPatientsDoctor.push(patientElement);
           }
         }
@@ -542,7 +545,6 @@ router.get("/userdata", async (req, res) => {
           email: info.email,
           type: info.type,
           patients: newPatientsDoctor,
-          patientsCreated: newPatientsDoctor,
           notifications: [...notificationsDoctor],
           picture: info.image,
         });
