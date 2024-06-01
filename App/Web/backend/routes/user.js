@@ -438,6 +438,35 @@ router.post("/profiles", async (req, res) => {
   }
 });
 
+router.get("/patientdata/:currentPatient", async (req, res) => {
+  const { currentPatient } = req.params;
+  console.log(currentPatient);
+  if (currentPatient) {
+    const patientX = await Patient.findById(currentPatient);
+    let patientElement = patientX;
+    patientElement = {
+      ...patientElement._doc,
+    };
+    patientElement.assistants = [];
+    for (let x of patientX.assistants) {
+      let assistantFound = await User.findById(x);
+      patientElement.assistants.push({
+        id: x,
+        name: assistantFound.name,
+        phone: assistantFound.phone,
+        image: assistantFound.image,
+      });
+    }
+    //get primary assistant profile picture
+    let primaryImage = await User.findById(patientX.primaryAssistant);
+    primaryImage = primaryImage.image;
+    patientElement = { ...patientElement, primaryImage: primaryImage };
+    return res.json({ status: true, patient: patientElement });
+  } else {
+    return res.json({ status: false, message: "error" });
+  }
+});
+
 router.get("/userdata", async (req, res) => {
   try {
     const token = req.cookies.token;

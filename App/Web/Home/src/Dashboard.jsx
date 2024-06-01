@@ -26,6 +26,8 @@ export default function Dashboard() {
   const [modalPatientOpen, setPatientModalOpen] = useState(false);
   const [modalDeleteOpen, setDeleteModalOpen] = useState(false);
   const [modalInstructionsOpen, setInstructionsModalOpen] = useState(false);
+  const [modalListAssistantsOpen, setListAssistantsModalOpen] = useState(false);
+  const [modalListDoctorsOpen, setListDoctorsModalOpen] = useState(false);
   const [condition, setCondition] = useState("alzheimer");
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
@@ -50,6 +52,7 @@ export default function Dashboard() {
   const [image, setImage] = useState("");
   const [thread, setThread] = useState("");
   const [threadName, setThreadName] = useState("");
+  const [currentPatient, setCurrentPatient] = useState([]);
   const { setAuth } = useAuth();
 
   const closeAssistant = () => {
@@ -65,12 +68,19 @@ export default function Dashboard() {
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
+
+  const openListAssistants = () => setListAssistantsModalOpen(true);
+  const openListDoctors = () => setListDoctorsModalOpen(true);
+  const closeListAssistants = () => setListAssistantsModalOpen(false);
+  const closeListDoctors = () => setListDoctorsModalOpen(false);
+
   const closeInstructions = () => {
     setInstructionsModalOpen(false);
     setInstruction("");
     setThread("");
     setThreadName("");
   };
+
   const closeDelete = () => {
     setDeleteModalOpen(false);
     setDelete("");
@@ -100,12 +110,19 @@ export default function Dashboard() {
       patientid: patientid,
     })
       .then((res) => {
-        console.log(res.data);
         setUpdateDash(!updateDash);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+  const handleAssistants = (currentPatient) => {
+    Axios.get(`http://localhost:3000/auth/patientdata/${currentPatient}`).then(
+      (res) => {
+        setCurrentPatient(res.data.patient);
+        openListAssistants();
+      }
+    );
   };
   const handleForm = (e) => {
     e.preventDefault();
@@ -204,6 +221,58 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {modalListAssistantsOpen && (
+          <Modal
+            modalListAssistantsOpen={modalListAssistantsOpen}
+            handleClose={closeListAssistants}
+            text={
+              <>
+                <div className="absolute top-8 text-lg font-bold">
+                  Secondary Assistants
+                </div>
+                <div className="flex w-full px-4 flex-col gap-4">
+                  {currentPatient.assistants.map((data) => {
+                    return (
+                      <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
+                        <div className="flex items-center justify-center gap-4">
+                          <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
+                            <img
+                              src={`http://localhost:3000/${data.image}`}
+                              alt=""
+                            />
+                          </div>
+
+                          {data.name}
+                          <div className="flex justify-center items-center font-bold text-sm text-slate-400">
+                            {data.phone
+                              ? "+213" + data.phone
+                              : "No phone number"}
+                          </div>
+                        </div>
+                        <motion.button
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            Axios.post(
+                              "http://localhost:3000/auth/dissociate",
+                              { assistantId: data._id }
+                            ).then(() => {
+                              setUpdateDash(!updateDash);
+                            });
+                          }}
+                          className=" bg-red-700 hover:bg-red-800 text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer transition-all ease-linear duration-100"
+                        >
+                          Dissociate
+                        </motion.button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            }
+          />
+        )}
+      </AnimatePresence>
       <form id="mainForm" onSubmit={handleForm}></form>
       <Sidebar setAuth={setAuth} role={role} />
       <section className="flex-[6] flex flex-col">
@@ -810,6 +879,10 @@ export default function Dashboard() {
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
                         role={role}
+                        modalListAssistantsOpen={modalListAssistantsOpen}
+                        closeListAssistants={closeListAssistants}
+                        openListAssistants={openListAssistants}
+                        handleAssistants={handleAssistants}
                       />
                     );
                   })}
@@ -825,6 +898,10 @@ export default function Dashboard() {
                         doctor={element.doctors}
                         doctorImage={element.doctorImage}
                         role={role}
+                        modalListAssistantsOpen={modalListAssistantsOpen}
+                        closeListAssistants={closeListAssistants}
+                        openListAssistants={openListAssistants}
+                        handleAssistants={handleAssistants}
                       />
                     );
                   })}
@@ -881,6 +958,10 @@ export default function Dashboard() {
                             doctorImage={element.doctorImage}
                             patient={element.name}
                             role={role}
+                            modalListAssistantsOpen={modalListAssistantsOpen}
+                            closeListAssistants={closeListAssistants}
+                            openListAssistants={openListAssistants}
+                            handleAssistants={handleAssistants}
                           />
                         );
                       })}
@@ -921,6 +1002,10 @@ function Row({
   doctorImage,
   handleCheck,
   role,
+  modalListAssistantsOpen,
+  closeListAssistants,
+  openListAssistants,
+  handleAssistants,
 }) {
   return (
     <tr className="h-16">
@@ -944,6 +1029,10 @@ function Row({
                 ? "bg-yellow-300"
                 : "bg-slate-200"
             } rounded-full overflow-hidden`}
+            onClick={() => {
+              handleAssistants(patientId);
+              modalListAssistantsOpen ? closeListAssistants() : null;
+            }}
           >
             {assistant.length > 0 ? (
               <img
@@ -961,7 +1050,13 @@ function Row({
             )}
           </div>
           {assistant.length > 1 ? (
-            <div className="relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-yellow-300 rounded-full overflow-hidden">
+            <div
+              onClick={() => {
+                handleAssistants(patientId);
+                modalListAssistantsOpen ? closeListAssistants() : null;
+              }}
+              className="relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 z-[2] right-3 w-8 h-8 bg-yellow-300 rounded-full overflow-hidden"
+            >
               <img
                 src={
                   assistant[1].image
@@ -973,7 +1068,13 @@ function Row({
             </div>
           ) : null}
           {assistant.length > 2 ? (
-            <div className="relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-yellow-300 text-center text-gray-400 rounded-full overflow-hidden">
+            <div
+              onClick={() => {
+                handleAssistants(patientId);
+                modalListAssistantsOpen ? closeListAssistants() : null;
+              }}
+              className="relative hover:w-[34px] hover:h-[34px] transition-all cursor-pointer border-slate-300 border-2 z-[3] right-6 w-8 h-8 bg-yellow-300 text-center text-gray-400 rounded-full overflow-hidden"
+            >
               <img
                 src={
                   assistant[2].image
@@ -1168,7 +1269,7 @@ function PatientRow({ element, thread, setThread, setThreadName }) {
       >
         <label
           htmlFor={element._id}
-          className="flex  justify-between items-center px-2  hover:cursor-pointer w-full h-full"
+          className="flex justify-between items-center px-2  hover:cursor-pointer w-full h-full"
         >
           {element.name}
         </label>
