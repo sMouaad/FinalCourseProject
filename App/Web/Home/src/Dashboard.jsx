@@ -52,17 +52,6 @@ export default function Dashboard() {
   const [threadName, setThreadName] = useState("");
   const { setAuth } = useAuth();
 
-  const handleLogout = () => {
-    Axios.get("http://localhost:3000/auth/logout")
-      .then((res) => {
-        if (res.data.status) console.log("cookies cleared");
-        setAuth({});
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const closeAssistant = () => {
     setAssistantModalOpen(false);
     setDelete("");
