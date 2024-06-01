@@ -92,14 +92,30 @@ router.post("/support", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { name, email, type, password } = req.body;
+  const { name, email, type, password, phone } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     return res.json({ message: "user already exists" });
   }
   const hashPassword = await bcryt.hash(password, 10);
-  const newUser = new User({ name, email, password: hashPassword, type });
-  await newUser.save();
+  if (phone) {
+    const newUser = new User({
+      name,
+      email,
+      password: hashPassword,
+      type,
+      phone,
+    });
+    await newUser.save();
+  } else {
+    const newUser = new User({
+      name,
+      email,
+      password: hashPassword,
+      type,
+    });
+    await newUser.save();
+  }
 
   return res.json({ status: true, message: "record registered" });
 });
