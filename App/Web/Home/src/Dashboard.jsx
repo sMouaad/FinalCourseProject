@@ -1042,7 +1042,7 @@ function Row({
       {role === "assistant" ? (
         <>
           <td className="text-center px-2">
-            <Link to="/home">
+            <Link to={`/home/${patientId}`}>
               <button className=" bg-[#0067e5] text-white text-[12px] border-[1px] px-4 border-transparent min-h-8 rounded-full font-[600] tracking-[0.5px] uppercase cursor-pointer">
                 Improve Social Skills
               </button>

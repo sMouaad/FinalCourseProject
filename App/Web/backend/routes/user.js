@@ -573,6 +573,22 @@ router.post("/delete", async (req, res) => {
   return res.json({ status: false, message: "error, no task or patient" });
 });
 
+router.post("/check", async (req, res) => {
+  const { taskId, patientId } = req.body;
+  if (taskId && patientId) {
+    const patientX = await Patient.findById(patientId);
+    for (let element of patientX.instructions) {
+      if (element._id == taskId) {
+        element.done = true;
+        await patientX.save();
+        return res.json({ status: true, message: "success" });
+      }
+    }
+    return res.json({ status: false, message: "Not supposed to go there" });
+  }
+  return res.json({ status: false, message: "error, no task or patient" });
+});
+
 router.get("/get/:id", async (req, res) => {
   const { id } = req.params;
   if (id) {
