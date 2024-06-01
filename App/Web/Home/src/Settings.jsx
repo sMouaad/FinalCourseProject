@@ -19,6 +19,7 @@ export default function Settings() {
   const [picture, setPicture] = useState("");
   const [error, setError] = useState("");
   const [update, setUpdate] = useState(true);
+  const [success, setSuccess] = useState("");
   const updateInfo = () => {
     const formData = new FormData();
     formData.append("file", image);
@@ -34,6 +35,7 @@ export default function Settings() {
       .then((res) => {
         if (res.data.status) {
           setUpdate(!update);
+          setSuccess("Your informations have been updated successfully!");
         } else {
           alert("errror!");
           setError(res.data.message);
@@ -193,8 +195,12 @@ export default function Settings() {
                 />
               </div>
             </div>
-            <div className="flex text-red-800 text-sm font-bold justify-center min-h-8">
-              {error}
+            <div
+              className={`flex ${
+                success ? "text-green-400" : "text-red-800"
+              } text-sm font-bold justify-center min-h-8`}
+            >
+              {success || error}
             </div>
             <div className="flex justify-center">
               <motion.button
@@ -202,6 +208,7 @@ export default function Settings() {
                 onClick={(e) => {
                   e.preventDefault();
                   setError("");
+                  setSuccess("");
                   if (
                     password === confirmPassword &&
                     updateEmail === confirmEmail
