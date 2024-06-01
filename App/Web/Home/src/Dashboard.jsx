@@ -534,7 +534,7 @@ export default function Dashboard() {
                                           {patients.length === 0 ? (
                                             <div className="h-full flex flex-col items-center justify-center text-2xl mt-8">
                                               <Lottie
-                                                className="h-96 mb-8"
+                                                className="h- mb-8"
                                                 animationData={animation}
                                               />
                                               <div className="text-slate-800">
@@ -811,14 +811,13 @@ export default function Dashboard() {
                   <th>DOCTOR</th>
                   {role === "assistant" ? (
                     <>
-                      {" "}
                       <th>SOCIAL SKILLS</th>
                       <th>TRACK PATIENT</th>
                     </>
                   ) : (
                     <>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
                     </>
                   )}
                 </tr>
