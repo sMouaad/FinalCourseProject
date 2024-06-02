@@ -55,9 +55,9 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("patientLoc", { lng: longitude, lat: latitude });
   });
 
-  socket.on("chat message", (msg) => {
+  socket.on("chat message", (msg, room) => {
     console.log("message:", msg[0].text);
     // Broadcast message to all clients in the room
-    io.to(msg[0].user._id).emit("chat message", msg);
+    io.to(room).emit("chat message", msg);
   });
 });
