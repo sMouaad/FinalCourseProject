@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -13,25 +7,13 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
   RefreshControl,
   ActivityIndicator,
-  Button,
-  Pressable,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { storeData, getData, removeData } from "../../../localStorage";
+import { storeData, getData } from "../../../localStorage";
 import Axios from "axios";
 import { SERVER_IP } from "@env";
-import { Picker } from "@react-native-picker/picker";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
-import Icon from "../../../components/Icon";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import IconFont from "react-native-vector-icons/Feather";
 
 const Item = ({ navigation, patient }) => {
   return (
@@ -39,7 +21,7 @@ const Item = ({ navigation, patient }) => {
       onPress={async () => {
         await storeData("patientName", patient.name);
         await storeData("patientId", patient.id);
-        // navigation.navigate("Home_RTC", { patientName: patient.name });
+
         navigation.navigate("ToDoA", { patientName: patient.name });
       }}
       style={styles.patient}
@@ -113,55 +95,35 @@ function Todo({ navigation }) {
 
   return (
     <GestureHandlerRootView>
-      <BottomSheetModalProvider>
-        <SafeAreaView style={styles.container}>
-          <ScrollView
-            contentContainerStyle={styles.scrollView}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Text
+            className=" text-2xl text-center mx-4 font-medium rounded-[20px] text-[#654ff3] bg-[#f2f1ff] p-2 my-[17px] "
+            style={{
+              shadowColor: "#654ff3",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              elevation: 15,
+            }}
           >
-            <Text
-              className=" text-2xl text-center mx-4 font-medium rounded-[20px] text-[#654ff3]  bg-[#f2f1ff] p-2 my-[17px] "
-              style={{
-                shadowColor: "#654ff3",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                elevation: 15,
-              }}
-            >
-              To-Do Patients
-            </Text>
-            <View className=" flex-row mb-[20px] px-4 gap-2 ">
-              {/* <View
-                style={{
-                  shadowColor: "#654ff3",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  elevation: 15,
-                }}
-                className="text-xl f rounded-full py-2 px-3 items-center justify-center bg-[#f2f1ff] flex-1 font-bold "
-              >
-                <Text className="text-[17px]   text-[#654ff3]  font-medium ">
-                  {" "}
-                  Your Patients{" "}
-                </Text>
-              </View> */}
-            </View>
-            <View style={styles.scrollViewContent}>
-              {patients.map((item) => (
-                <Item key={item.id} patient={item} navigation={navigation} />
-              ))}
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-      </BottomSheetModalProvider>
+            To-Do Patients
+          </Text>
+          <View className=" flex-row mb-[20px] px-4 gap-2 "></View>
+          <View style={styles.scrollViewContent}>
+            {patients.map((item) => (
+              <Item key={item.id} patient={item} navigation={navigation} />
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

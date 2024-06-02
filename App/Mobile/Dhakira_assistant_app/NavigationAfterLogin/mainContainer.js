@@ -13,7 +13,6 @@ import UserSettings from "./Screens/UserSettings";
 import ToDoPageAssistantDoctor from "./Screens/TodoScreens/ToDoPage";
 import EditPatient from "./Screens/Settings/EditPatient";
 import FamilyFace from "./Screens/Settings/FamilyFace";
-import { Text } from "react-native";
 import MessagesStack from "./Screens/Chat/StackMsg";
 
 const SettingsStack = createNativeStackNavigator();
