@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -96,6 +96,10 @@ export default function App({ navigation, route }) {
     },
   ]);
 
+  useEffect(() => {
+    
+
+  }, []);
   const toggleTaskCompletion = (id) => {
     const newTasks = tasks.map((task) => {
       if (task.id === id) {
