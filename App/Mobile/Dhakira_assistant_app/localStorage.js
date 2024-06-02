@@ -8,7 +8,6 @@ const storeData = async (key, value) => {
     console.log(e);
   }
 };
-
 const getData = async (key) => {
   try {
     const userData = await AsyncStorage.getItem(key);

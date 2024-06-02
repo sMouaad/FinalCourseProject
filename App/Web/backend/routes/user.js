@@ -336,6 +336,7 @@ router.post("/login", async (req, res) => {
   return res.json({
     status: true,
     message: "login successful",
+    id: user._id.toString(),
     accessToken: token,
   });
 });

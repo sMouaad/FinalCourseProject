@@ -3,78 +3,31 @@ import {
   Text,
   View,
   FlatList,
-  Image,
-  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import ChatContainer from "./ChatContainer";
 import { Ionicons } from "@expo/vector-icons";
 
-const messages = [
-  {
-    id: 1,
-    sender: {
-      name: "Abderraouf",
-      imageUrl:
-        "https://lh3.googleusercontent.com/a/ACg8ocKyw_h4Iw-mKDE5GHA2kToPvbHRV13o15U_D8MdSkiuAA3S0ZGt=s288-c-no",
-    },
-  },
-  {
-    id: 3,
-    sender: {
-      name: "Younes",
-      imageUrl:
-        "https://scontent.falg2-2.fna.fbcdn.net/v/t1.6435-9/39453865_1935146083451500_4672188320783007744_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEtbouyonUuR_qmldciaTF6StBMzdxpKgdK0EzN3GkqB06edootKxRUZ0w7sVba6V-nvOwIMEfEoz21v8ubDr6B&_nc_ohc=iq2jhEdHZ1kAb66Sy1L&_nc_pt=1&_nc_ht=scontent.falg2-2.fna&oh=00_AfCetjPLvV4fR9AQPse0kW0BgcJ4TkvpvFYPRs-zjxOjww&oe=6635E123",
-    },
-  },
-];
-
 const MessageItem = ({ message }) => {
   return (
     <ChatContainer>
       <View style={styles.messageContainer}>
-        <Image
-          source={{ uri: message.sender.imageUrl }}
-          style={styles.profileImage}
-        />
-        <View style={styles.messageContent}>
-          <Text style={styles.senderName}>{message.sender.name}</Text>
-        </View>
-        <Pressable
-          style={({ pressed }) => [
-            styles.btn,
-            pressed && {
-              opacity: 0.8,
-              elevation: 2,
-              backgroundColor: "#00E5BD",
-            },
-          ]}
-          onPress={() => {}}
-        >
-          {({ pressed }) => {
-            return (
-              <>
-                <Ionicons
-                  name="call"
-                  size={24}
-                  color={pressed ? "#fff" : "#00E5BD"}
-                />
-              </>
-            );
-          }}
-        </Pressable>
+        <TouchableOpacity style={styles.messageContent} onPress={{}}>
+          <Text style={styles.senderName}>{message.name}</Text>
+        </TouchableOpacity>
       </View>
     </ChatContainer>
   );
 };
 
-const Assistants = () => {
+const Assistants = ({ data }) => {
   return (
     <>
       <View className="h-full w-screen box-border">
         <FlatList
-          className="mx-[10] box-border mb-[10] py-2  "
-          data={messages}
+          className="box-border mb-[10] py-2  "
+          data={data}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
             return (
@@ -129,9 +82,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   messageContent: {
+    backgroundColor: "#6c5ce7",
+    alignItems: "center",
     flex: 1,
+    padding: 10,
+    borderRadius: 20,
+    // marginRight: 20,
   },
   senderName: {
+    color: "white",
     fontWeight: "bold",
     marginBottom: 5,
   },

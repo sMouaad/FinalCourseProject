@@ -7,56 +7,57 @@ import {
 } from "react-native-gifted-chat";
 import { TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
 import io from "socket.io-client";
+import { getData } from "../../../localStorage";
 
 export function Chat() {
+  const [userID, setUserID] = useState(null);
   const [messages, setMessages] = useState([
-    {
-      _id: 1,
-      text: "azerty",
-      image: "default-image.png",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-      },
-    },
+    // {
+    //   _id: 1,
+    //   text: "azerty",
+    //   image: "default-image.png",
+    //   createdAt: new Date(),
+    //   user: {
+    //     _id: 2,
+    //     name: "React Native",
+    //   },
+    // },
   ]);
   const [socket, setSocket] = useState(null);
   const giftedChatRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Socket.IO connection
-    const socket = io(`http://${process.env.SERVER_IP}`);
-    setSocket(socket);
+    getData("userID").then((userID) => {
+      setUserID(userID);
+      console.log(userID);
+      // Initialize Socket.IO connection
+      const socket = io(`http://${process.env.SERVER_IP}`);
+      setSocket(socket);
 
-    // Emit a test message to the server
-    socket.emit("test message", "test");
+      getData("patientId").then((patientId) => {});
 
-    // Event listener for receiving messages from the server
-    socket.on("chat message", (msg) => {
-      const modifiedMessages = msg.map((message) => ({
-        ...message,
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar:
-            "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
-        },
-      }));
+      // Emit a test message to the server
+      socket.emit("test message", "test");
 
-      // Update state with the modified message
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, modifiedMessages)
-      );
+      // Event listener for receiving messages from the server
+      socket.on("chat message", (msg) => {
+        const modifiedMessages = msg.map((message) => ({
+          ...message,
+        }));
+
+        // Update state with the modified message
+        setMessages((previousMessages) =>
+          GiftedChat.append(previousMessages, modifiedMessages)
+        );
+      });
+      // Cleanup function to disconnect socket when component unmounts
+      return () => {
+        if (socket) {
+          socket.disconnect();
+        }
+      };
     });
-    // Cleanup function to disconnect socket when component unmounts
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
   }, []);
 
   const onSend = useCallback(
@@ -127,7 +128,7 @@ export function Chat() {
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
-        user={{ _id: 1, image: "default-image.png" }}
+        user={{ _id: userID, image: "default-image.png" }}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
         renderSend={renderSend}

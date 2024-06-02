@@ -1,55 +1,219 @@
-import React from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   StatusBar,
-  View,
   Text,
-  TouchableOpacity
-} from 'react-native';
+  TouchableOpacity,
+  View,
+  TextInput,
+  RefreshControl,
+  ActivityIndicator,
+  Button,
+  Pressable,
+} from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { storeData, getData, removeData } from "../../../localStorage";
+import Axios from "axios";
+import { SERVER_IP } from "@env";
+import { Picker } from "@react-native-picker/picker";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetScrollView,
+} from "@gorhom/bottom-sheet";
+import Icon from "../../../components/Icon";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import IconFont from "react-native-vector-icons/Feather";
 
-function Todo({navigation}){
+const Item = ({ navigation, patient }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-        <TouchableOpacity style={styles.patient} onPress={() => navigation.navigate('ToDoA')}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Younes BENSAFIA</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Abderraouf MAHDJOUB</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Mouaad SADI</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Aissam BOUKHELKHAL</Text></View></TouchableOpacity>
-        <TouchableOpacity style={styles.patient}><View style={{alignItems: 'center',justifyContent: 'center', backgroundColor: '#5FA9D6', borderRadius:45, height:70, width:'100%'}}><Text style={{fontSize:20, fontWeight:'bold', color:'#fff' }}>Ahmed TEHAR</Text></View></TouchableOpacity>
-      </ScrollView>
-      </SafeAreaView>
+    <TouchableOpacity
+      onPress={async () => {
+        await storeData("patientName", patient.name);
+        await storeData("patientId", patient.id);
+        // navigation.navigate("Home_RTC", { patientName: patient.name });
+        navigation.navigate("ToDoA", { patientName: patient.name });
+      }}
+      style={styles.patient}
+    >
+      <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
+        {patient.name}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
+function Todo({ navigation }) {
+  const [patients, setPatients] = useState([]);
+  const [fetched, setFetsched] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await getData("cookie");
+      Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
+        accessToken: userData,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            const result = [
+              ...res.data.patientsCreated,
+              ...res.data.secondaryPatients,
+            ];
+
+            setPatients(
+              result.map((patient) => {
+                return {
+                  id: patient._id,
+                  name: patient.name,
+                };
+              })
+            );
+          }
+          setFetsched(true);
+        })
+        .catch((err) => {
+          console.log("ScrollingBarPatients " + err.response);
+          console.log("ScrollingBarPatients " + err);
+        });
+    };
+
+    if (refreshing) {
+      fetchData();
+      setRefreshing(false);
+    }
+  }, [refreshing]);
+  // removeData("cookie");
+  if (!fetched) {
+    return (
+      <ScrollView
+        contentContainerStyle={styles.scrollViewActivityIndicator}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className="flex-1 justify-center">
+          <ActivityIndicator size={"large"} />
+        </View>
+      </ScrollView>
+    );
+  }
+
+  return (
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <SafeAreaView style={styles.container}>
+          <ScrollView
+            contentContainerStyle={styles.scrollView}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <Text
+              className=" text-2xl text-center mx-4 font-medium rounded-[20px] text-[#654ff3]  bg-[#f2f1ff] p-2 my-[17px] "
+              style={{
+                shadowColor: "#654ff3",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                elevation: 15,
+              }}
+            >
+              To-Do Patients
+            </Text>
+            <View className=" flex-row mb-[20px] px-4 gap-2 ">
+              <View
+                style={{
+                  shadowColor: "#654ff3",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  elevation: 15,
+                }}
+                className="text-xl f rounded-full py-2 px-3 items-center justify-center bg-[#f2f1ff] flex-1 font-bold "
+              >
+                <Text className="text-[17px]   text-[#654ff3]  font-medium ">
+                  {" "}
+                  Your Patients{" "}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.scrollViewContent}>
+              {patients.map((item) => (
+                <Item key={item.id} patient={item} navigation={navigation} />
+              ))}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
+  );
+}
+
 const styles = StyleSheet.create({
+  scrollViewActivityIndicator: {
+    display: "flex",
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+  },
   container: {
+    padding: 5,
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor:'#fff'
+    backgroundColor: "#f2f1ff",
   },
   scrollView: {
-    flexDirection: 'column', 
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
+    flexDirection: "column",
+    backgroundColor: "#fff",
+    flex: 1,
     borderRadius: 31,
+    backgroundColor: "#f2f1ff",
   },
   scrollViewContent: {
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: "#f2f1ff",
+    flex: 1,
+    borderRadius: 31,
+    marginHorizontal: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   patient: {
-    height: 100,
-    width: "100%",
-    backgroundColor: "#4EA8DE",
-    marginBottom: 30,
-    borderRadius: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth:4,
-    borderColor:'#ffd700'
-  }
+    marginTop: 7,
+    padding: 20,
+    height: 120,
+    backgroundColor: "#6c5ce7",
+    flexBasis: "49%",
+    maxWidth: "49%",
+    flex: 1,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
 });
 
 export { Todo };

@@ -7,7 +7,7 @@ const Group = () => {
     <View
       style={{
         width: Dimensions.get("screen").width,
-        marginLeft: 0,
+        marginLeft: -10,
       }}
     >
       <Chat />
@@ -16,4 +16,3 @@ const Group = () => {
 };
 
 export default Group;
-

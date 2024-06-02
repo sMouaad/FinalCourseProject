@@ -9,7 +9,9 @@ import {
   Alert,
 } from "react-native";
 
-export default function App() {
+export default function App({ navigation, route }) {
+  const { patientName } = route.params;
+  navigation.setOptions({ title: patientName });
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([
     {
@@ -94,13 +96,6 @@ export default function App() {
     },
   ]);
 
-  const handleAddTask = () => {
-    if (task.trim()) {
-      setTasks([...tasks, { id: Date.now(), title: task, completed: false }]);
-      setTask("");
-    }
-  };
-
   const toggleTaskCompletion = (id) => {
     const newTasks = tasks.map((task) => {
       if (task.id === id) {
@@ -109,27 +104,6 @@ export default function App() {
       return task;
     });
     setTasks(newTasks);
-  };
-
-  const handleDeleteTask = (id) => {
-    Alert.alert(
-      "Confirmation",
-      "Êtes-vous sûr de vouloir supprimer cette tâche ?",
-      [
-        {
-          text: "Annuler",
-          onPress: () => console.log("Annulation de la suppression"),
-          style: "cancel",
-        },
-        {
-          text: "Supprimer",
-          onPress: () => {
-            const updatedTasks = tasks.filter((task) => task.id !== id);
-            setTasks(updatedTasks);
-          },
-        },
-      ]
-    );
   };
 
   const renderItem = ({ item }) => (
@@ -198,19 +172,16 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   taskContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
+    // alignItems: "center",
     marginBottom: 10,
   },
   task: {
-    flex: 1,
+    // flex: 1,
     padding: 10,
-
     fontSize: 15,
     borderRadius: 21,
-    width: 310,
-
     borderWidth: 3,
     borderColor: "#5E60CE",
   },
