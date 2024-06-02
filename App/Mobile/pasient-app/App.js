@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, ActivityIndicator } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainContainer from "./NavigationAfterLogin/mainContainer";
@@ -10,13 +9,9 @@ import WaitingForTheFaceRecognition from "./Comp/WaitingForTheFaceRecognition/Wa
 import { Profiles } from "./Comp/profiles.jsx";
 import "react-native-get-random-values";
 import { View } from "react-native-animatable";
-import { storeData, getData, removeData } from "./localStorage";
+import { getData, removeData } from "./localStorage";
 import { enableScreens } from "react-native-screens";
-import {
-  LocationContext,
-  LocationProvider,
-} from "./NavigationAfterLogin/Screens/LocationContext";
-import * as TaskManager from "expo-task-manager";
+import { LocationProvider } from "./NavigationAfterLogin/Screens/LocationContext";
 
 const LOCATION_TASK_NAME = "background-location-task";
 
@@ -25,7 +20,7 @@ enableScreens();
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  // removeData("patientId");
+  removeData("patientId");
   // removeData("cookie");
   const [initialRouteName, setInitialRouteName] = useState("");
 

@@ -57,8 +57,8 @@ const LocationProvider = ({ children }) => {
             const { longitude, latitude } = location.coords;
             socket.emit("locationUpdate", { longitude, latitude });
             setLocation(location);
-            console.log(location);
-          }, 10000);
+            // console.log(location);
+          }, 2000);
         }
 
         // treat error

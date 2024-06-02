@@ -47,8 +47,10 @@ function LoginPageInterface() {
     })
       .then((res) => {
         if (res.data.status) {
-          storeData("cookie", res.data.accessToken).then(() => {
-            navigation.navigate("Main");
+          storeData("userID", res.data.id).then(() => {
+            storeData("cookie", res.data.accessToken).then(() => {
+              navigation.navigate("Main");
+            });
           });
         }
       })

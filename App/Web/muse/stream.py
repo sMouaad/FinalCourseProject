@@ -1,4 +1,3 @@
-
 from functools import partial
 
 import mne_lsl.lsl
@@ -12,7 +11,7 @@ def stream(preset=None):
     # Find device
 
     from find import find_devices
- 
+
     device = find_devices(max_duration=10, verbose=True)[0]
     address = device["address"]
     # EEG ====================================================
@@ -30,7 +29,6 @@ def stream(preset=None):
     eeg_info.set_channel_units("microvolts")
 
     eeg_outlet = mne_lsl.lsl.StreamOutlet(eeg_info, chunk_size=6)
-
 
     def push(data, timestamps, outlet):
         outlet.push_chunk(data.T, timestamps[-1])
@@ -64,4 +62,6 @@ def stream(preset=None):
         if mne_lsl.lsl.local_clock() - muse.last_timestamp > 60:
             print("No data received for 60 seconds. Disconnecting...")
         print("Disconnected.")
+
+
 stream()
