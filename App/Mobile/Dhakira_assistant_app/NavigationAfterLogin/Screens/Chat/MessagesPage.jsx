@@ -1,15 +1,70 @@
-import React, { useRef, useState } from "react";
-import { View, ScrollView, Text, StyleSheet, StatusBar } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  StatusBar,
+  ActivityIndicator,
+} from "react-native";
 
 import Group from "./Group";
 import Assistants from "./Assistants";
 import TabBar from "./TabBar";
+import { RefreshControl } from "react-native";
+import { SERVER_IP } from "@env";
+import { getData } from "../../../localStorage";
+import Axios from "axios";
 
 let previousOffsetX = 0;
 
 const Home = () => {
   const scrollview = useRef();
   const [activeTab, setActiveTab] = useState("all");
+  const [patients, setPatients] = useState([]);
+  const [fetched, setFetsched] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await getData("cookie");
+      Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
+        accessToken: userData,
+      })
+        .then((res) => {
+          if (res.data.status) {
+            const result = [
+              ...res.data.patientsCreated,
+              ...res.data.secondaryPatients,
+            ];
+
+            setPatients(
+              result.map((patient) => {
+                return {
+                  id: patient._id,
+                  name: patient.name,
+                };
+              })
+            );
+          }
+          setFetsched(true);
+        })
+        .catch((err) => {
+          console.log("ScrollingBarPatients " + err.response);
+          console.log("ScrollingBarPatients " + err);
+        });
+    };
+
+    if (refreshing) {
+      fetchData();
+      setRefreshing(false);
+    }
+  }, [refreshing]);
+  // removeData("cookie");
 
   const handleScroll = (event) => {
     const tabs = ["all", "group", "assistants"];
@@ -49,6 +104,20 @@ const Home = () => {
     // Update previousOffsetX for the next scroll event
     previousOffsetX = offsetX;
   };
+  if (!fetched) {
+    return (
+      <ScrollView
+        contentContainerStyle={styles.scrollViewActivityIndicator}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className="flex-1 justify-center">
+          <ActivityIndicator size={"large"} />
+        </View>
+      </ScrollView>
+    );
+  }
   return (
     <View style={styles.container}>
       <Text
@@ -86,8 +155,8 @@ const Home = () => {
         onScroll={handleScroll}
         keyboardShouldPersistTaps="handled"
       >
+        <Assistants data={patients} />
         <Group />
-        <Assistants />
       </ScrollView>
     </View>
   );
@@ -96,6 +165,12 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  scrollViewActivityIndicator: {
+    display: "flex",
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+  },
   container: {
     padding: 5,
     flex: 1,

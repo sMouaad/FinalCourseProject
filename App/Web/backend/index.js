@@ -41,10 +41,10 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 
-  socket.on("join", (msg) => {
-    console.log("join: " + msg);
+  socket.on("join room", (userId) => {
+    socket.join(userId);
+    console.log("User joined room:", userId);
   });
-
   socket.on("msg", (msg) => {
     console.log("message: " + msg);
   });
@@ -56,9 +56,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("chat message", (msg) => {
-    console.log("message:" + msg[0].text);
-  });
-  socket.on("chat message", (msg) => {
-    socket.broadcast.emit("chat message", msg);
+    console.log("message:", msg[0].text);
+    // Broadcast message to all clients in the room
+    io.to(msg[0].user._id).emit("chat message", msg);
   });
 });

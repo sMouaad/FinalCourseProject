@@ -7,22 +7,21 @@ import {
 } from "react-native-gifted-chat";
 import { TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import getData from "../../../localStorage";
-
+import { getData } from "../../../localStorage";
+import avatar from "../../../assets/avatar.png";
 import io from "socket.io-client";
-import { user } from "osenv";
 
 export function Chat() {
   const [messages, setMessages] = useState([
-    {
-      _id: 1,
-      text: "azerty",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-      },
-    },
+    // {
+    //   _id: 1,
+    //   text: "azerty",
+    //   createdAt: new Date(),
+    //   user: {
+    //     _id: 2,
+    //     name: "React Native",
+    //   },
+    // },
   ]);
   const [socket, setSocket] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -34,15 +33,17 @@ export function Chat() {
       const userId = await getData("patientId");
       setUserId(userId);
       console.log(userId);
+      return userId;
     };
     const connection = async () => {
-      await fetchUserId();
+      const id = await fetchUserId();
 
       // Initialize Socket.IO connection
       const socket = io(`http://${process.env.SERVER_IP}`);
       setSocket(socket);
 
-      socket.emit("join room", { userId: userId });
+      socket.emit("join room", id);
+
       // Emit a test message to the server
       socket.emit("test message", "test");
 
@@ -51,10 +52,9 @@ export function Chat() {
         const modifiedMessages = msg.map((message) => ({
           ...message,
           user: {
-            _id: 2,
-            name: "React Native",
-            avatar:
-              "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg",
+            _id: message.user._id,
+            name: message.user.name,
+            avatar: avatar,
           },
         }));
 
@@ -64,6 +64,7 @@ export function Chat() {
         );
       });
     };
+    connection();
     // Cleanup function to disconnect socket when component unmounts
     return () => {
       if (socket) {
@@ -80,9 +81,9 @@ export function Chat() {
       }
 
       // Update state with the sent message
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages)
-      );
+      // setMessages((previousMessages) =>
+      //   GiftedChat.append(previousMessages, messages)
+      // );
 
       if (giftedChatRef.current) {
         giftedChatRef.current.scrollToBottom();
@@ -140,7 +141,7 @@ export function Chat() {
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
-        user={{ _id: 1 }}
+        user={{ _id: userId, avatar: avatar }}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
         renderSend={renderSend}
