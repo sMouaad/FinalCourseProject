@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import TabButton from "./TabButton";
-import React, { useState } from "react";
+import React from "react";
 
 const TabBar = ({ activeTab, setActiveTab, onPress1, onPress2 }) => {
   // const [activeTab, setActiveTab] = useState("all");

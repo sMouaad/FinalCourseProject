@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import Axios from "axios";
+import React, { useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -7,25 +8,27 @@ import {
   Text,
   TouchableOpacity,
   Image,
-} from 'react-native';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+} from "react-native";
+import FeatherIcon from "react-native-vector-icons/Feather";
+import { removeData } from "../../localStorage";
+import { SERVER_IP } from "@env";
 
-export default function UserSettings() {
+export default function UserSettings({ navigation }) {
   const [form, setForm] = useState({
     emailNotifications: true,
     pushNotifications: false,
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerAction}>
             <TouchableOpacity
               onPress={() => {
                 // handle onPress
-              }}>
-            </TouchableOpacity>
+              }}
+            ></TouchableOpacity>
           </View>
         </View>
 
@@ -34,14 +37,12 @@ export default function UserSettings() {
             <Text style={styles.sectionTitle}>Account</Text>
 
             <View style={styles.sectionBody}>
-              <View
-                style={styles.profile}>
+              <View style={styles.profile}>
                 <Image
                   alt=""
-                  source={
-                    require('../../Images/user.jpg')
-                  }
-                  style={styles.profileAvatar} />
+                  source={require("../../Images/user.jpg")}
+                  style={styles.profileAvatar}
+                />
 
                 <View style={styles.profileBody}>
                   <Text style={styles.profileName}>Younes BENSAFIA</Text>
@@ -59,20 +60,14 @@ export default function UserSettings() {
 
             <View style={styles.sectionBody}>
               <View style={[styles.rowWrapper, styles.rowFirst]}>
-                <TouchableOpacity
-                  onPress={() => {
-                  }}
-                  style={styles.row}>
+                <TouchableOpacity onPress={() => {}} style={styles.row}>
                   <Text style={styles.rowLabel}>Mail</Text>
 
                   <View style={styles.rowSpacer} />
 
                   <Text style={styles.rowValue}>youbensafia@gmail.com</Text>
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
@@ -81,17 +76,15 @@ export default function UserSettings() {
                   onPress={() => {
                     // handle onPress
                   }}
-                  style={styles.row}>
+                  style={styles.row}
+                >
                   <Text style={styles.rowLabel}>Phone number</Text>
 
                   <View style={styles.rowSpacer} />
 
                   <Text style={styles.rowValue}>+213561240053</Text>
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
@@ -103,11 +96,7 @@ export default function UserSettings() {
 
                   <Text style={styles.rowValue}>Younes BENSAFIA</Text>
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
-                 
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
@@ -116,10 +105,7 @@ export default function UserSettings() {
                   <Text style={styles.rowLabel}>Change the password</Text>
 
                   <View style={styles.rowSpacer} />
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -134,15 +120,13 @@ export default function UserSettings() {
                   onPress={() => {
                     // handle onPress
                   }}
-                  style={styles.row}>
+                  style={styles.row}
+                >
                   <Text style={styles.rowLabel}>Contact Us</Text>
 
                   <View style={styles.rowSpacer} />
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
@@ -151,15 +135,13 @@ export default function UserSettings() {
                   onPress={() => {
                     // handle onPress
                   }}
-                  style={styles.row}>
+                  style={styles.row}
+                >
                   <Text style={styles.rowLabel}>Report Bug</Text>
 
                   <View style={styles.rowSpacer} />
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -172,13 +154,22 @@ export default function UserSettings() {
                   styles.rowWrapper,
                   styles.rowFirst,
                   styles.rowLast,
-                  { alignItems: 'center' },
-                ]}>
+                  { alignItems: "center" },
+                ]}
+              >
                 <TouchableOpacity
-                  onPress={() => {
-                    // handle onPress
+                  onPress={async () => {
+                    Axios.get(`http://${SERVER_IP}:3000/auth/logout`).then(
+                      (res) => {
+                        if (res.data.status) {
+                          removeData("cookie");
+                          navigation.navigate("FirstPage");
+                        }
+                      }
+                    );
                   }}
-                  style={styles.row}>
+                  style={styles.row}
+                >
                   <Text style={[styles.rowLabel, styles.rowLabelLogout]}>
                     Log Out
                   </Text>
@@ -201,22 +192,22 @@ const styles = StyleSheet.create({
   },
   /** Header */
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
     paddingHorizontal: 16,
   },
   headerAction: {
     width: 40,
     height: 40,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   headerTitle: {
     fontSize: 19,
-    fontWeight: '600',
-    color: '#000',
+    fontWeight: "600",
+    color: "#000",
   },
   /** Content */
   content: {
@@ -225,9 +216,9 @@ const styles = StyleSheet.create({
   contentFooter: {
     marginTop: 24,
     fontSize: 13,
-    fontWeight: '500',
-    textAlign: 'center',
-    color: '#a69f9f',
+    fontWeight: "500",
+    textAlign: "center",
+    color: "#a69f9f",
   },
   /** Section */
   section: {
@@ -238,13 +229,13 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     fontSize: 13,
     letterSpacing: 0.33,
-    fontWeight: '500',
-    color: '#a69f9f',
-    textTransform: 'uppercase',
+    fontWeight: "500",
+    color: "#a69f9f",
+    textTransform: "uppercase",
   },
   sectionBody: {
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -256,11 +247,11 @@ const styles = StyleSheet.create({
   /** Profile */
   profile: {
     padding: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   profileAvatar: {
     width: 60,
@@ -269,33 +260,33 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   profileBody: {
-    marginRight: 'auto',
+    marginRight: "auto",
   },
   profileName: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#292929',
+    fontWeight: "600",
+    color: "#292929",
   },
   profileHandle: {
     marginTop: 2,
     fontSize: 16,
-    fontWeight: '400',
-    color: '#858585',
+    fontWeight: "400",
+    color: "#858585",
   },
   /** Row */
   row: {
     height: 44,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     paddingRight: 12,
   },
   rowWrapper: {
     paddingLeft: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderColor: '#f0f0f0',
+    borderColor: "#f0f0f0",
   },
   rowFirst: {
     borderTopLeftRadius: 12,
@@ -304,7 +295,7 @@ const styles = StyleSheet.create({
   rowLabel: {
     fontSize: 16,
     letterSpacing: 0.24,
-    color: '#000',
+    color: "#000",
   },
   rowSpacer: {
     flexGrow: 1,
@@ -313,8 +304,8 @@ const styles = StyleSheet.create({
   },
   rowValue: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#ababab',
+    fontWeight: "500",
+    color: "#ababab",
     marginRight: 4,
   },
   rowLast: {
@@ -322,9 +313,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
   },
   rowLabelLogout: {
-    width: '100%',
-    textAlign: 'center',
-    fontWeight: '600',
-    color: '#dc2626',
+    width: "100%",
+    textAlign: "center",
+    fontWeight: "600",
+    color: "#dc2626",
   },
 });

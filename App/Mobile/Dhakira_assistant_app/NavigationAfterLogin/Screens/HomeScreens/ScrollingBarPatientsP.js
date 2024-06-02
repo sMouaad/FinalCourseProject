@@ -150,7 +150,7 @@ function HomePage({ navigation }) {
           setFetsched(true);
         })
         .catch((err) => {
-          console.log("ScrollingBarPatients " + err.response);
+          console.log("ScrollingBarPatients  " + err.response);
           console.log("ScrollingBarPatients " + err);
         });
     };

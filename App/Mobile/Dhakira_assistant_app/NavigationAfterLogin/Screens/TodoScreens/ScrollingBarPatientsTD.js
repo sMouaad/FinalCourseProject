@@ -68,7 +68,7 @@ function Todo({ navigation }) {
         })
         .catch((err) => {
           console.log("ScrollingBarPatients " + err.response);
-          console.log("ScrollingBarPatients " + err);
+          console.log("ScrollingBarPatients Todo" + err);
         });
     };
 

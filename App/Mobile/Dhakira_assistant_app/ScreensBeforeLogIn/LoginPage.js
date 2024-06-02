@@ -55,7 +55,7 @@ function LoginPageInterface() {
         }
       })
       .catch((err) => {
-        console.log("login Page", err);
+        console.log("login Page ", err);
         if (err.response.status === 401) {
           alert("Email or password is incorrect");
         }
