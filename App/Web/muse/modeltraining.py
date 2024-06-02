@@ -93,6 +93,22 @@ def train_model(model,x_train, y_train,x_test,y_test, save_to, epoch = 2):
 
 model,history = train_model(model, X_train, y_train,X_test, y_test, save_to= './', epoch = 40) 
 
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
 #Evaluating the model
 
 model_acc = model.evaluate(X_test, y_test, verbose=0)[1]

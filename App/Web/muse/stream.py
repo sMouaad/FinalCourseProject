@@ -44,11 +44,12 @@ def stream(preset=None):
     didConnect = muse.connect()
 
     if didConnect:
+        
         print("Connected.")
         muse.start()
 
         print(f"Streaming... EEG (CTRL + C to interrupt)")
-
+    
         # Disconnect if no data is received for 60 seconds
         while mne_lsl.lsl.local_clock() - muse.last_timestamp < 60:
             try:
