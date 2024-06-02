@@ -1,0 +1,4 @@
+[console_scripts]
+mne_lsl-sys_info = mne_lsl.commands.sys_info:run
+mne_lsl_player = mne_lsl.commands.mne_lsl_player:run
+mne_lsl_stream_viewer = mne_lsl.commands.mne_lsl_stream_viewer:run

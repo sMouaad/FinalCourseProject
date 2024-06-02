@@ -1,0 +1,2 @@
+[console_scripts]
+muselsl = muselsl.__main__:main
