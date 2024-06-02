@@ -37,6 +37,7 @@ export function Chat() {
     };
     const connection = async () => {
       const id = await fetchUserId();
+      setUserId(id);
 
       // Initialize Socket.IO connection
       const socket = io(`http://${process.env.SERVER_IP}`);
@@ -57,6 +58,7 @@ export function Chat() {
             avatar: avatar,
           },
         }));
+        console.log("message", msg);
 
         // Update state with the modified message
         setMessages((previousMessages) =>
@@ -77,7 +79,7 @@ export function Chat() {
     (messages) => {
       // Emit the sent message to the server
       if (socket) {
-        socket.emit("chat message", messages);
+        socket.emit("chat message", messages, userId);
       }
 
       // Update state with the sent message
@@ -85,9 +87,9 @@ export function Chat() {
       //   GiftedChat.append(previousMessages, messages)
       // );
 
-      if (giftedChatRef.current) {
-        giftedChatRef.current.scrollToBottom();
-      }
+      // if (giftedChatRef.current) {
+      //   giftedChatRef.current.scrollToBottom();
+      // }
     },
     [socket]
   );
