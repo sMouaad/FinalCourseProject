@@ -127,6 +127,7 @@ export default function Settings() {
                   className="my-[8px] rounded-[8px] outline-none"
                   type="tel"
                   placeholder="+213xxxxxxxx"
+                  pattern="[567][0-9]{8}"
                   autoComplete="false"
                 />
               </div>
@@ -169,6 +170,7 @@ export default function Settings() {
                 <label className="text-sm font-bold text-slate-600" htmlFor="">
                   Email
                 </label>
+
                 <input
                   className="my-[8px] rounded-[8px] outline-none"
                   type="email"
