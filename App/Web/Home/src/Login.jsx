@@ -186,15 +186,21 @@ export default function Login() {
                 setPassword(e.target.value);
               }}
             />
-            <input
-              className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
-              type="tel"
-              name="name"
-              placeholder="Phone Number"
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
-            />
+            <div className="flex w-full">
+              <div className="my-auto px-[15px] py-[12px] border-r-slate-300 rounded-l-[8px] border-r-2 text-[13px] bg-[#f4f4f4]">
+                +213
+              </div>
+              <input
+                className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-r-[8px] w-full outline-none"
+                type="tel"
+                name="name"
+                placeholder="Phone Number"
+                pattern="[567][0-9]{8}"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+              />
+            </div>
             <div className="h-3 text-xs text-red-600">
               {fill ? <p>You cannot register with this email</p> : null}
             </div>

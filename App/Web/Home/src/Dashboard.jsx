@@ -20,6 +20,7 @@ import Support from "./assets/dashboard/support.svg";
 import Check from "./assets/dashboard/check.svg";
 import Cross from "./assets/dashboard/cross.svg";
 import { ImCross } from "react-icons/im";
+import Refresh from "./assets/dashboard/refresh.svg";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
   const [modalDoctorOpen, setDoctorModalOpen] = useState(false);
@@ -239,7 +240,10 @@ export default function Dashboard() {
                   <div className="flex w-full px-4 flex-col gap-4">
                     {currentPatient.assistants.map((data) => {
                       return (
-                        <div className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg">
+                        <div
+                          key={data._id}
+                          className="flex justify-between bg-white px-4 py-2 shadow-md rounded-lg"
+                        >
                           <div className="flex items-center justify-center gap-4">
                             <div className="h-8 w-8 bg-white shadow-sm rounded-full overflow-hidden">
                               <img
@@ -384,7 +388,20 @@ export default function Dashboard() {
                 </h1>
               </div>
             </div>
-
+            <div
+              onClick={() => {
+                setUpdateDash(!updateDash);
+                setUpdateNotif(!updateNotif);
+              }}
+              className="absolute flex flex-col justify-between cursor-pointer items-center right-40"
+            >
+              <img
+                className="w-6 hover:w-[26px] transition-all ease-linear"
+                src={Refresh}
+                alt=""
+              />
+              <div className="font-Poppins font-bold text-sm">Refresh</div>
+            </div>
             <div
               onClick={() => setOpen(!open)}
               className="flex cursor-pointer absolute right-14 justify-center hover:bg-slate-200 self-center h-12 w-12 transition-all ease-linear rounded-full items-center ml-auto mr-2"
