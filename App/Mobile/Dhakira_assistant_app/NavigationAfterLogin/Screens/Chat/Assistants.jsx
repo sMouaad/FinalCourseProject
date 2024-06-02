@@ -2,18 +2,20 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import ChatContainer from "./ChatContainer";
-import { Ionicons } from "@expo/vector-icons";
 
-const MessageItem = ({ message }) => {
+const MessageItem = ({ message, onPress }) => {
   return (
     <ChatContainer>
       <View style={styles.messageContainer}>
-        <TouchableOpacity style={styles.messageContent} onPress={{}}>
+        <TouchableOpacity
+          style={styles.messageContent}
+          onPress={() => onPress(message.name, message.id)}
+        >
           <Text style={styles.senderName}>{message.name}</Text>
         </TouchableOpacity>
       </View>
@@ -21,29 +23,26 @@ const MessageItem = ({ message }) => {
   );
 };
 
-const Assistants = ({ data }) => {
+const Assistants = ({ data, onPress }) => {
   return (
-    <>
-      <View className="h-full w-screen box-border">
-        <FlatList
-          className="box-border mb-[10] py-2  "
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => {
-            return (
-              <>
-                {item.id.toString() != 1 ? (
-                  <View className="border self-center mx-1 w-[93%] border-[#F2F2F2]   " />
-                ) : (
-                  <></>
-                )}
-                <MessageItem message={item} />
-              </>
-            );
-          }}
-        ></FlatList>
-      </View>
-    </>
+    <ScrollView style={{ flex: 1 }}>
+      {data.map((item) => (
+        <React.Fragment key={item.id}>
+          {item.id !== 1 && (
+            <View
+              style={{
+                borderWidth: 1,
+                alignSelf: "center",
+                marginHorizontal: 1,
+                width: "93%",
+                borderColor: "#F2F2F2",
+              }}
+            />
+          )}
+          <MessageItem message={item} onPress={onPress} />
+        </React.Fragment>
+      ))}
+    </ScrollView>
   );
 };
 
@@ -87,7 +86,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     borderRadius: 20,
-    // marginRight: 20,
   },
   senderName: {
     color: "white",

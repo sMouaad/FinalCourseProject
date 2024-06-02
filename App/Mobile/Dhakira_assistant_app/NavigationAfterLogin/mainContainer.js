@@ -2,7 +2,7 @@ import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import MessagesPage from "./Screens/Chat/MessagesPage";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomePage } from "./Screens/HomeScreens/ScrollingBarPatientsP";
 import { Todo } from "./Screens/TodoScreens/ScrollingBarPatientsTD";
@@ -14,6 +14,7 @@ import ToDoPageAssistantDoctor from "./Screens/TodoScreens/ToDoPage";
 import EditPatient from "./Screens/Settings/EditPatient";
 import FamilyFace from "./Screens/Settings/FamilyFace";
 import { Text } from "react-native";
+import MessagesStack from "./Screens/Chat/StackMsg";
 
 const SettingsStack = createNativeStackNavigator();
 function SettingsStackGroup({ patientName }) {
@@ -145,7 +146,7 @@ export default function MainContainer() {
       />
       <Tab.Screen
         name="Messages"
-        component={MessagesPage}
+        component={MessagesStack}
         options={{
           headerShown: false,
         }}

@@ -136,7 +136,7 @@ function Todo({ navigation }) {
               To-Do Patients
             </Text>
             <View className=" flex-row mb-[20px] px-4 gap-2 ">
-              <View
+              {/* <View
                 style={{
                   shadowColor: "#654ff3",
                   shadowOffset: {
@@ -152,7 +152,7 @@ function Todo({ navigation }) {
                   {" "}
                   Your Patients{" "}
                 </Text>
-              </View>
+              </View> */}
             </View>
             <View style={styles.scrollViewContent}>
               {patients.map((item) => (

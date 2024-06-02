@@ -18,7 +18,7 @@ import Axios from "axios";
 
 let previousOffsetX = 0;
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const scrollview = useRef();
   const [activeTab, setActiveTab] = useState("all");
   const [patients, setPatients] = useState([]);
@@ -149,14 +149,17 @@ const Home = () => {
         className
         ref={scrollview}
         style={{ flex: 1 }}
-        horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         keyboardShouldPersistTaps="handled"
       >
-        <Assistants data={patients} />
-        <Group />
+        <Assistants
+          onPress={(name, id) => {
+            navigation.navigate("Group", { patientName: name, patientId: id });
+          }}
+          data={patients}
+        />
       </ScrollView>
     </View>
   );
