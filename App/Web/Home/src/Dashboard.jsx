@@ -20,6 +20,7 @@ import Support from "./assets/dashboard/support.svg";
 import Check from "./assets/dashboard/check.svg";
 import Cross from "./assets/dashboard/cross.svg";
 import { ImCross } from "react-icons/im";
+import Edit from "./assets/dashboard/edit.svg";
 import Refresh from "./assets/dashboard/refresh.svg";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
@@ -29,6 +30,7 @@ export default function Dashboard() {
   const [modalInstructionsOpen, setInstructionsModalOpen] = useState(false);
   const [modalListAssistantsOpen, setListAssistantsModalOpen] = useState(false);
   const [modalListDoctorsOpen, setListDoctorsModalOpen] = useState(false);
+  const [modalEditOpen, setEditOpen] = useState(false);
   const [condition, setCondition] = useState("alzheimer");
   const [deleteConfirmation, setDelete] = useState("");
   const [name, setName] = useState("user");
@@ -51,6 +53,8 @@ export default function Dashboard() {
   const [instruction, setInstruction] = useState("");
   const [instructions, setInstructions] = useState([]);
   const [image, setImage] = useState("");
+  const [updateName, setUpdateName] = useState("");
+  const [updateDate, setUpdateDate] = useState("");
   const [thread, setThread] = useState("");
   const [threadName, setThreadName] = useState("");
   const [currentPatient, setCurrentPatient] = useState([]);
@@ -70,11 +74,12 @@ export default function Dashboard() {
     setDeleteError("");
   };
   const openDoctor = () => setDoctorModalOpen(true);
-
+  const openEdit = () => setEditOpen(true);
   const openListAssistants = () => setListAssistantsModalOpen(true);
   const openListDoctors = () => setListDoctorsModalOpen(true);
   const closeListAssistants = () => setListAssistantsModalOpen(false);
   const closeListDoctors = () => setListDoctorsModalOpen(false);
+  const closeEdit = () => setEditOpen(false);
 
   const closeInstructions = () => {
     setInstructionsModalOpen(false);
@@ -166,6 +171,17 @@ export default function Dashboard() {
       });
   };
 
+  const handlePatient = (patientId) => {
+    Axios.get(`http://localhost:3000/auth/patientdata/${patientId}`).then(
+      (res) => {
+        setCurrentPatient(res.data.patient);
+        setUpdateName(res.data.patient.name);
+        setUpdateDate(res.data.patient.date);
+        console.log(res.data.patient.name);
+        openEdit();
+      }
+    );
+  };
   //we use UseEffect to fetch json data of patients of a the current user then display it on the dashboard, postponed to decide on which db to use.
   useEffect(() => {
     Axios.get("http://localhost:3000/auth/userdata").then((res) => {
@@ -219,9 +235,11 @@ export default function Dashboard() {
         closeInstructions();
         closeListAssistants();
         closeListDoctors();
+        closeEdit();
       }
     });
   }, []);
+
   return (
     <div className="flex-wrap h-screen flex font-Roboto">
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
@@ -341,6 +359,79 @@ export default function Dashboard() {
                   ) : (
                     <div className="text-center">No doctor assigned.</div>
                   )}
+                </div>
+              </>
+            }
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {modalEditOpen && (
+          <Modal
+            modalEditOpen={modalEditOpen}
+            handleClose={closeEdit}
+            text={
+              <>
+                <div className="absolute top-8 text-lg font-bold">
+                  Edit Patient {currentPatient.name}
+                </div>
+                <div>
+                  <div className="text-center font-Poppins text-sm font-bold">
+                    {" "}
+                    Condition : {currentPatient.condition.toUpperCase()}
+                  </div>
+                  <input
+                    onChange={(e) => {
+                      setUpdateName(e.target.value);
+                      console.log(updateName);
+                    }}
+                    id="patientName"
+                    defaultValue={currentPatient.name}
+                    autoComplete="off"
+                    className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                    placeholder="Name"
+                  />
+                  <input
+                    id="patientDate"
+                    type="date"
+                    onChange={(e) => {
+                      setUpdateDate(e.target.value);
+                    }}
+                    min={0}
+                    max={100}
+                    autoComplete="off"
+                    className="bg-[#eee] border-none my-[8px] mx-0 py-[10px] px-[15px] text-[13px] rounded-[8px] w-full outline-none"
+                    defaultValue={currentPatient.date}
+                  />
+                  <div className="min-h-5 text-center font-bold text-red-800 text-sm">
+                    {deleteError}
+                  </div>
+                  <div className="flex justify-center">
+                    <button
+                      form="mainForm"
+                      type="button"
+                      onClick={() => {
+                        if (updateName && updateDate) {
+                          Axios.post(
+                            "http://localhost:3000/auth/updatepatient",
+                            {
+                              patientId: currentPatient._id,
+                              updateName,
+                              updateDate,
+                            }
+                          ).then((res) => {
+                            setUpdateDash(!updateDash);
+                            handlePatient(currentPatient._id);
+                          });
+                        } else {
+                          setDeleteError("Make sure to fill all the fields.");
+                        }
+                      }}
+                      className=" bg-blue-600 text-white text-[12px] py-[5px] px-[45px] border-[1px] border-transparent rounded-[8px] font-[600] tracking-[0.5px] uppercase mt-[10px] cursor-pointer"
+                    >
+                      Update
+                    </button>
+                  </div>
                 </div>
               </>
             }
@@ -958,6 +1049,7 @@ export default function Dashboard() {
                   tableRows.map((element) => {
                     return (
                       <Row
+                        handlePatient={handlePatient}
                         key={element._id}
                         patientId={element._id}
                         handleCheck={handleCheck}
@@ -980,6 +1072,7 @@ export default function Dashboard() {
                   patients.map((element) => {
                     return (
                       <Row
+                        handlePatient={handlePatient}
                         key={element._id}
                         patientId={element._id}
                         handleCheck={handleCheck}
@@ -1040,6 +1133,7 @@ export default function Dashboard() {
                       secondaryRows.map((element) => {
                         return (
                           <Row
+                            handlePatient={handlePatient}
                             key={element._id}
                             patientId={element._id}
                             handleCheck={handleCheck}
@@ -1100,20 +1194,33 @@ function Row({
   closeListDoctors,
   owner = false,
   setOwner,
+  handlePatient,
 }) {
   return (
     <tr className="h-16">
       <td>
-        <input
-          onChange={() => {
-            handleCheck(patientId);
-          }}
-          type="checkbox"
-          className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
-          value={patientId}
-          name="patient"
-        />
-        {patient}
+        <span className="flex items-center">
+          <input
+            onChange={() => {
+              handleCheck(patientId);
+            }}
+            type="checkbox"
+            className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
+            value={patientId}
+            name="patient"
+          />
+          <div className="flex gap-6 justify-between w-full pr-24 items-center">
+            {patient}{" "}
+            <img
+              src={Edit}
+              onClick={() => {
+                handlePatient(patientId);
+              }}
+              className="h-4 cursor-pointer hover:h-5 transition-all ease-in-out"
+              alt=""
+            />
+          </div>
+        </span>
       </td>
       <td>
         <div className="flex select-none w-max">
