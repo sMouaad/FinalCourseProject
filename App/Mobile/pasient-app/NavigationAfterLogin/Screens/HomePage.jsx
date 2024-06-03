@@ -27,7 +27,7 @@ const HomePage = ({ navigation }) => {
                   }
                 })
                 .catch((err) => {
-                  console.log(err);
+                  console.log(err + "logout");
                 });
             }}
           >
