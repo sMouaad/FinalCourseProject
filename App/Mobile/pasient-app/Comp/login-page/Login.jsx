@@ -184,15 +184,9 @@ const Login = ({ navigation }) => {
                   </Pressable>
                   <Pressable
                     onPress={() => {
-                      // console.log("login");
+                      console.log("login");
                       const trimmedEmail = emailLogin.trim().toLowerCase();
-                      // navigation.navigate("Profiles");
-                      // this is for creating test account
-                      // Axios.post("http://192.168.8.101:3000/auth/signup", {
-                      //   name,
-                      //   email: trimmedEmail,
-                      //   password: passwordLogin,
-                      // });
+
                       const url = `http://${process.env.SERVER_IP}/auth/login`;
 
                       Axios.post(url, {
@@ -207,7 +201,7 @@ const Login = ({ navigation }) => {
                           }
                         })
                         .catch((err) => {
-                          console.log("login wow" + err);
+                          console.log("login wow  " + err);
                           if (err.response.status === 401) {
                             setIscorrect(true);
                           }

@@ -17,6 +17,7 @@ const HomePage = ({ navigation }) => {
           <TouchableOpacity
             className="self-start m-10 flex-row items-center"
             onPress={() => {
+              console.log("logout");
               Axios.get(`http://${SERVER_IP}/auth/logout`)
                 .then((res) => {
                   if (res.data.status) {
@@ -30,7 +31,7 @@ const HomePage = ({ navigation }) => {
                 });
             }}
           >
-            <Icon name="logout" size={30} color="#000" />
+            <Icon name="logout" size={30} color="red" />
             <Text className=" ml-[10] text  ">Logout</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -41,7 +42,7 @@ const HomePage = ({ navigation }) => {
               });
             }}
           >
-            <Icon name="account-switch" size={30} color="#000" />
+            <Icon name="account-switch" size={30} color="#00E5BD" />
             <Text className=" ml-[10] text   ">Switch Patient</Text>
           </TouchableOpacity>
         </View>
