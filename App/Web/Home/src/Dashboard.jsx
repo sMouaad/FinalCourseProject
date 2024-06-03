@@ -20,6 +20,7 @@ import Support from "./assets/dashboard/support.svg";
 import Check from "./assets/dashboard/check.svg";
 import Cross from "./assets/dashboard/cross.svg";
 import { ImCross } from "react-icons/im";
+import Edit from "./assets/dashboard/edit.svg";
 import Refresh from "./assets/dashboard/refresh.svg";
 export default function Dashboard() {
   const [modalAssistantOpen, setAssistantModalOpen] = useState(false);
@@ -1104,16 +1105,25 @@ function Row({
   return (
     <tr className="h-16">
       <td>
-        <input
-          onChange={() => {
-            handleCheck(patientId);
-          }}
-          type="checkbox"
-          className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
-          value={patientId}
-          name="patient"
-        />
-        {patient}
+        <span className="flex items-center">
+          <input
+            onChange={() => {
+              handleCheck(patientId);
+            }}
+            type="checkbox"
+            className="rounded-full mr-2 text-green-400 p-2 transition-all focus:ring-green-500 appearance-none"
+            value={patientId}
+            name="patient"
+          />
+          <div className="flex gap-6 items-center">
+            {patient}{" "}
+            <img
+              src={Edit}
+              className="h-4 cursor-pointer hover:h-5 transition-all ease-in-out"
+              alt=""
+            />
+          </div>
+        </span>
       </td>
       <td>
         <div className="flex select-none w-max">
