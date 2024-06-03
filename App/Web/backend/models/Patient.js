@@ -13,7 +13,7 @@ const TodoSchema = new mongoose.Schema({
   },
 });
 const Messages = new mongoose.Schema({
-  sender: { type: String },
+  sender: { type: mongoose.SchemaTypes.ObjectId },
   messageContent: { type: String },
 });
 const PatientSchema = new mongoose.Schema({
