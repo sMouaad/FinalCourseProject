@@ -46,6 +46,7 @@ function ToDoPage({ navigation }) {
   }, []);
 
   const toggleTaskCompletion = (id) => {
+    console.log("")
     const newTasks = tasks.map((task) => {
       if (task._id === id) {
         Axios.post(`http://${SERVER_IP}/auth/check/`, {
