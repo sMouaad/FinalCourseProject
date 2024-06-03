@@ -67,8 +67,8 @@ function Todo({ navigation }) {
           setFetsched(true);
         })
         .catch((err) => {
-          console.log("ScrollingBarPatients " + err.response);
-          console.log("ScrollingBarPatients" + err);
+          console.log("ScrollingBarPatients Todo " + err.response);
+          console.log("ScrollingBarPatients Todo " + err);
         });
     };
 

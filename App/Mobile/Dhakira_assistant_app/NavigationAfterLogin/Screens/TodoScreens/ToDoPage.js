@@ -9,101 +9,47 @@ import {
   Alert,
 } from "react-native";
 
+import Axios from "axios";
+import { SERVER_IP } from "@env";
+import { getData } from "../../../localStorage";
 export default function App({ navigation, route }) {
   const { patientName } = route.params;
   navigation.setOptions({ title: patientName });
   const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Wake up and get out of bed",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Brush teeth",
-      completed: false,
-    },
-    {
-      id: 3,
-      title: "Take morning medication",
-      completed: false,
-    },
-    {
-      id: 4,
-      title: "Eat breakfast",
-      completed: false,
-    },
-    {
-      id: 5,
-      title: "Drink water",
-      completed: false,
-    },
-    {
-      id: 6,
-      title: "Go for a short walk",
-      completed: false,
-    },
-    {
-      id: 7,
-      title: "Engage in a cognitive activity",
-      completed: false,
-    },
-    {
-      id: 8,
-      title: "Take a break",
-      completed: false,
-    },
-    {
-      id: 9,
-      title: "Eat lunch",
-      completed: false,
-    },
-    {
-      id: 10,
-      title: "Take afternoon medication",
-      completed: false,
-    },
-    {
-      id: 11,
-      title: "Do a physical activity",
-      completed: false,
-    },
-    {
-      id: 12,
-      title: "Engage in a hobby",
-      completed: false,
-    },
-    {
-      id: 13,
-      title: "Take a short nap",
-      completed: false,
-    },
-    {
-      id: 14,
-      title: "Snack time",
-      completed: false,
-    },
-    {
-      id: 15,
-      title: "Social interaction",
-      completed: false,
-    },
-    {
-      id: 16,
-      title: "Eat dinner",
-      completed: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [patientId, setPatientId] = useState(null);
 
   useEffect(() => {
-    
-
+    const fetchData = async () => {
+      const patientId = await getData("patientId");
+      setPatientId(patientId);
+      Axios.get(`http://${SERVER_IP}:3000/auth/get/${patientId}`)
+        .then((res) => {
+          if (res.data.status) {
+            setTasks(res.data.instructions);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
   }, []);
+
   const toggleTaskCompletion = (id) => {
     const newTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, completed: !task.completed };
+      if (task._id === id) {
+        Axios.post(`http://${SERVER_IP}:3000/auth/check/`, {
+          taskId: task._id,
+          patientId: patientId,
+        })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        return { ...task, done: !task.done };
       }
       return task;
     });
@@ -112,9 +58,9 @@ export default function App({ navigation, route }) {
 
   const renderItem = ({ item }) => (
     <View style={styles.taskContainer}>
-      <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)}>
-        <Text style={[styles.task, item.completed && styles.completed]}>
-          {item.title}
+      <TouchableOpacity onPress={() => toggleTaskCompletion(item._id)}>
+        <Text style={[styles.task, item.done && styles.completed]}>
+          {item.task}
         </Text>
       </TouchableOpacity>
     </View>
@@ -127,7 +73,7 @@ export default function App({ navigation, route }) {
         style={styles.list}
         data={tasks}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id.toString()}
       />
     </View>
   );
