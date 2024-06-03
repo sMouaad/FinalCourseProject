@@ -55,6 +55,7 @@ const Profiles = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    console.log("Profiles");
     const fetchData = async () => {
       const userData = await getData("cookie");
       Axios.post(`http://${process.env.SERVER_IP}/auth/profiles`, {

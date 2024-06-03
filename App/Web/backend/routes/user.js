@@ -666,7 +666,7 @@ router.post("/check", async (req, res) => {
     const patientX = await Patient.findById(patientId);
     for (let element of patientX.instructions) {
       if (element._id == taskId) {
-        element.done = true;
+        element.done = !element.done;
         await patientX.save();
         return res.json({ status: true, message: "success" });
       }
