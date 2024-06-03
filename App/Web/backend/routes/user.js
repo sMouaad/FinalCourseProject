@@ -6,7 +6,7 @@ import { Notification } from "../models/Notifications.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import multer from "multer";
-import fs from "fs";
+import fs, { copyFile } from "fs";
 const router = express.Router();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -635,12 +635,17 @@ router.get("/userdata", async (req, res) => {
   }
 });
 
-// router.put("/update/:id", (req, res) => {
-//   const { id } = req.params;
-//   Todo.findByIdAndUpdate(id, { done: true })
-//     .then((result) => res.json(result))
-//     .catch((err) => res.json(err));
-// });
+router.post("/updatepatient", async (req, res) => {
+  const { patientId, updateName, updateDate } = req.body;
+  if (patientId && updateName && updateDate) {
+    const patientX = await Patient.findById(patientId);
+    patientX.name = updateName;
+    patientX.date = updateDate;
+    await patientX.save();
+    return res.json({ status: true, message: "update successfull" });
+  }
+  return res.json({ status: false, message: "missing inputs" });
+});
 
 router.post("/delete", async (req, res) => {
   const { taskid, patientid } = req.body;
