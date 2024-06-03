@@ -3,36 +3,44 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   FlatList,
-  Alert,
+  ActivityIndicator,
 } from "react-native";
 
 import Axios from "axios";
 import { SERVER_IP } from "@env";
 import { getData } from "../../../localStorage";
+
 export default function App({ navigation, route }) {
   const { patientName } = route.params;
   navigation.setOptions({ title: patientName });
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const [patientId, setPatientId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const patientId = await getData("patientId");
+    setPatientId(patientId);
+    Axios.get(`http://${SERVER_IP}:3000/auth/get/${patientId}`)
+      .then((res) => {
+        if (res.data.status) {
+          setTasks(res.data.instructions);
+        }
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setRefreshing(false);
+      });
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const patientId = await getData("patientId");
-      setPatientId(patientId);
-      Axios.get(`http://${SERVER_IP}:3000/auth/get/${patientId}`)
-        .then((res) => {
-          if (res.data.status) {
-            setTasks(res.data.instructions);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
     fetchData();
   }, []);
 
@@ -56,6 +64,11 @@ export default function App({ navigation, route }) {
     setTasks(newTasks);
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.taskContainer}>
       <TouchableOpacity onPress={() => toggleTaskCompletion(item._id)}>
@@ -68,13 +81,20 @@ export default function App({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}></View>
-      <FlatList
-        style={styles.list}
-        data={tasks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id.toString()}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#5E60CE" />
+      ) : tasks.length ? (
+        <FlatList
+          style={styles.list}
+          data={tasks}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id.toString()}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+        />
+      ) : (
+        <Text>No tasks</Text>
+      )}
     </View>
   );
 }
@@ -124,11 +144,9 @@ const styles = StyleSheet.create({
   taskContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
-    // alignItems: "center",
     marginBottom: 10,
   },
   task: {
-    // flex: 1,
     padding: 10,
     fontSize: 15,
     borderRadius: 21,
