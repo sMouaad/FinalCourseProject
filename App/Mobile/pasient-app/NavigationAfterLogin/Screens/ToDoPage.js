@@ -7,11 +7,13 @@ import {
   FlatList,
   ActivityIndicator,
   StatusBar,
+  Image,
 } from "react-native";
 
 import Axios from "axios";
 import { SERVER_IP } from "@env";
 import { getData } from "../../localStorage";
+import noTask from "../../assets/no-task.png";
 
 function ToDoPage({ navigation }) {
   const [task, setTask] = useState("");
@@ -106,7 +108,18 @@ function ToDoPage({ navigation }) {
           refreshing={refreshing}
         />
       ) : (
-        <Text>No tasks</Text>
+        <View className="flex-1 justify-center items-center">
+          {/* <Text>No tasks</Text> */}
+          <Image
+            source={noTask}
+            style={{
+              marginLeft: 50,
+              marginBottom: 50,
+              width: 200,
+              height: 200,
+            }}
+          />
+        </View>
       )}
     </View>
   );

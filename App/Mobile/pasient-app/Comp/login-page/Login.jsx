@@ -184,6 +184,7 @@ const Login = ({ navigation }) => {
                   </Pressable>
                   <Pressable
                     onPress={() => {
+                      // console.log("login");
                       const trimmedEmail = emailLogin.trim().toLowerCase();
                       // navigation.navigate("Profiles");
                       // this is for creating test account
@@ -206,11 +207,11 @@ const Login = ({ navigation }) => {
                           }
                         })
                         .catch((err) => {
-                          console.log("login " + err);
+                          console.log("login wow" + err);
                           if (err.response.status === 401) {
                             setIscorrect(true);
                           }
-                        }); 
+                        });
                     }}
                     style={({ pressed }) => [
                       styles.button,
