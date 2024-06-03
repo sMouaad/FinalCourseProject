@@ -161,6 +161,7 @@ export default function UserSettings({ navigation }) {
                   onPress={async () => {
                     Axios.get(`http://${SERVER_IP}:3000/auth/logout`).then(
                       (res) => {
+                        console.log("logout");
                         if (res.data.status) {
                           removeData("cookie");
                           navigation.navigate("FirstPage");

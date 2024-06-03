@@ -1,7 +1,64 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useEffect } from "react";
+import Axios from "axios";
+import { useState } from "react";
+import { SERVER_IP } from "@env";
+import { getData } from "../../../localStorage";
 
 export default function Settings({ navigation, patientName }) {
+  const [patientId, setPatientId] = useState(null);
+  const [cookie, setCookie] = useState(null);
+
+  useEffect(() => {
+    async function getPatientId() {
+      const cookie = await getData("cookie");
+      const patientid = await getData("patientId");
+      setCookie(cookie);
+      setPatientId(patientid);
+    }
+    getPatientId();
+  }, []);
+
+  const handelDelete = () => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure that you want to delete this patient?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            Axios.post(`http://${SERVER_IP}:3000/auth/operation`, {
+              token: cookie,
+              operation: "delete",
+              tableData: [patientId],
+            })
+              .then((res) => {
+                if (res.data.status) {
+                  navigation.navigate("HomePage");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View
       style={{
@@ -58,7 +115,7 @@ export default function Settings({ navigation, patientName }) {
         <Text style={styles.buttonText}>Edit</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.Delete}>
+      <TouchableOpacity style={styles.Delete} onPress={handelDelete}>
         <Text style={styles.DeleteText}>Delete</Text>
       </TouchableOpacity>
     </View>

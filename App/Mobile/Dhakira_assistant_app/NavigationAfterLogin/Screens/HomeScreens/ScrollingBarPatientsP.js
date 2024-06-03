@@ -128,6 +128,7 @@ function HomePage({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getData("cookie");
+      // console.log("userData", userData);
       Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
         accessToken: userData,
       })
