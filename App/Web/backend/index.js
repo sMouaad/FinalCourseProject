@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { UserRouter } from "./routes/user.js";
 import { TodoRouter } from "./routes/todo-list.js";
+import { Patient } from "./models/Patient.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
@@ -55,7 +56,12 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("patientLoc", { lng: longitude, lat: latitude });
   });
 
-  socket.on("chat message", (msg, room) => {
+  socket.on("chat message", async (msg, room) => {
+    let patientX = await Patient.findOne({ _id: room });
+    // patientX.messages.push({
+    //   sender: msg[0].sender,
+    //   messageContent: msg[0].text,
+    // });
     console.log("message:", msg[0].text);
     // Broadcast message to all clients in the room
     io.to(room).emit("chat message", msg);

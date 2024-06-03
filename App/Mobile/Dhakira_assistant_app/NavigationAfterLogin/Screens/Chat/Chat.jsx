@@ -79,6 +79,7 @@ export function Chat({ route }) {
     (messages) => {
       // Emit the sent message to the server
 
+      console.log(messages);
       if (socket) {
         socket.emit("chat message", messages, patientId);
       }
