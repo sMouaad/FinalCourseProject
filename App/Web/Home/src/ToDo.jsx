@@ -43,7 +43,12 @@ export default function ToDo() {
               >
                 <div className="flex items-center">
                   {todo.done ? (
-                    <BsFillCheckCircleFill className="mr-2 text-green-500" />
+                    <BsFillCheckCircleFill
+                      onClick={() => {
+                        handleCheck(todo._id);
+                      }}
+                      className="mr-2 text-green-500"
+                    />
                   ) : (
                     <BsCircleFill
                       onClick={() => {
