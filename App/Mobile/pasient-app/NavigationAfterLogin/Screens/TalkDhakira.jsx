@@ -75,7 +75,7 @@ const TalkDhakira = ({ navigation }) => {
 
     const test = {
       _id: 1,
-      text: " I'm Dhakira, your Alzheimer's assistant. How can I help you today??",
+      text: " I'm Dhakira, your assistant. How can I help you today??",
       createdAt: new Date(),
       user: {
         _id: 2,

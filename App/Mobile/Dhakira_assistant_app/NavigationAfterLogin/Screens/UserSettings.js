@@ -45,11 +45,9 @@ export default function UserSettings({ navigation }) {
                 />
 
                 <View style={styles.profileBody}>
-                  <Text style={styles.profileName}>Younes BENSAFIA</Text>
+                  <Text style={styles.profileName}>Aissam</Text>
 
-                  <Text style={styles.profileHandle}>
-                    youbensafia@gmail.com
-                  </Text>
+                  <Text style={styles.profileHandle}>aissam@test.dz</Text>
                 </View>
               </View>
             </View>
@@ -65,7 +63,7 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
-                  <Text style={styles.rowValue}>youbensafia@gmail.com</Text>
+                  <Text style={styles.rowValue}>aissam@test.com</Text>
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
@@ -94,7 +92,7 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
-                  <Text style={styles.rowValue}>Younes BENSAFIA</Text>
+                  <Text style={styles.rowValue}>Aissam</Text>
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
