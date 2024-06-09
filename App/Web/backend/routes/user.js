@@ -70,14 +70,14 @@ router.post("/support", async (req, res) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "mouaadsdi.usthb@gmail.com",
+        user: "reviewerchess@gmail.com",
         pass: process.env.MAIL_PASS,
       },
     });
 
     var mailOptions = {
-      from: "mouaadsdi.usthb@gmail.com",
-      to: "mouaad.sadi11@gmail.com",
+      from: "reviewerchess@gmail.com",
+      to: "random@random.random",
       subject: subject,
       text: `The user with email ${email} seeks support with the following message :\n ${message}`,
     };
@@ -378,13 +378,13 @@ router.post("/forgot-password", async (req, res) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "mouaadsdi.usthb@gmail.com",
+        user: "reviewerchess@gmail.com",
         pass: process.env.MAIL_PASS,
       },
     });
 
     var mailOptions = {
-      from: "mouaadsdi.usthb@gmail.com",
+      from: "reviewerchess@gmail.com",
       to: email,
       subject: "Reset Your Password",
       text: `Here is your link to reset your password : http://localhost:5173/login/reset-password/${token}`,
