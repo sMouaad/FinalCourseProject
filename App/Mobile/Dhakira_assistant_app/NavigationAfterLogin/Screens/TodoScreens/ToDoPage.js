@@ -34,7 +34,7 @@ export default function App({ navigation, route }) {
         setRefreshing(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err + "test");
         setLoading(false);
         setRefreshing(false);
       });

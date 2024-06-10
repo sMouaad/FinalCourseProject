@@ -7,6 +7,7 @@ import { Patient } from "./models/Patient.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
+import { Types } from "mongoose";
 
 dotenv.config();
 const app = express();
@@ -58,10 +59,21 @@ io.on("connection", (socket) => {
 
   socket.on("chat message", async (msg, room) => {
     let patientX = await Patient.findOne({ _id: room });
-    // patientX.messages.push({
-    //   sender: msg[0].sender,
-    //   messageContent: msg[0].text,
-    // });
+    let user = {id: msg[0].user._id, avatar: msg[0].user.avatar };
+    patientX.messages.push({
+      text: msg[0].text,
+      user: user,
+      createdAt: msg[0].createdAt,
+    });
+    await patientX.save();
+
+    // {
+    //   text: 'Hello',
+    //   user: { _id: '66539226e6ab7c1ee63acd04', avatar: 7 },
+    //   createdAt: '2024-06-03T12:23:54.249Z',
+    //   _id: '49ee0ae1-09de-43e8-8de5-b160f0b8b5a2'
+    // }
+
     console.log("message:", msg[0].text);
     // Broadcast message to all clients in the room
     io.to(room).emit("chat message", msg);

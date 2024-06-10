@@ -98,7 +98,7 @@ export default function FamilyFace() {
         } else alert(res.data.message);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("face " + err);
       })
       .then(() => {
         setFetsched(true);
@@ -128,7 +128,7 @@ export default function FamilyFace() {
 
         setPeoples(response.data);
       } catch (err) {
-        console.warn("useEffect:", err);
+        console.warn("useEffect: error is ", err);
       }
     }
     if (patientId) {

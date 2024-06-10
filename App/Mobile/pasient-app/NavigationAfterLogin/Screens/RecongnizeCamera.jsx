@@ -74,7 +74,7 @@ export function RecongnizeCamera() {
             setFetsched(true);
           })
           .catch((error) => {
-            console.log(error + " hu");
+            console.log(error + "you");
           });
       } catch (error) {
         console.log(error);

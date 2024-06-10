@@ -20,8 +20,7 @@ enableScreens();
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  removeData("patientId");
-  // removeData("cookie");
+
   const [initialRouteName, setInitialRouteName] = useState("");
 
   useEffect(() => {

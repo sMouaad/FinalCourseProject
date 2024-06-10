@@ -46,7 +46,7 @@ const LocationProvider = ({ children }) => {
             "Permission to access background location was denied"
           );
         }
-        // console.log("hi");
+        console.log("hi");
         if (socket !== null) {
           setTimeout(async () => {
             let location = await Location.getCurrentPositionAsync({
@@ -57,7 +57,7 @@ const LocationProvider = ({ children }) => {
             const { longitude, latitude } = location.coords;
             socket.emit("locationUpdate", { longitude, latitude });
             setLocation(location);
-            // console.log(location);
+            console.log(location);
           }, 2000);
         }
 

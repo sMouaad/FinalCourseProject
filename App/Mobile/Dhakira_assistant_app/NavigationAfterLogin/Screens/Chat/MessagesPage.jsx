@@ -31,7 +31,7 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("mesage");
+      // console.log("mesage");
       const userData = await getData("cookie");
       Axios.post(`http://${SERVER_IP}:3000/auth/profiles`, {
         accessToken: userData,
@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
           setFetsched(true);
         })
         .catch((err) => {
-          console.log("ScrollingBarPatients message" + err.response);
+          console.log("ScrollingBarPatients message hi" + err.response);
           console.log("ScrollingBarPatients message " + err);
         });
     };

@@ -24,9 +24,9 @@ client = AsyncOpenAI(
     api_key="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",
 )
 # Assistant ID for AUTISM
-assistant_id = "asst_ZnwVnra8nFjDPW7c7BCYBL6O"
+# assistant_id = "asst_ZnwVnra8nFjDPW7c7BCYBL6O"
 # Assistant ID for Alzheimer
-# assistant_id = "asst_3zUihuTX8BNZ5vCuK5DIDHqD"
+assistant_id = "asst_3zUihuTX8BNZ5vCuK5DIDHqD"
 run_finished_states = ["completed", "failed", "cancelled", "expired", "requires_action"]
 
 

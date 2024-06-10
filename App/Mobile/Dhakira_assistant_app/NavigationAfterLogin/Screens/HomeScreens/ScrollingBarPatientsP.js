@@ -126,6 +126,7 @@ function HomePage({ navigation }) {
   }, []);
 
   useEffect(() => {
+    console.log("mesage");
     const fetchData = async () => {
       const userData = await getData("cookie");
       // console.log("userData", userData);
@@ -151,7 +152,7 @@ function HomePage({ navigation }) {
           setFetsched(true);
         })
         .catch((err) => {
-          console.log("ScrollingBarPatients  " + err.response);
+          console.log("ScrollingBarPatients hi" + err.response);
           console.log("ScrollingBarPatients " + err);
         });
     };

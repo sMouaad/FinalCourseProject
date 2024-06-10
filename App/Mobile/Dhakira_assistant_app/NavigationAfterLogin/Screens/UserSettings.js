@@ -45,11 +45,9 @@ export default function UserSettings({ navigation }) {
                 />
 
                 <View style={styles.profileBody}>
-                  <Text style={styles.profileName}>Younes BENSAFIA</Text>
+                  <Text style={styles.profileName}></Text>
 
-                  <Text style={styles.profileHandle}>
-                    youbensafia@gmail.com
-                  </Text>
+                  <Text style={styles.profileHandle}></Text>
                 </View>
               </View>
             </View>
@@ -65,7 +63,7 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
-                  <Text style={styles.rowValue}>youbensafia@gmail.com</Text>
+                  <Text style={styles.rowValue}></Text>
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
@@ -82,7 +80,7 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
-                  <Text style={styles.rowValue}>+213561240053</Text>
+                  <Text style={styles.rowValue}></Text>
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
@@ -94,7 +92,7 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
-                  <Text style={styles.rowValue}>Younes BENSAFIA</Text>
+                  <Text style={styles.rowValue}></Text>
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
@@ -161,7 +159,7 @@ export default function UserSettings({ navigation }) {
                   onPress={async () => {
                     Axios.get(`http://${SERVER_IP}:3000/auth/logout`).then(
                       (res) => {
-                        console.log("logout");
+                        // console.log("logout");
                         if (res.data.status) {
                           removeData("cookie");
                           navigation.navigate("FirstPage");

@@ -41,7 +41,7 @@ function LoginPageInterface() {
 
   const handelLogin = () => {
     const trimmedEmail = emailLogin.trim().toLowerCase();
-    Axios.post(`http://${SERVER_IP}:3000/auth/login`, {
+    Axios.post(`http://${process.env.SERVER_IP}:3000/auth/login`, {
       emailLogin: trimmedEmail,
       passwordLogin,
     })
@@ -55,7 +55,7 @@ function LoginPageInterface() {
         }
       })
       .catch((err) => {
-        console.log("login Page ", err);
+        console.log("login Page :", err);
         if (err.response.status === 401) {
           alert("Email or password is incorrect");
         }

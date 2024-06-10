@@ -12,9 +12,20 @@ const TodoSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+// {
+//   text: 'Hello',
+//   user: { _id: '66539226e6ab7c1ee63acd04', avatar: 7 },
+//   createdAt: '2024-06-03T12:23:54.249Z',
+//   _id: '49ee0ae1-09de-43e8-8de5-b160f0b8b5a2'
+// }
 const Messages = new mongoose.Schema({
-  sender: { type: mongoose.SchemaTypes.ObjectId },
-  messageContent: { type: String },
+  text: { type: String },
+  user: {
+    id: mongoose.SchemaTypes.ObjectId,
+    avatar: Number,
+  },
+  createdAt: { type: Date },
 });
 const PatientSchema = new mongoose.Schema({
   name: { type: String, required: true },

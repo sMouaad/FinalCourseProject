@@ -80,7 +80,7 @@ const Profiles = ({ navigation }) => {
           setFetsched(true);
         })
         .catch((err) => {
-          console.log("Profiles " + err);
+          console.log("Profiles jhg " + err);
         });
     };
     if (refreshing) {

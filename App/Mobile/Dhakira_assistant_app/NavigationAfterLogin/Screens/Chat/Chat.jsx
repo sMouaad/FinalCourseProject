@@ -45,7 +45,9 @@ export function Chat({ route }) {
       // Event listener for receiving messages from the server
       socket.on("chat message", (msg) => {
         const modifiedMessages = msg.map((message) => ({
-          ...message,
+          _id: message._id,
+          text: message.text,
+          createdAt: new Date(message.createdAt),
           user: {
             _id: message.user._id,
             name: message.user.name,
@@ -79,7 +81,8 @@ export function Chat({ route }) {
     (messages) => {
       // Emit the sent message to the server
 
-      console.log(messages);
+      console.log("hi");
+
       if (socket) {
         socket.emit("chat message", messages, patientId);
       }

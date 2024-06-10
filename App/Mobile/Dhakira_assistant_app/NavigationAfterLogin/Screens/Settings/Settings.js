@@ -39,7 +39,7 @@ export default function Settings({ navigation, patientName }) {
         {
           text: "Yes",
           onPress: () => {
-            Axios.post(`http://${SERVER_IP}:3000/auth/operation`, {
+            Axios.post(`http://192.168.8.101:3000/auth/operation`, {
               token: cookie,
               operation: "delete",
               tableData: [patientId],
@@ -50,7 +50,7 @@ export default function Settings({ navigation, patientName }) {
                 }
               })
               .catch((err) => {
-                console.log(err);
+                console.log(err + " hi");
               });
           },
         },
