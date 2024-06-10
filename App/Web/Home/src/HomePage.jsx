@@ -160,20 +160,17 @@ const AboutUs = () => {
       <div className="mx-auto flex flex-row md:flex-row justify-between items-center gap-12">
         <div className="md:w-3/5 mx-auto px-10">
           <h2 className="text-4xl text-[#00E5BD] drop-shadow-lg font-bold mb-4">
-            gratuit. efficace.
+            Gratuit, efficace,
           </h2>
           <h2 className="text-4xl text-[#00E5BD] drop-shadow-lg font-bold mb-4">
-            efficace.
+            amusant.
           </h2>
           <p>
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem
+            Découvrez notre nouvelle application révolutionnaire pour
+            accompagner les enfants atteints d'autisme. Conçue pour être à la
+            fois éducative et divertissante, notre plateforme offre une variété
+            de fonctionnalités pour aider les enfants à développer leurs
+            compétences sociales et cognitives tout en s'amusant.
           </p>
         </div>
         <div>
@@ -183,20 +180,16 @@ const AboutUs = () => {
       <div className="mx-auto flex flex-row md:flex-row justify-between items-center gap-12">
         <div className="md:w-3/5 mx-auto px-10">
           <h2 className="text-4xl text-[#00E5BD] drop-shadow-lg font-bold mb-4">
-            gratuit. efficace.
+            Accessible, efficace,
           </h2>
           <h2 className="text-4xl text-[#00E5BD] drop-shadow-lg font-bold mb-4">
-            efficace.
+            ludique.
           </h2>
           <p>
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem
-            lorem lorem lorem lorem
+            Notre application révolutionnaire est conçue pour offrir un soutien
+            quotidien aux enfants atteints d'autisme. Profitez d'une expérience
+            ludique et interactive qui aide à développer les compétences
+            sociales et cognitives.
           </p>
         </div>
         <div>
@@ -228,7 +221,7 @@ const App = () => {
         <div className="md:w-3/5 p-10 flex-col">
           <img src={Qrcode} alt="" className="w-60" />
           <p className="text-wrap w-40 py-4">
-            Scannez le code pour telecherger l’app sur votre telephone
+            Scannez le code pour télécharger l’app sur votre téléphone
           </p>
         </div>
         <div className="flex">
@@ -239,7 +232,7 @@ const App = () => {
       <footer className="bg-[#4CFF69] h-20 flex justify-start">
         <div className="flex flex-row ">
           <p className="p-5">phone: +213xxxxxx</p>
-          <p className="p-5">email: rn.mkanch@metsqsonach.dz </p>
+          <p className="p-5">email: dhakira@support.dz </p>
         </div>
       </footer>
     </div>

@@ -63,7 +63,11 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
+<<<<<<< HEAD
                   <Text style={styles.rowValue}></Text>
+=======
+                  <Text style={styles.rowValue}>aissam@test.com</Text>
+>>>>>>> 9e78d05ad639b8034b9b6acfe2031e5632598022
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
@@ -92,7 +96,11 @@ export default function UserSettings({ navigation }) {
 
                   <View style={styles.rowSpacer} />
 
+<<<<<<< HEAD
                   <Text style={styles.rowValue}></Text>
+=======
+                  <Text style={styles.rowValue}>Aissam</Text>
+>>>>>>> 9e78d05ad639b8034b9b6acfe2031e5632598022
 
                   <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
