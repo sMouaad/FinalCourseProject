@@ -18,6 +18,3 @@ The project incorporates a range of modern technologies to deliver a robust and 
 - **Backend Development**: 
   - **Node.js**: For building a fast and scalable backend API.
   - **MongoDB**: A NoSQL database for efficient data storage and retrieval, ensuring flexibility and scalability.
-
-## Getting Started
-To get started with the project, clone the repository and install the necessary dependencies.
